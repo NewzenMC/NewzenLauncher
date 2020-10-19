@@ -1,0 +1,49 @@
+{
+  "name": "newdylauncher",
+  "version": "0.0.1",
+  "productName": "NewdyLauncher",
+  "description": "Launcher Officiel de NewdyCraft",
+  "author": "TIEB62 (Titouan Petit)",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/NewdyCraft/NewdyLauncher",
+  "bugs": {
+    "url": "https://github.com/NewdyCraft/NewdyLauncher/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "cross-env ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES=true node build.js",
+    "dist:win": "npm run dist -- WINDOWS",
+    "dist:mac": "npm run dist -- MAC",
+    "dist:linux": "npm run dist -- LINUX",
+    "lint": "eslint --config .eslintrc.json ."
+  },
+  "engines": {
+    "node": "12.x.x"
+  },
+  "dependencies": {
+    "adm-zip": "^0.4.16",
+    "async": "^3.2.0",
+    "discord-rpc": "^3.1.1",
+    "ejs": "^3.1.3",
+    "ejs-electron": "^2.0.3",
+    "electron-updater": "^4.3.1",
+    "fs-extra": "^9.0.1",
+    "github-syntax-dark": "^0.5.0",
+    "jquery": "^3.5.1",
+    "request": "^2.88.2",
+    "semver": "^7.3.2",
+    "tar-fs": "^2.1.0",
+    "winreg": "^1.2.4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "electron": "^9.0.5",
+    "electron-builder": "^22.7.0",
+    "eslint": "^7.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewdyCraft/NewdyLauncher.git"
+  }
+}

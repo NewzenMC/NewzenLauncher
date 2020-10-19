@@ -1,0 +1,49 @@
+{
+    "html": {
+        "avatarOverlay": "Modifier"
+    },
+    "js": {
+        "login": {
+            "error": {
+                "invalidValue": "* Valeur Invalide",
+                "requiredValue": "* Requis",
+                "userMigrated": {
+                    "title": "Erreur durant la connection :<br>Identifiants Invalides",
+                    "desc": "Vous avez éssayé de vous connecter avec un compte migré. Rééssayez en remplaçant le nom d'utilisateur par l'addresse email"
+                },
+                "invalidCredentials": {
+                    "title": "Erreur durant la connection :<br>Identifiants Invalides",
+                    "desc": "L'Email ou le Mot de Passe que vous avez entré est invalide, veuillez rééssayer"
+                },
+                "rateLimit": {
+                    "title": "Erreur durant la connection :<br>Trop grand nombre de tentatives !",
+                    "desc": "Il y a eu trop de tentatives de connections refusées récemment sur votre compte. Veuillez rééssayer plus tard"
+                },
+                "noInternet": {
+                    "title": "Erreur durant la connection :<br>Pas de connection Internet",
+                    "desc": "Vous devez être connecté à Internet pour vous connecter. Connectez-vous et rééssayez"
+                },
+                "authDown": {
+                    "title": "EErreur durant la connection :<br>Les Serveurs d'Authentification sont actuellement Hors-Service !",
+                    "desc": "Les serveurs d'Authentification de Mojang sont actuellement Hors-Service ou inaccessibles, sans doute pour cause de Maintenance. Attendez un peu et rééssayez. Vous pouvez vérifier le status des serveurs de Mojang <a href=\"https://help.mojang.com/\">ICI</a>"
+                },
+                "notPaid": {
+                    "title": "Erreur durant la connection :<br>Vous n'avez pas acheté le jeu !",
+                    "desc": "Le compte avec lequel vous essayez de vous connecter n'a pas acheté de copie de Minecraft.<br>Vous pouvez acheter une copie sur <a href=\"https://minecraft.net/\">https://minecraft.net</a>"
+                },
+                "unknown": {
+                    "title": "Erreur durant la connection :<br>Erreur Inconnue"
+                }
+            },
+            "login": "Connection",
+            "loggingIn": "Connection en cours...",
+            "success": "Succès",
+            "tryAgain": "Rééssayez"
+        },
+        "landing": {
+            "launch": {
+                "pleaseWait": "Veuillez patienter..."
+            }
+        }
+    }
+}
