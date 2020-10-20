@@ -1,13 +1,13 @@
 {
-  "name": "newdylauncher",
+  "name": "newzenlauncher",
   "version": "0.0.1",
-  "productName": "NewdyLauncher",
-  "description": "Launcher Officiel de NewdyCraft",
+  "productName": "NewzenLauncher",
+  "description": "Launcher Officiel de Newzen",
   "author": "TIEB62 (Titouan Petit)",
   "license": "GPL-3.0-or-later",
-  "homepage": "https://github.com/NewdyCraft/NewdyLauncher",
+  "homepage": "https://github.com/NewzenMC/NewzenLauncher",
   "bugs": {
-    "url": "https://github.com/NewdyCraft/NewdyLauncher/issues"
+    "url": "https://github.com/NewzenMC/NewzenLauncher/issues"
   },
   "main": "index.js",
   "scripts": {
@@ -45,6 +45,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NewdyCraft/NewdyLauncher.git"
+    "url": "git+https://github.com/NewzenMC/NewzenLauncher.git"
   }
 }

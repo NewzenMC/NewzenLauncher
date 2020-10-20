@@ -11,9 +11,9 @@ exports.initRPC = function (genSettings, initialDetails = 'En Attente du Client.
 
     activity = {
         details: initialDetails,
-        state: 'Serveur : ' + 'NewdyCraft', //TODO Modifier dynamiquement le nom
-        largeImageKey: 'newdycraft',
-        largeImageText: 'NewdyCraft', //TODO Modifier dynamiquement le Texte
+        state: 'Serveur : ' + 'Newzen', //TODO Modifier dynamiquement le nom
+        largeImageKey: 'newzen',
+        largeImageText: 'Newzen', //TODO Modifier dynamiquement le Texte
         smallImageKey: 'unknown', //TODO Changer le nom (maintenance/offline/online/unknown) en fonction du ping du serveur
         smallImageText: genSettings.smallImageText,
         startTimestamp: new Date().getTime(),

@@ -18,10 +18,10 @@ function getCurrentPlatform() {
 builder.build({
     targets: (process.argv[2] != null && Platform[process.argv[2]] != null ? Platform[process.argv[2]] : getCurrentPlatform()).createTarget(),
     config: {
-        appId: 'newdylauncher',
-        productName: 'Newdy Launcher',
+        appId: 'newzenlauncher',
+        productName: 'Newzen Launcher',
         artifactName: '${productName}-setup-${version}.${ext}',
-        copyright: 'Copyright © 2020 NewdyCraft',
+        copyright: 'Copyright © 2020 Newzen',
         directories: {
             buildResources: 'build',
             output: 'dist'
@@ -47,9 +47,9 @@ builder.build({
         linux: {
             target: 'AppImage',
             maintainer: 'Titouan Petit (TIEB62)',
-            vendor: 'NewdyCraft',
-            synopsis: 'Launcher de NewdyCraft',
-            description: 'Le Launcher Officiel de NewdyCraft (Serveur Minecraft)',
+            vendor: 'Newzen',
+            synopsis: 'Launcher de Newzen',
+            description: 'Le Launcher Officiel de Newzen (Serveur Minecraft)',
             category: 'Game'
         },
         compression: 'maximum',
