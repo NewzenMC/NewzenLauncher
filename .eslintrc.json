@@ -16,10 +16,6 @@
                 "SwitchCase": 1
             }
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
         "quotes": [
             "error",
             "single"
@@ -52,15 +48,17 @@
     },
     "overrides": [
         {
-          "files": [ "app/assets/js/scripts/*.js" ],
-          "rules": {
-            "no-unused-vars": [
-                0
+            "files": [
+                "app/assets/js/scripts/*.js"
             ],
-            "no-undef": [
-                0
-            ]
-          }
+            "rules": {
+                "no-unused-vars": [
+                    0
+                ],
+                "no-undef": [
+                    0
+                ]
+            }
         }
-      ]
+    ]
 }
