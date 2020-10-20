@@ -106,7 +106,7 @@ function createWindow() {
             enableRemoteModule: true,
             worldSafeExecuteJavaScript: true
         },
-        backgroundColor: '#171614'
+        backgroundColor: '#2C2F33'
     })
 
     ejse.data('bkid', Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)))
