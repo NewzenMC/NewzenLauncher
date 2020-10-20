@@ -12,12 +12,12 @@
     "servers": [
         {
             "id": "Newzen-1.15.2",
-            "name": "Newzen Server",
-            "description": "Main WesterosCraft server. Connect to enter the Realm.",
+            "name": "Newzen",
+            "description": "Serveur Pvp Faction Moddé",
             "icon": "http://mc.westeroscraft.com/WesterosCraftLauncher/files/server-prod.png",
-            "version": "3.9.4",
-            "address": "mc.westeroscraft.com",
-            "minecraftVersion": "1.11.2",
+            "version": "1.0.0",
+            "address": "play.excaliamc.fr",
+            "minecraftVersion": "1.15.2",
             "discord": {
                 "shortId": "Production",
                 "largeImageText": "Newzen Server",
