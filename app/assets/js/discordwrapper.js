@@ -2,21 +2,18 @@
 const logger = require('./loggerutil')('%c[DiscordWrapper]', 'color: #7289da; font-weight: bold')
 
 const RPC = require('discord-rpc')
-
 let client
 let activity
 
-exports.initRPC = function (genSettings, initialDetails = 'En Attente du Client..') {
+exports.initRPC = function () {
     client = new RPC.Client({ transport: 'ipc' })
 
     activity = {
-        details: initialDetails,
-        state: 'Serveur : ' + 'Newzen', //TODO Modifier dynamiquement le nom
+        details: 'Sur le Launcher',
         largeImageKey: 'newzen',
-        largeImageText: 'Newzen', //TODO Modifier dynamiquement le Texte
-        smallImageKey: 'unknown', //TODO Changer le nom (maintenance/offline/online/unknown) en fonction du ping du serveur
-        smallImageText: genSettings.smallImageText,
-        startTimestamp: new Date().getTime(),
+        largeImageText: 'Newzen',
+        smallImageKey: 'maintenance',
+        smallImageText: 'Maintenance',
         instance: false
     }
 
@@ -25,7 +22,7 @@ exports.initRPC = function (genSettings, initialDetails = 'En Attente du Client.
         client.setActivity(activity)
     })
 
-    client.login({ clientId: genSettings.clientId }).catch(error => {
+    client.login({ clientId: '726151873983283300' }).catch(error => {
         if (error.message.includes('ENOENT')) {
             logger.log('Impossible d\'initialiser Discord Rich Presence, aucun client détecté !')
         } else {
@@ -46,3 +43,5 @@ exports.shutdownRPC = function () {
     client = null
     activity = null
 }
+
+this.initRPC()

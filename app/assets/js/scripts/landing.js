@@ -704,16 +704,14 @@ function dlAsync(login = true) {
 
                     // Init Discord Hook
                     const distro = DistroManager.getDistribution()
-                    if (distro.discord != null) {
-                        DiscordWrapper.initRPC(distro.discord)
-                        hasRPC = true
-                        proc.on('close', (code, signal) => {
-                            loggerLaunchSuite.log('Arret de la Discord Rich Presence...')
-                            DiscordWrapper.shutdownRPC()
-                            hasRPC = false
-                            proc = null
-                        })
-                    }
+                    hasRPC = true
+                    proc.on('close', (code, signal) => {
+                        loggerLaunchSuite.log('Arret de la Discord Rich Presence...')
+                        DiscordWrapper.shutdownRPC()
+                        hasRPC = false
+                        proc = null
+                    })
+
 
                 } catch (err) {
 
