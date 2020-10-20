@@ -103,3 +103,9 @@ dist
 # TernJS port file
 .tern-port
 .vscode/launch.json
+/node_modules/
+/.vs/
+/.vscode/
+/target/
+/logs/
+/dist/
