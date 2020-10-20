@@ -1,11 +1,12 @@
 {
     "env": {
-        "es6": true,
+        "es2017": true,
         "node": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2021
+        "ecmaVersion": 2019,
+        "sourceType": "module"
     },
     "rules": {
         "indent": [
@@ -15,11 +16,10 @@
                 "SwitchCase": 1
             }
         ],
-        // Disable LineBreak IDE Errors
-        // "linebreak-style": [
-        //     "error",
-        //     "windows"
-        // ],
+        "linebreak-style": [
+            "error",
+            "windows"
+        ],
         "quotes": [
             "error",
             "single"
@@ -52,17 +52,15 @@
     },
     "overrides": [
         {
-            "files": [
-                "app/assets/js/scripts/*.js"
+          "files": [ "app/assets/js/scripts/*.js" ],
+          "rules": {
+            "no-unused-vars": [
+                0
             ],
-            "rules": {
-                "no-unused-vars": [
-                    0
-                ],
-                "no-undef": [
-                    0
-                ]
-            }
+            "no-undef": [
+                0
+            ]
+          }
         }
-    ]
+      ]
 }

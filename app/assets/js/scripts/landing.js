@@ -323,7 +323,7 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
                 // Show this information to the user.
                 setOverlayContent(
                     'No Compatible<br>Java Installation Found',
-                    'In order to join NewdyCraft, you need a 64-bit installation of Java 8. Would you like us to install a copy? By installing, you accept <a href="http://www.oracle.com/technetwork/java/javase/terms/license/index.html">Oracle\'s license agreement</a>.',
+                    'In order to join Newzen, you need a 64-bit installation of Java 8. Would you like us to install a copy? By installing, you accept <a href="http://www.oracle.com/technetwork/java/javase/terms/license/index.html">Oracle\'s license agreement</a>.',
                     'Install Java',
                     'Install Manually'
                 )
@@ -680,7 +680,7 @@ function dlAsync(login = true) {
                     if (SERVER_JOINED_REGEX.test(data)) {
                         DiscordWrapper.updateDetails('Sur Minecraft')
                     } else if (GAME_JOINED_REGEX.test(data)) {
-                        DiscordWrapper.updateDetails('Connecté sur NewdyCraft')
+                        DiscordWrapper.updateDetails('Connecté sur Newzen')
                     }
                 }
 
@@ -700,7 +700,7 @@ function dlAsync(login = true) {
                     proc.stdout.on('data', tempListener)
                     proc.stderr.on('data', gameErrorListener)
 
-                    setLaunchDetails('Terminé, Bon jeu sur NewdyCraft !')
+                    setLaunchDetails('Terminé, Bon jeu sur Newzen !')
 
                     // Init Discord Hook
                     const distro = DistroManager.getDistribution()
