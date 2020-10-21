@@ -19,7 +19,7 @@ $('#adminPanelBtn').on('click', () => {
 
 // Escape key return to main menu
 document.onkeyup = (e) => {
-    if (e.key === 'Escape' && getCurrentView() === VIEWS.adminPanel) { // escape key maps to keycode `27` 
+    if (e.key === 'Escape' && getCurrentView() === VIEWS.adminPanel) {
         switchView(getCurrentView(), VIEWS.landing)
     }
 }
