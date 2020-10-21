@@ -1,4 +1,3 @@
-// Work in progress
 const logger = require('./loggerutil')('%c[DiscordWrapper]', 'color: #7289da; font-weight: bold')
 
 const RPC = require('discord-rpc')
