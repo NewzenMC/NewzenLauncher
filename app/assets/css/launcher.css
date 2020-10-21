@@ -3774,4 +3774,30 @@ input:checked + .toggleSwitchSlider:before {
  * Admin Panel View (adminPanel.ejs)                                           *
  *                                                                             *
  ******************************************************************************/
-/*TODO: Admin Panel CSS */
+#adminPanelBtn {
+    display: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 0px 0px 0px yellow;
+    font-size: 15px;
+    padding: 10px;
+    transition: 0.25s ease;
+    outline: none;
+    color: orange;
+    border: 2px solid orange;
+    border-radius: 5px;
+    text-align: center;
+    margin-left: 30px;
+    margin-top: 30px;
+}
+#adminPanelBtn:hover,
+#adminPanelBtn:focus {
+    text-shadow: 0px 0px 20px yellow, 0px 0px 20px yellow;
+}
+#adminPanelBtn:active {
+    color: #c7c7c7;
+    text-shadow: 0px 0px 20px orangered, 0px 0px 20px orangered;
+    border: 2px solid orangered;
+}
