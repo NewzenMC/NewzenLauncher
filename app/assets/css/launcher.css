@@ -2665,12 +2665,12 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Logo image. */
 #image_seal {
-    height: 70px;
+    height: 140px;
     width: auto;
     position: relative;
-    border: 2px solid white;
+    /*border: 2px solid white;*/
     box-sizing: border-box;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
 }
 
 /* Logo container styles. */
