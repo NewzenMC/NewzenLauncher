@@ -3775,3 +3775,10 @@ input:checked + .toggleSwitchSlider:before {
 .rotating {
     animation: rotating 2s linear infinite;
 }
+
+/*******************************************************************************
+ *                                                                             *
+ * Admin Panel View (adminPanel.ejs)                                           *
+ *                                                                             *
+ ******************************************************************************/
+/*TODO: Admin Panel CSS */

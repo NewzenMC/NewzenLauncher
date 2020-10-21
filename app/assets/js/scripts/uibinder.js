@@ -18,7 +18,8 @@ const VIEWS = {
     landing: '#landingContainer',
     login: '#loginContainer',
     settings: '#settingsContainer',
-    welcome: '#welcomeContainer'
+    welcome: '#welcomeContainer',
+    adminPanel: '#adminPanelContainer'
 }
 
 // The currently shown view container.
