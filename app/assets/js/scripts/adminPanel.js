@@ -16,4 +16,4 @@ function showAdminPanelButton() {
 }
 
 refreshAdminPanelAccess()
-//FIXME Refresh dès que l'utilisateur ajoute ou supprime un compte du launcher
+//NEWFEATURE Refresh dès que l'utilisateur ajoute ou supprime un compte du launcher
