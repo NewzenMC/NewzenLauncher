@@ -10,9 +10,18 @@ const { ipcRenderer, remote, shell, webFrame } = require('electron')
 const isDev = require('./assets/js/isdev')
 const LoggerUtil = require('./assets/js/loggerutil')
 
-const loggerUICore = LoggerUtil('%c[UICore]', 'color: #000668; font-weight: bold')
-const loggerAutoUpdater = LoggerUtil('%c[AutoUpdater]', 'color: #000668; font-weight: bold')
-const loggerAutoUpdaterSuccess = LoggerUtil('%c[AutoUpdater]', 'color: #209b07; font-weight: bold')
+const loggerUICore = LoggerUtil(
+    '%c[UICore]',
+    'color: #000668; font-weight: bold'
+)
+const loggerAutoUpdater = LoggerUtil(
+    '%c[AutoUpdater]',
+    'color: #000668; font-weight: bold'
+)
+const loggerAutoUpdaterSuccess = LoggerUtil(
+    '%c[AutoUpdater]',
+    'color: #209b07; font-weight: bold'
+)
 
 // Log deprecation and process warnings.
 process.traceProcessWarnings = true
@@ -26,10 +35,22 @@ window.eval = global.eval = function () {
 
 // Display warning when devtools window is opened.
 remote.getCurrentWebContents().on('devtools-opened', () => {
-    console.log('%cLa Console est sombre et pleine de dangers', 'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold')
-    console.log('%cSi l\'on vous a dit de Copier/Coller quelque chose ici, vous vous êtes sans doute fait arnaquer', 'font-size: 20px')
-    console.log('%cSi vous ne savez pas exactement ce que vous faites, fermez cette fenêtre !', 'font-size: 20px')
-    console.log('%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, vous vous exposez à de gros riques de piratage de données !', 'font-size: 20px')
+    console.log(
+        '%cLa Console est sombre et pleine de dangers',
+        'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold'
+    )
+    console.log(
+        "%cSi l'on vous a dit de Copier/Coller quelque chose ici, vous vous êtes sans doute fait arnaquer",
+        'font-size: 20px'
+    )
+    console.log(
+        '%cSi vous ne savez pas exactement ce que vous faites, fermez cette fenêtre !',
+        'font-size: 20px'
+    )
+    console.log(
+        '%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, vous vous exposez à de gros riques de piratage de données !',
+        'font-size: 20px'
+    )
 })
 
 // Disable zoom, needed for darwin.
@@ -46,7 +67,10 @@ if (!isDev) {
                 settingsUpdateButtonStatus('Checking for Updates..', true)
                 break
             case 'update-available':
-                loggerAutoUpdaterSuccess.log('New update available', info.version)
+                loggerAutoUpdaterSuccess.log(
+                    'New update available',
+                    info.version
+                )
 
                 if (process.platform === 'darwin') {
                     info.darwindownload = `https://github.com/dscalzi/HeliosLauncher/releases/download/v${info.version}/helioslauncher-setup-${info.version}.dmg`
@@ -56,7 +80,9 @@ if (!isDev) {
                 populateSettingsUpdateInformation(info)
                 break
             case 'update-downloaded':
-                loggerAutoUpdaterSuccess.log('Update ' + info.version + ' ready to be installed.')
+                loggerAutoUpdaterSuccess.log(
+                    'Update ' + info.version + ' ready to be installed.'
+                )
                 settingsUpdateButtonStatus('Install Now', false, () => {
                     if (!isDev) {
                         ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
@@ -81,7 +107,10 @@ if (!isDev) {
                     } else if (info.code === 'ERR_XML_MISSED_ELEMENT') {
                         loggerAutoUpdater.log('No releases found.')
                     } else {
-                        loggerAutoUpdater.error('Error during update check..', info)
+                        loggerAutoUpdater.error(
+                            'Error during update check..',
+                            info
+                        )
                         loggerAutoUpdater.debug('Error Code:', info.code)
                     }
                 }
@@ -98,7 +127,7 @@ if (!isDev) {
  * allowPrerelease. If we are running a prerelease version, then
  * this will always be set to true, regardless of the current value
  * of val.
- * 
+ *
  * @param {boolean} val The new allow prerelease value.
  */
 function changeAllowPrerelease(val) {
@@ -123,7 +152,10 @@ function showUpdateUI(info) {
         })
         toggleOverlay(true, true)*/
         switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
-            settingsNavItemListener(document.getElementById('settingsNavUpdate'), false)
+            settingsNavItemListener(
+                document.getElementById('settingsNavUpdate'),
+                false
+            )
         })
     }
 }
@@ -133,65 +165,69 @@ $(function(){
     loggerUICore.log('UICore Initialized');
 })*/
 
-document.addEventListener('readystatechange', function () {
-    if (document.readyState === 'interactive') {
-        loggerUICore.log('UICore Initializing..')
+document.addEventListener(
+    'readystatechange',
+    function () {
+        if (document.readyState === 'interactive') {
+            loggerUICore.log('UICore Initializing..')
 
-        // Bind close button.
-        Array.from(document.getElementsByClassName('fCb')).map((val) => {
-            val.addEventListener('click', e => {
-                const window = remote.getCurrentWindow()
-                window.close()
+            // Bind close button.
+            Array.from(document.getElementsByClassName('fCb')).map((val) => {
+                val.addEventListener('click', (e) => {
+                    const window = remote.getCurrentWindow()
+                    window.close()
+                })
             })
-        })
 
-        // Bind restore down button.
-        Array.from(document.getElementsByClassName('fRb')).map((val) => {
-            val.addEventListener('click', e => {
-                const window = remote.getCurrentWindow()
-                if (window.isMaximized()) {
-                    window.unmaximize()
-                } else {
-                    window.maximize()
+            // Bind restore down button.
+            Array.from(document.getElementsByClassName('fRb')).map((val) => {
+                val.addEventListener('click', (e) => {
+                    const window = remote.getCurrentWindow()
+                    if (window.isMaximized()) {
+                        window.unmaximize()
+                    } else {
+                        window.maximize()
+                    }
+                    document.activeElement.blur()
+                })
+            })
+
+            // Bind minimize button.
+            Array.from(document.getElementsByClassName('fMb')).map((val) => {
+                val.addEventListener('click', (e) => {
+                    const window = remote.getCurrentWindow()
+                    window.minimize()
+                    document.activeElement.blur()
+                })
+            })
+
+            // Remove focus from social media buttons once they're clicked.
+            Array.from(document.getElementsByClassName('mediaURL')).map(
+                (val) => {
+                    val.addEventListener('click', (e) => {
+                        document.activeElement.blur()
+                    })
                 }
-                document.activeElement.blur()
-            })
-        })
+            )
+        } else if (document.readyState === 'complete') {
+            //266.01
+            //170.8
+            //53.21
+            // Bind progress bar length to length of bot wrapper
+            //const targetWidth = document.getElementById("launch_content").getBoundingClientRect().width
+            //const targetWidth2 = document.getElementById("server_selection").getBoundingClientRect().width
+            //const targetWidth3 = document.getElementById("launch_button").getBoundingClientRect().width
 
-        // Bind minimize button.
-        Array.from(document.getElementsByClassName('fMb')).map((val) => {
-            val.addEventListener('click', e => {
-                const window = remote.getCurrentWindow()
-                window.minimize()
-                document.activeElement.blur()
-            })
-        })
-
-        // Remove focus from social media buttons once they're clicked.
-        Array.from(document.getElementsByClassName('mediaURL')).map(val => {
-            val.addEventListener('click', e => {
-                document.activeElement.blur()
-            })
-        })
-
-    } else if (document.readyState === 'complete') {
-
-        //266.01
-        //170.8
-        //53.21
-        // Bind progress bar length to length of bot wrapper
-        //const targetWidth = document.getElementById("launch_content").getBoundingClientRect().width
-        //const targetWidth2 = document.getElementById("server_selection").getBoundingClientRect().width
-        //const targetWidth3 = document.getElementById("launch_button").getBoundingClientRect().width
-
-        document.getElementById('launch_details').style.maxWidth = 266.01
-        document.getElementById('launch_progress').style.width = 170.8
-        document.getElementById('launch_details_right').style.maxWidth = 170.8
-        document.getElementById('launch_progress_label').style.width = 53.21
-
-    }
-
-}, false)
+            document.getElementById('launch_details').style.maxWidth = 266.01
+            document.getElementById('launch_progress').style.width = 170.8
+            document.getElementById(
+                'launch_details_right'
+            ).style.maxWidth = 170.8
+            document.getElementById('launch_progress_label').style.width = 53.21
+        }
+    },
+    false
+)
 
 /**
  * Open web links in the user's default browser.
@@ -204,7 +240,7 @@ $(document).on('click', 'a[href^="http"]', function (event) {
 /**
  * Opens DevTools window if you hold (ctrl + shift + i).
  * This will crash the program if you are using multiple
- * DevTools, for example the chrome debugger in VS Code. 
+ * DevTools, for example the chrome debugger in VS Code.
  */
 document.addEventListener('keydown', function (e) {
     if ((e.key === 'I' || e.key === 'i') && e.ctrlKey && e.shiftKey) {

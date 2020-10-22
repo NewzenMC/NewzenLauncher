@@ -10,8 +10,12 @@ const settingsState = {
 }
 
 function bindSettingsSelect() {
-    for (let ele of document.getElementsByClassName('settingsSelectContainer')) {
-        const selectedDiv = ele.getElementsByClassName('settingsSelectSelected')[0]
+    for (let ele of document.getElementsByClassName(
+        'settingsSelectContainer'
+    )) {
+        const selectedDiv = ele.getElementsByClassName(
+            'settingsSelectSelected'
+        )[0]
 
         selectedDiv.onclick = (e) => {
             e.stopPropagation()
@@ -23,9 +27,15 @@ function bindSettingsSelect() {
 }
 
 function closeSettingsSelect(el) {
-    for (let ele of document.getElementsByClassName('settingsSelectContainer')) {
-        const selectedDiv = ele.getElementsByClassName('settingsSelectSelected')[0]
-        const optionsDiv = ele.getElementsByClassName('settingsSelectOptions')[0]
+    for (let ele of document.getElementsByClassName(
+        'settingsSelectContainer'
+    )) {
+        const selectedDiv = ele.getElementsByClassName(
+            'settingsSelectSelected'
+        )[0]
+        const optionsDiv = ele.getElementsByClassName(
+            'settingsSelectOptions'
+        )[0]
 
         if (!(selectedDiv === el)) {
             selectedDiv.classList.remove('select-arrow-active')
@@ -40,14 +50,16 @@ document.addEventListener('click', closeSettingsSelect)
 
 bindSettingsSelect()
 
-
 function bindFileSelectors() {
     for (let ele of document.getElementsByClassName('settingsFileSelButton')) {
-
-        ele.onclick = async e => {
+        ele.onclick = async (e) => {
             const isJavaExecSel = ele.id === 'settingsJavaExecSel'
-            const directoryDialog = ele.hasAttribute('dialogDirectory') && ele.getAttribute('dialogDirectory') == 'true'
-            const properties = directoryDialog ? ['openDirectory', 'createDirectory'] : ['openFile']
+            const directoryDialog =
+                ele.hasAttribute('dialogDirectory') &&
+                ele.getAttribute('dialogDirectory') == 'true'
+            const properties = directoryDialog
+                ? ['openDirectory', 'createDirectory']
+                : ['openFile']
 
             const options = {
                 properties
@@ -64,7 +76,10 @@ function bindFileSelectors() {
                 ]
             }
 
-            const res = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), options)
+            const res = await remote.dialog.showOpenDialog(
+                remote.getCurrentWindow(),
+                options
+            )
             if (!res.canceled) {
                 ele.previousElementSibling.value = res.filePaths[0]
                 if (isJavaExecSel) {
@@ -77,20 +92,21 @@ function bindFileSelectors() {
 
 bindFileSelectors()
 
-
 /**
  * General Settings Functions
  */
 
 /**
-  * Bind value validators to the settings UI elements. These will
-  * validate against the criteria defined in the ConfigManager (if
-  * and). If the value is invalid, the UI will reflect this and saving
-  * will be disabled until the value is corrected. This is an automated
-  * process. More complex UI may need to be bound separately.
-  */
+ * Bind value validators to the settings UI elements. These will
+ * validate against the criteria defined in the ConfigManager (if
+ * and). If the value is invalid, the UI will reflect this and saving
+ * will be disabled until the value is corrected. This is an automated
+ * process. More complex UI may need to be bound separately.
+ */
 function initSettingsValidators() {
-    const sEls = document.getElementById('settingsContainer').querySelectorAll('[cValue]')
+    const sEls = document
+        .getElementById('settingsContainer')
+        .querySelectorAll('[cValue]')
     Array.from(sEls).map((v, index, arr) => {
         const vFn = ConfigManager['validate' + v.getAttribute('cValue')]
         if (typeof vFn === 'function') {
@@ -115,7 +131,6 @@ function initSettingsValidators() {
                 }
             }
         }
-
     })
 }
 
@@ -123,7 +138,9 @@ function initSettingsValidators() {
  * Load configuration values onto the UI. This is an automated process.
  */
 function initSettingsValues() {
-    const sEls = document.getElementById('settingsContainer').querySelectorAll('[cValue]')
+    const sEls = document
+        .getElementById('settingsContainer')
+        .querySelectorAll('[cValue]')
     Array.from(sEls).map((v, index, arr) => {
         const cVal = v.getAttribute('cValue')
         const gFn = ConfigManager['get' + cVal]
@@ -150,7 +167,8 @@ function initSettingsValues() {
                     if (cVal === 'MinRAM' || cVal === 'MaxRAM') {
                         let val = gFn()
                         if (val.endsWith('M')) {
-                            val = Number(val.substring(0, val.length - 1)) / 1000
+                            val =
+                                Number(val.substring(0, val.length - 1)) / 1000
                         } else {
                             val = Number.parseFloat(val)
                         }
@@ -162,7 +180,6 @@ function initSettingsValues() {
                 }
             }
         }
-
     })
 }
 
@@ -170,7 +187,9 @@ function initSettingsValues() {
  * Save the settings values.
  */
 function saveSettingsValues() {
-    const sEls = document.getElementById('settingsContainer').querySelectorAll('[cValue]')
+    const sEls = document
+        .getElementById('settingsContainer')
+        .querySelectorAll('[cValue]')
     Array.from(sEls).map((v, index, arr) => {
         const cVal = v.getAttribute('cValue')
         const sFn = ConfigManager['set' + cVal]
@@ -216,12 +235,19 @@ let selectedSettingsTab = 'settingsTabAccount'
 /**
  * Modify the settings container UI when the scroll threshold reaches
  * a certain poin.
- * 
+ *
  * @param {UIEvent} e The scroll event.
  */
 function settingsTabScrollListener(e) {
-    if (e.target.scrollTop > Number.parseFloat(getComputedStyle(e.target.firstElementChild).marginTop)) {
-        document.getElementById('settingsContainer').setAttribute('scrolled', '')
+    if (
+        e.target.scrollTop >
+        Number.parseFloat(
+            getComputedStyle(e.target.firstElementChild).marginTop
+        )
+    ) {
+        document
+            .getElementById('settingsContainer')
+            .setAttribute('scrolled', '')
     } else {
         document.getElementById('settingsContainer').removeAttribute('scrolled')
     }
@@ -231,19 +257,21 @@ function settingsTabScrollListener(e) {
  * Bind functionality for the settings navigation items.
  */
 function setupSettingsTabs() {
-    Array.from(document.getElementsByClassName('settingsNavItem')).map((val) => {
-        if (val.hasAttribute('rSc')) {
-            val.onclick = () => {
-                settingsNavItemListener(val)
+    Array.from(document.getElementsByClassName('settingsNavItem')).map(
+        (val) => {
+            if (val.hasAttribute('rSc')) {
+                val.onclick = () => {
+                    settingsNavItemListener(val)
+                }
             }
         }
-    })
+    )
 }
 
 /**
  * Settings nav item onclick lisener. Function is exposed so that
  * other UI elements can quickly toggle to a certain tab from other views.
- * 
+ *
  * @param {Element} ele The nav item which has been clicked.
  * @param {boolean} fade Optional. True to fade transition.
  */
@@ -262,7 +290,9 @@ function settingsNavItemListener(ele, fade = true) {
     selectedSettingsTab = ele.getAttribute('rSc')
 
     document.getElementById(prevTab).onscroll = null
-    document.getElementById(selectedSettingsTab).onscroll = settingsTabScrollListener
+    document.getElementById(
+        selectedSettingsTab
+    ).onscroll = settingsTabScrollListener
 
     if (fade) {
         $(`#${prevTab}`).fadeOut(250, () => {
@@ -293,7 +323,7 @@ const settingsNavDone = document.getElementById('settingsNavDone')
 
 /**
  * Set if the settings save (done) button is disabled.
- * 
+ *
  * @param {boolean} v True to disable, false to enable.
  */
 function settingsSaveDisabled(v) {
@@ -328,12 +358,16 @@ document.getElementById('settingsAddAccount').onclick = (e) => {
  * is selected, the UI of the previously selected account will be updated.
  */
 function bindAuthAccountSelect() {
-    Array.from(document.getElementsByClassName('settingsAuthAccountSelect')).map((val) => {
+    Array.from(
+        document.getElementsByClassName('settingsAuthAccountSelect')
+    ).map((val) => {
         val.onclick = (e) => {
             if (val.hasAttribute('selected')) {
                 return
             }
-            const selectBtns = document.getElementsByClassName('settingsAuthAccountSelect')
+            const selectBtns = document.getElementsByClassName(
+                'settingsAuthAccountSelect'
+            )
             for (let i = 0; i < selectBtns.length; i++) {
                 if (selectBtns[i].hasAttribute('selected')) {
                     selectBtns[i].removeAttribute('selected')
@@ -342,7 +376,9 @@ function bindAuthAccountSelect() {
             }
             val.setAttribute('selected', '')
             val.innerHTML = 'Selected Account &#10004;'
-            setSelectedAccount(val.closest('.settingsAuthAccount').getAttribute('uuid'))
+            setSelectedAccount(
+                val.closest('.settingsAuthAccount').getAttribute('uuid')
+            )
         }
     })
 }
@@ -353,7 +389,9 @@ function bindAuthAccountSelect() {
  * be updated accordingly.
  */
 function bindAuthAccountLogOut() {
-    Array.from(document.getElementsByClassName('settingsAuthAccountLogOut')).map((val) => {
+    Array.from(
+        document.getElementsByClassName('settingsAuthAccountLogOut')
+    ).map((val) => {
         val.onclick = (e) => {
             let isLastAccount = false
             if (Object.keys(ConfigManager.getAuthAccounts()).length === 1) {
@@ -361,7 +399,7 @@ function bindAuthAccountLogOut() {
                 setOverlayContent(
                     'Warning<br>This is Your Last Account',
                     'In order to use the launcher you must be logged into at least one account. You will need to login again after.<br><br>Are you sure you want to log out?',
-                    'I\'m Sure',
+                    "I'm Sure",
                     'Cancel'
                 )
                 setOverlayHandler(() => {
@@ -376,14 +414,13 @@ function bindAuthAccountLogOut() {
             } else {
                 processLogOut(val, isLastAccount)
             }
-
         }
     })
 }
 
 /**
  * Process a log out.
- * 
+ *
  * @param {Element} val The log out button element.
  * @param {boolean} isLastAccount If this logout is on the last added account.
  */
@@ -407,25 +444,31 @@ function processLogOut(val, isLastAccount) {
 /**
  * Refreshes the status of the selected account on the auth account
  * elements.
- * 
+ *
  * @param {string} uuid The UUID of the new selected account.
  */
 function refreshAuthAccountSelected(uuid) {
-    Array.from(document.getElementsByClassName('settingsAuthAccount')).map((val) => {
-        const selBtn = val.getElementsByClassName('settingsAuthAccountSelect')[0]
-        if (uuid === val.getAttribute('uuid')) {
-            selBtn.setAttribute('selected', '')
-            selBtn.innerHTML = 'Selected Account &#10004;'
-        } else {
-            if (selBtn.hasAttribute('selected')) {
-                selBtn.removeAttribute('selected')
+    Array.from(document.getElementsByClassName('settingsAuthAccount')).map(
+        (val) => {
+            const selBtn = val.getElementsByClassName(
+                'settingsAuthAccountSelect'
+            )[0]
+            if (uuid === val.getAttribute('uuid')) {
+                selBtn.setAttribute('selected', '')
+                selBtn.innerHTML = 'Selected Account &#10004;'
+            } else {
+                if (selBtn.hasAttribute('selected')) {
+                    selBtn.removeAttribute('selected')
+                }
+                selBtn.innerHTML = 'Select Account'
             }
-            selBtn.innerHTML = 'Select Account'
         }
-    })
+    )
 }
 
-const settingsCurrentAccounts = document.getElementById('settingsCurrentAccounts')
+const settingsCurrentAccounts = document.getElementById(
+    'settingsCurrentAccounts'
+)
 
 /**
  * Add auth account elements for each one stored in the authentication database.
@@ -444,21 +487,33 @@ function populateAuthAccounts() {
         const acc = authAccounts[val]
         authAccountStr += `<div class="settingsAuthAccount" uuid="${acc.uuid}">
             <div class="settingsAuthAccountLeft">
-                <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay">
+                <img class="settingsAuthAccountImage" alt="${
+                    acc.displayName
+                }" src="https://crafatar.com/renders/body/${
+            acc.uuid
+        }?scale=3&default=MHF_Steve&overlay">
             </div>
             <div class="settingsAuthAccountRight">
                 <div class="settingsAuthAccountDetails">
                     <div class="settingsAuthAccountDetailPane">
                         <div class="settingsAuthAccountDetailTitle">Username</div>
-                        <div class="settingsAuthAccountDetailValue">${acc.displayName}</div>
+                        <div class="settingsAuthAccountDetailValue">${
+                            acc.displayName
+                        }</div>
                     </div>
                     <div class="settingsAuthAccountDetailPane">
                         <div class="settingsAuthAccountDetailTitle">UUID</div>
-                        <div class="settingsAuthAccountDetailValue">${acc.uuid}</div>
+                        <div class="settingsAuthAccountDetailValue">${
+                            acc.uuid
+                        }</div>
                     </div>
                 </div>
                 <div class="settingsAuthAccountActions">
-                    <button class="settingsAuthAccountSelect" ${selectedUUID === acc.uuid ? 'selected>Selected Account &#10004;' : '>Select Account'}</button>
+                    <button class="settingsAuthAccountSelect" ${
+                        selectedUUID === acc.uuid
+                            ? 'selected>Selected Account &#10004;'
+                            : '>Select Account'
+                    }</button>
                     <div class="settingsAuthAccountWrapper">
                         <button class="settingsAuthAccountLogOut">Log Out</button>
                     </div>
@@ -484,18 +539,22 @@ function prepareAccountsTab() {
  */
 
 /**
-  * Disable decimals, negative signs, and scientific notation.
-  */
-document.getElementById('settingsGameWidth').addEventListener('keydown', (e) => {
-    if (/^[-.eE]$/.test(e.key)) {
-        e.preventDefault()
-    }
-})
-document.getElementById('settingsGameHeight').addEventListener('keydown', (e) => {
-    if (/^[-.eE]$/.test(e.key)) {
-        e.preventDefault()
-    }
-})
+ * Disable decimals, negative signs, and scientific notation.
+ */
+document
+    .getElementById('settingsGameWidth')
+    .addEventListener('keydown', (e) => {
+        if (/^[-.eE]$/.test(e.key)) {
+            e.preventDefault()
+        }
+    })
+document
+    .getElementById('settingsGameHeight')
+    .addEventListener('keydown', (e) => {
+        if (/^[-.eE]$/.test(e.key)) {
+            e.preventDefault()
+        }
+    })
 
 /**
  * Mods Tab
@@ -512,7 +571,11 @@ function resolveModsForUI() {
     const distro = DistroManager.getDistribution()
     const servConf = ConfigManager.getModConfiguration(serv)
 
-    const modStr = parseModulesForUI(distro.getServer(serv).getModules(), false, servConf.mods)
+    const modStr = parseModulesForUI(
+        distro.getServer(serv).getModules(),
+        false,
+        servConf.mods
+    )
 
     document.getElementById('settingsReqModsContent').innerHTML = modStr.reqMods
     document.getElementById('settingsOptModsContent').innerHTML = modStr.optMods
@@ -520,23 +583,25 @@ function resolveModsForUI() {
 
 /**
  * Recursively build the mod UI elements.
- * 
+ *
  * @param {Object[]} mdls An array of modules to parse.
  * @param {boolean} submodules Whether or not we are parsing submodules.
  * @param {Object} servConf The server configuration object for this module level.
  */
 function parseModulesForUI(mdls, submodules, servConf) {
-
     let reqMods = ''
     let optMods = ''
 
     for (const mdl of mdls) {
-
-        if (mdl.getType() === DistroManager.Types.ForgeMod || mdl.getType() === DistroManager.Types.LiteMod || mdl.getType() === DistroManager.Types.LiteLoader) {
-
+        if (
+            mdl.getType() === DistroManager.Types.ForgeMod ||
+            mdl.getType() === DistroManager.Types.LiteMod ||
+            mdl.getType() === DistroManager.Types.LiteLoader
+        ) {
             if (mdl.getRequired().isRequired()) {
-
-                reqMods += `<div id="${mdl.getVersionlessID()}" class="settingsBaseMod settings${submodules ? 'Sub' : ''}Mod" enabled>
+                reqMods += `<div id="${mdl.getVersionlessID()}" class="settingsBaseMod settings${
+                    submodules ? 'Sub' : ''
+                }Mod" enabled>
                     <div class="settingsModContent">
                         <div class="settingsModMainWrapper">
                             <div class="settingsModStatus"></div>
@@ -550,17 +615,27 @@ function parseModulesForUI(mdls, submodules, servConf) {
                             <span class="toggleSwitchSlider"></span>
                         </label>
                     </div>
-                    ${mdl.hasSubModules() ? `<div class="settingsSubModContainer">
-                        ${Object.values(parseModulesForUI(mdl.getSubModules(), true, servConf[mdl.getVersionlessID()])).join('')}
-                    </div>` : ''}
+                    ${
+                        mdl.hasSubModules()
+                            ? `<div class="settingsSubModContainer">
+                        ${Object.values(
+                            parseModulesForUI(
+                                mdl.getSubModules(),
+                                true,
+                                servConf[mdl.getVersionlessID()]
+                            )
+                        ).join('')}
+                    </div>`
+                            : ''
+                    }
                 </div>`
-
             } else {
-
                 const conf = servConf[mdl.getVersionlessID()]
                 const val = typeof conf === 'object' ? conf.value : conf
 
-                optMods += `<div id="${mdl.getVersionlessID()}" class="settingsBaseMod settings${submodules ? 'Sub' : ''}Mod" ${val ? 'enabled' : ''}>
+                optMods += `<div id="${mdl.getVersionlessID()}" class="settingsBaseMod settings${
+                    submodules ? 'Sub' : ''
+                }Mod" ${val ? 'enabled' : ''}>
                     <div class="settingsModContent">
                         <div class="settingsModMainWrapper">
                             <div class="settingsModStatus"></div>
@@ -570,15 +645,26 @@ function parseModulesForUI(mdls, submodules, servConf) {
                             </div>
                         </div>
                         <label class="toggleSwitch">
-                            <input type="checkbox" formod="${mdl.getVersionlessID()}" ${val ? 'checked' : ''}>
+                            <input type="checkbox" formod="${mdl.getVersionlessID()}" ${
+                    val ? 'checked' : ''
+                }>
                             <span class="toggleSwitchSlider"></span>
                         </label>
                     </div>
-                    ${mdl.hasSubModules() ? `<div class="settingsSubModContainer">
-                        ${Object.values(parseModulesForUI(mdl.getSubModules(), true, conf.mods)).join('')}
-                    </div>` : ''}
+                    ${
+                        mdl.hasSubModules()
+                            ? `<div class="settingsSubModContainer">
+                        ${Object.values(
+                            parseModulesForUI(
+                                mdl.getSubModules(),
+                                true,
+                                conf.mods
+                            )
+                        ).join('')}
+                    </div>`
+                            : ''
+                    }
                 </div>`
-
             }
         }
     }
@@ -587,7 +673,6 @@ function parseModulesForUI(mdls, submodules, servConf) {
         reqMods,
         optMods
     }
-
 }
 
 /**
@@ -599,14 +684,17 @@ function bindModsToggleSwitch() {
     Array.from(sEls).map((v, index, arr) => {
         v.onchange = () => {
             if (v.checked) {
-                document.getElementById(v.getAttribute('formod')).setAttribute('enabled', '')
+                document
+                    .getElementById(v.getAttribute('formod'))
+                    .setAttribute('enabled', '')
             } else {
-                document.getElementById(v.getAttribute('formod')).removeAttribute('enabled')
+                document
+                    .getElementById(v.getAttribute('formod'))
+                    .removeAttribute('enabled')
             }
         }
     })
 }
-
 
 /**
  * Save the mod configuration based on the UI values.
@@ -620,12 +708,14 @@ function saveModConfiguration() {
 
 /**
  * Recursively save mod config with submods.
- * 
+ *
  * @param {Object} modConf Mod config object to save.
  */
 function _saveModConfiguration(modConf) {
     for (let m of Object.entries(modConf)) {
-        const tSwitch = settingsModsContainer.querySelectorAll(`[formod='${m[0]}']`)
+        const tSwitch = settingsModsContainer.querySelectorAll(
+            `[formod='${m[0]}']`
+        )
         if (!tSwitch[0].hasAttribute('dropin')) {
             if (typeof m[1] === 'boolean') {
                 modConf[m[0]] = tSwitch[0].checked
@@ -634,7 +724,9 @@ function _saveModConfiguration(modConf) {
                     if (tSwitch.length > 0) {
                         modConf[m[0]].value = tSwitch[0].checked
                     }
-                    modConf[m[0]].mods = _saveModConfiguration(modConf[m[0]].mods)
+                    modConf[m[0]].mods = _saveModConfiguration(
+                        modConf[m[0]].mods
+                    )
                 }
             }
         }
@@ -652,26 +744,45 @@ let CACHE_DROPIN_MODS
  * populate the results onto the UI.
  */
 function resolveDropinModsForUI() {
-    const serv = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer())
-    CACHE_SETTINGS_MODS_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.getID(), 'mods')
-    CACHE_DROPIN_MODS = DropinModUtil.scanForDropinMods(CACHE_SETTINGS_MODS_DIR, serv.getMinecraftVersion())
+    const serv = DistroManager.getDistribution().getServer(
+        ConfigManager.getSelectedServer()
+    )
+    CACHE_SETTINGS_MODS_DIR = path.join(
+        ConfigManager.getInstanceDirectory(),
+        serv.getID(),
+        'mods'
+    )
+    CACHE_DROPIN_MODS = DropinModUtil.scanForDropinMods(
+        CACHE_SETTINGS_MODS_DIR,
+        serv.getMinecraftVersion()
+    )
 
     let dropinMods = ''
 
     for (dropin of CACHE_DROPIN_MODS) {
-        dropinMods += `<div id="${dropin.fullName}" class="settingsBaseMod settingsDropinMod" ${!dropin.disabled ? 'enabled' : ''}>
+        dropinMods += `<div id="${
+            dropin.fullName
+        }" class="settingsBaseMod settingsDropinMod" ${
+            !dropin.disabled ? 'enabled' : ''
+        }>
                     <div class="settingsModContent">
                         <div class="settingsModMainWrapper">
                             <div class="settingsModStatus"></div>
                             <div class="settingsModDetails">
-                                <span class="settingsModName">${dropin.name}</span>
+                                <span class="settingsModName">${
+                                    dropin.name
+                                }</span>
                                 <div class="settingsDropinRemoveWrapper">
-                                    <button class="settingsDropinRemoveButton" remmod="${dropin.fullName}">Remove</button>
+                                    <button class="settingsDropinRemoveButton" remmod="${
+                                        dropin.fullName
+                                    }">Remove</button>
                                 </div>
                             </div>
                         </div>
                         <label class="toggleSwitch">
-                            <input type="checkbox" formod="${dropin.fullName}" dropin ${!dropin.disabled ? 'checked' : ''}>
+                            <input type="checkbox" formod="${
+                                dropin.fullName
+                            }" dropin ${!dropin.disabled ? 'checked' : ''}>
                             <span class="toggleSwitchSlider"></span>
                         </label>
                     </div>
@@ -689,7 +800,10 @@ function bindDropinModsRemoveButton() {
     Array.from(sEls).map((v, index, arr) => {
         v.onclick = () => {
             const fullName = v.getAttribute('remmod')
-            const res = DropinModUtil.deleteDropinMod(CACHE_SETTINGS_MODS_DIR, fullName)
+            const res = DropinModUtil.deleteDropinMod(
+                CACHE_SETTINGS_MODS_DIR,
+                fullName
+            )
             if (res) {
                 document.getElementById(fullName).remove()
             } else {
@@ -715,23 +829,26 @@ function bindDropinModFileSystemButton() {
         DropinModUtil.validateDir(CACHE_SETTINGS_MODS_DIR)
         shell.openPath(CACHE_SETTINGS_MODS_DIR)
     }
-    fsBtn.ondragenter = e => {
+    fsBtn.ondragenter = (e) => {
         e.dataTransfer.dropEffect = 'move'
         fsBtn.setAttribute('drag', '')
         e.preventDefault()
     }
-    fsBtn.ondragover = e => {
+    fsBtn.ondragover = (e) => {
         e.preventDefault()
     }
-    fsBtn.ondragleave = e => {
+    fsBtn.ondragleave = (e) => {
         fsBtn.removeAttribute('drag')
     }
 
-    fsBtn.ondrop = e => {
+    fsBtn.ondrop = (e) => {
         fsBtn.removeAttribute('drag')
         e.preventDefault()
 
-        DropinModUtil.addDropinMods(e.dataTransfer.files, CACHE_SETTINGS_MODS_DIR)
+        DropinModUtil.addDropinMods(
+            e.dataTransfer.files,
+            CACHE_SETTINGS_MODS_DIR
+        )
         reloadDropinMods()
     }
 }
@@ -745,8 +862,15 @@ function saveDropinModConfiguration() {
         const dropinUI = document.getElementById(dropin.fullName)
         if (dropinUI != null) {
             const dropinUIEnabled = dropinUI.hasAttribute('enabled')
-            if (DropinModUtil.isDropinModEnabled(dropin.fullName) != dropinUIEnabled) {
-                DropinModUtil.toggleDropinMod(CACHE_SETTINGS_MODS_DIR, dropin.fullName, dropinUIEnabled).catch(err => {
+            if (
+                DropinModUtil.isDropinModEnabled(dropin.fullName) !=
+                dropinUIEnabled
+            ) {
+                DropinModUtil.toggleDropinMod(
+                    CACHE_SETTINGS_MODS_DIR,
+                    dropin.fullName,
+                    dropinUIEnabled
+                ).catch((err) => {
                     if (!isOverlayVisible()) {
                         setOverlayContent(
                             'Failed to Toggle<br>One or More Drop-in Mods',
@@ -765,7 +889,10 @@ function saveDropinModConfiguration() {
 // Refresh the drop-in mods when F5 is pressed.
 // Only active on the mods tab.
 document.addEventListener('keydown', (e) => {
-    if (getCurrentView() === VIEWS.settings && selectedSettingsTab === 'settingsTabMods') {
+    if (
+        getCurrentView() === VIEWS.settings &&
+        selectedSettingsTab === 'settingsTabMods'
+    ) {
         if (e.key === 'F5') {
             reloadDropinMods()
             saveShaderpackSettings()
@@ -791,10 +918,19 @@ let CACHE_SELECTED_SHADERPACK
  * Load shaderpack information.
  */
 function resolveShaderpacksForUI() {
-    const serv = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer())
-    CACHE_SETTINGS_INSTANCE_DIR = path.join(ConfigManager.getInstanceDirectory(), serv.getID())
-    CACHE_SHADERPACKS = DropinModUtil.scanForShaderpacks(CACHE_SETTINGS_INSTANCE_DIR)
-    CACHE_SELECTED_SHADERPACK = DropinModUtil.getEnabledShaderpack(CACHE_SETTINGS_INSTANCE_DIR)
+    const serv = DistroManager.getDistribution().getServer(
+        ConfigManager.getSelectedServer()
+    )
+    CACHE_SETTINGS_INSTANCE_DIR = path.join(
+        ConfigManager.getInstanceDirectory(),
+        serv.getID()
+    )
+    CACHE_SHADERPACKS = DropinModUtil.scanForShaderpacks(
+        CACHE_SETTINGS_INSTANCE_DIR
+    )
+    CACHE_SELECTED_SHADERPACK = DropinModUtil.getEnabledShaderpack(
+        CACHE_SETTINGS_INSTANCE_DIR
+    )
 
     setShadersOptions(CACHE_SHADERPACKS, CACHE_SELECTED_SHADERPACK)
 }
@@ -808,7 +944,8 @@ function setShadersOptions(arr, selected) {
         d.setAttribute('value', opt.fullName)
         if (opt.fullName === selected) {
             d.setAttribute('selected', '')
-            document.getElementById('settingsShadersSelected').innerHTML = opt.name
+            document.getElementById('settingsShadersSelected').innerHTML =
+                opt.name
         }
         d.addEventListener('click', function (e) {
             this.parentNode.previousElementSibling.innerHTML = this.innerHTML
@@ -824,7 +961,8 @@ function setShadersOptions(arr, selected) {
 
 function saveShaderpackSettings() {
     let sel = 'OFF'
-    for (let opt of document.getElementById('settingsShadersOptions').childNodes) {
+    for (let opt of document.getElementById('settingsShadersOptions')
+        .childNodes) {
         if (opt.hasAttribute('selected')) {
             sel = opt.getAttribute('value')
         }
@@ -839,23 +977,26 @@ function bindShaderpackButton() {
         DropinModUtil.validateDir(p)
         shell.openPath(p)
     }
-    spBtn.ondragenter = e => {
+    spBtn.ondragenter = (e) => {
         e.dataTransfer.dropEffect = 'move'
         spBtn.setAttribute('drag', '')
         e.preventDefault()
     }
-    spBtn.ondragover = e => {
+    spBtn.ondragover = (e) => {
         e.preventDefault()
     }
-    spBtn.ondragleave = e => {
+    spBtn.ondragleave = (e) => {
         spBtn.removeAttribute('drag')
     }
 
-    spBtn.ondrop = e => {
+    spBtn.ondrop = (e) => {
         spBtn.removeAttribute('drag')
         e.preventDefault()
 
-        DropinModUtil.addShaderpacks(e.dataTransfer.files, CACHE_SETTINGS_INSTANCE_DIR)
+        DropinModUtil.addShaderpacks(
+            e.dataTransfer.files,
+            CACHE_SETTINGS_INSTANCE_DIR
+        )
         saveShaderpackSettings()
         resolveShaderpacksForUI()
     }
@@ -867,7 +1008,9 @@ function bindShaderpackButton() {
  * Load the currently selected server information onto the mods tab.
  */
 function loadSelectedServerOnModsTab() {
-    const serv = DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer())
+    const serv = DistroManager.getDistribution().getServer(
+        ConfigManager.getSelectedServer()
+    )
 
     document.getElementById('settingsSelServContent').innerHTML = `
         <img class="serverListingImg" src="${serv.getIcon()}"/>
@@ -877,7 +1020,9 @@ function loadSelectedServerOnModsTab() {
             <div class="serverListingInfo">
                 <div class="serverListingVersion">${serv.getMinecraftVersion()}</div>
                 <div class="serverListingRevision">${serv.getVersion()}</div>
-                ${serv.isMainServer() ? `<div class="serverListingStarWrapper">
+                ${
+                    serv.isMainServer()
+                        ? `<div class="serverListingStarWrapper">
                     <svg id="Layer_1" viewBox="0 0 107.45 104.74" width="20px" height="20px">
                         <defs>
                             <style>.cls-1{fill:#fff;}.cls-2{fill:none;stroke:#fff;stroke-miterlimit:10;}</style>
@@ -886,17 +1031,21 @@ function loadSelectedServerOnModsTab() {
                         <circle class="cls-2" cx="53.73" cy="53.9" r="38"/>
                     </svg>
                     <span class="serverListingStarTooltip">Main Server</span>
-                </div>` : ''}
+                </div>`
+                        : ''
+                }
             </div>
         </div>
     `
 }
 
 // Bind functionality to the server switch button.
-document.getElementById('settingsSwitchServerButton').addEventListener('click', (e) => {
-    e.target.blur()
-    toggleServerSelection(true)
-})
+document
+    .getElementById('settingsSwitchServerButton')
+    .addEventListener('click', (e) => {
+        e.target.blur()
+        toggleServerSelection(true)
+    })
 
 /**
  * Save mod configuration for the current selected server.
@@ -943,7 +1092,9 @@ const settingsMaxRAMLabel = document.getElementById('settingsMaxRAMLabel')
 const settingsMinRAMLabel = document.getElementById('settingsMinRAMLabel')
 const settingsMemoryTotal = document.getElementById('settingsMemoryTotal')
 const settingsMemoryAvail = document.getElementById('settingsMemoryAvail')
-const settingsJavaExecDetails = document.getElementById('settingsJavaExecDetails')
+const settingsJavaExecDetails = document.getElementById(
+    'settingsJavaExecDetails'
+)
 
 // Store maximum memory values.
 const SETTINGS_MAX_MEMORY = ConfigManager.getAbsoluteMaxRAM()
@@ -957,7 +1108,6 @@ settingsMinRAMRange.setAttribute('min', SETTINGS_MIN_MEMORY)
 
 // Bind on change event for min memory container.
 settingsMinRAMRange.onchange = (e) => {
-
     // Current range values
     const sMaxV = Number(settingsMaxRAMRange.getAttribute('value'))
     const sMinV = Number(settingsMinRAMRange.getAttribute('value'))
@@ -979,8 +1129,11 @@ settingsMinRAMRange.onchange = (e) => {
     // Increase maximum memory if the minimum exceeds its value.
     if (sMaxV < sMinV) {
         const sliderMeta = calculateRangeSliderMeta(settingsMaxRAMRange)
-        updateRangedSlider(settingsMaxRAMRange, sMinV,
-            ((sMinV - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc)
+        updateRangedSlider(
+            settingsMaxRAMRange,
+            sMinV,
+            ((sMinV - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc
+        )
         settingsMaxRAMLabel.innerHTML = sMinV.toFixed(1) + 'G'
     }
 
@@ -1011,8 +1164,11 @@ settingsMaxRAMRange.onchange = (e) => {
     // Decrease the minimum memory if the maximum value is less.
     if (sMaxV < sMinV) {
         const sliderMeta = calculateRangeSliderMeta(settingsMaxRAMRange)
-        updateRangedSlider(settingsMinRAMRange, sMaxV,
-            ((sMaxV - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc)
+        updateRangedSlider(
+            settingsMinRAMRange,
+            sMaxV,
+            ((sMaxV - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc
+        )
         settingsMinRAMLabel.innerHTML = sMaxV.toFixed(1) + 'G'
     }
     settingsMaxRAMLabel.innerHTML = sMaxV.toFixed(1) + 'G'
@@ -1020,15 +1176,15 @@ settingsMaxRAMRange.onchange = (e) => {
 
 /**
  * Calculate common values for a ranged slider.
- * 
- * @param {Element} v The range slider to calculate against. 
+ *
+ * @param {Element} v The range slider to calculate against.
  * @returns {Object} An object with meta values for the provided ranged slider.
  */
 function calculateRangeSliderMeta(v) {
     const val = {
         max: Number(v.getAttribute('max')),
         min: Number(v.getAttribute('min')),
-        step: Number(v.getAttribute('step')),
+        step: Number(v.getAttribute('step'))
     }
     val.ticks = (val.max - val.min) / val.step
     val.inc = 100 / val.ticks
@@ -1041,7 +1197,6 @@ function calculateRangeSliderMeta(v) {
  */
 function bindRangeSlider() {
     Array.from(document.getElementsByClassName('rangeSlider')).map((v) => {
-
         // Reference the track (thumb).
         const track = v.getElementsByClassName('rangeSliderTrack')[0]
 
@@ -1049,11 +1204,14 @@ function bindRangeSlider() {
         const value = v.getAttribute('value')
         const sliderMeta = calculateRangeSliderMeta(v)
 
-        updateRangedSlider(v, value, ((value - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc)
+        updateRangedSlider(
+            v,
+            value,
+            ((value - sliderMeta.min) / sliderMeta.step) * sliderMeta.inc
+        )
 
         // The magic happens when we click on the track.
         track.onmousedown = (e) => {
-
             // Stop moving the track on mouse up.
             document.onmouseup = (e) => {
                 document.onmousemove = null
@@ -1062,21 +1220,29 @@ function bindRangeSlider() {
 
             // Move slider according to the mouse position.
             document.onmousemove = (e) => {
-
                 // Distance from the beginning of the bar in pixels.
                 const diff = e.pageX - v.offsetLeft - track.offsetWidth / 2
 
                 // Don't move the track off the bar.
-                if (diff >= 0 && diff <= v.offsetWidth - track.offsetWidth / 2) {
-
+                if (
+                    diff >= 0 &&
+                    diff <= v.offsetWidth - track.offsetWidth / 2
+                ) {
                     // Convert the difference to a percentage.
                     const perc = (diff / v.offsetWidth) * 100
                     // Calculate the percentage of the closest notch.
-                    const notch = Number(perc / sliderMeta.inc).toFixed(0) * sliderMeta.inc
+                    const notch =
+                        Number(perc / sliderMeta.inc).toFixed(0) *
+                        sliderMeta.inc
 
                     // If we're close to that notch, stick to it.
                     if (Math.abs(perc - notch) < sliderMeta.inc / 2) {
-                        updateRangedSlider(v, sliderMeta.min + (sliderMeta.step * (notch / sliderMeta.inc)), notch)
+                        updateRangedSlider(
+                            v,
+                            sliderMeta.min +
+                                sliderMeta.step * (notch / sliderMeta.inc),
+                            notch
+                        )
                     }
                 }
             }
@@ -1086,7 +1252,7 @@ function bindRangeSlider() {
 
 /**
  * Update a ranged slider's value and position.
- * 
+ *
  * @param {Element} element The ranged slider to update.
  * @param {string | number} value The new value for the ranged slider.
  * @param {number} notch The notch that the slider should now be at.
@@ -1125,19 +1291,25 @@ function updateRangedSlider(element, value, notch) {
  * Display the total and available RAM.
  */
 function populateMemoryStatus() {
-    settingsMemoryTotal.innerHTML = Number((os.totalmem() - 1000000000) / 1000000000).toFixed(1) + 'G'
-    settingsMemoryAvail.innerHTML = Number(os.freemem() / 1000000000).toFixed(1) + 'G'
+    settingsMemoryTotal.innerHTML =
+        Number((os.totalmem() - 1000000000) / 1000000000).toFixed(1) + 'G'
+    settingsMemoryAvail.innerHTML =
+        Number(os.freemem() / 1000000000).toFixed(1) + 'G'
 }
 
 /**
  * Validate the provided executable path and display the data on
  * the UI.
- * 
+ *
  * @param {string} execPath The executable path to populate against.
  */
 function populateJavaExecDetails(execPath) {
-    const jg = new JavaGuard(DistroManager.getDistribution().getServer(ConfigManager.getSelectedServer()).getMinecraftVersion())
-    jg._validateJavaBinary(execPath).then(v => {
+    const jg = new JavaGuard(
+        DistroManager.getDistribution()
+            .getServer(ConfigManager.getSelectedServer())
+            .getMinecraftVersion()
+    )
+    jg._validateJavaBinary(execPath).then((v) => {
         if (v.valid) {
             if (v.version.major < 9) {
                 settingsJavaExecDetails.innerHTML = `Selected: Java ${v.version.major} Update ${v.version.update} (x${v.arch})`
@@ -1163,9 +1335,15 @@ function prepareJavaTab() {
  */
 
 const settingsTabAbout = document.getElementById('settingsTabAbout')
-const settingsAboutChangelogTitle = settingsTabAbout.getElementsByClassName('settingsChangelogTitle')[0]
-const settingsAboutChangelogText = settingsTabAbout.getElementsByClassName('settingsChangelogText')[0]
-const settingsAboutChangelogButton = settingsTabAbout.getElementsByClassName('settingsChangelogButton')[0]
+const settingsAboutChangelogTitle = settingsTabAbout.getElementsByClassName(
+    'settingsChangelogTitle'
+)[0]
+const settingsAboutChangelogText = settingsTabAbout.getElementsByClassName(
+    'settingsChangelogText'
+)[0]
+const settingsAboutChangelogButton = settingsTabAbout.getElementsByClassName(
+    'settingsChangelogButton'
+)[0]
 
 // Bind the devtools toggle button.
 document.getElementById('settingsAboutDevToolsButton').onclick = (e) => {
@@ -1175,7 +1353,7 @@ document.getElementById('settingsAboutDevToolsButton').onclick = (e) => {
 
 /**
  * Return whether or not the provided version is a prerelease.
- * 
+ *
  * @param {string} version The semver version to test.
  * @returns {boolean} True if the version is a prerelease, otherwise false.
  */
@@ -1187,13 +1365,18 @@ function isPrerelease(version) {
 /**
  * Utility method to display version information on the
  * About and Update settings tabs.
- * 
+ *
  * @param {string} version The semver version to display.
  * @param {Element} valueElement The value element.
  * @param {Element} titleElement The title element.
  * @param {Element} checkElement The check mark element.
  */
-function populateVersionInformation(version, valueElement, titleElement, checkElement) {
+function populateVersionInformation(
+    version,
+    valueElement,
+    titleElement,
+    checkElement
+) {
     valueElement.innerHTML = version
     if (isPrerelease(version)) {
         titleElement.innerHTML = 'Pre-release'
@@ -1210,7 +1393,12 @@ function populateVersionInformation(version, valueElement, titleElement, checkEl
  * Retrieve the version information and display it on the UI.
  */
 function populateAboutVersionInformation() {
-    populateVersionInformation(remote.app.getVersion(), document.getElementById('settingsAboutCurrentVersionValue'), document.getElementById('settingsAboutCurrentVersionTitle'), document.getElementById('settingsAboutCurrentVersionCheck'))
+    populateVersionInformation(
+        remote.app.getVersion(),
+        document.getElementById('settingsAboutCurrentVersionValue'),
+        document.getElementById('settingsAboutCurrentVersionTitle'),
+        document.getElementById('settingsAboutCurrentVersionCheck')
+    )
 }
 
 /**
@@ -1230,15 +1418,20 @@ function populateReleaseNotes() {
                 id = id.substring(id.lastIndexOf('/') + 1)
 
                 if (id === version) {
-                    settingsAboutChangelogTitle.innerHTML = entry.find('title').text()
-                    settingsAboutChangelogText.innerHTML = entry.find('content').text()
-                    settingsAboutChangelogButton.href = entry.find('link').attr('href')
+                    settingsAboutChangelogTitle.innerHTML = entry
+                        .find('title')
+                        .text()
+                    settingsAboutChangelogText.innerHTML = entry
+                        .find('content')
+                        .text()
+                    settingsAboutChangelogButton.href = entry
+                        .find('link')
+                        .attr('href')
                 }
             }
-
         },
         timeout: 2500
-    }).catch(err => {
+    }).catch((err) => {
         settingsAboutChangelogText.innerHTML = 'Failed to load release notes.'
     })
 }
@@ -1257,17 +1450,31 @@ function prepareAboutTab() {
 
 const settingsTabUpdate = document.getElementById('settingsTabUpdate')
 const settingsUpdateTitle = document.getElementById('settingsUpdateTitle')
-const settingsUpdateVersionCheck = document.getElementById('settingsUpdateVersionCheck')
-const settingsUpdateVersionTitle = document.getElementById('settingsUpdateVersionTitle')
-const settingsUpdateVersionValue = document.getElementById('settingsUpdateVersionValue')
-const settingsUpdateChangelogTitle = settingsTabUpdate.getElementsByClassName('settingsChangelogTitle')[0]
-const settingsUpdateChangelogText = settingsTabUpdate.getElementsByClassName('settingsChangelogText')[0]
-const settingsUpdateChangelogCont = settingsTabUpdate.getElementsByClassName('settingsChangelogContainer')[0]
-const settingsUpdateActionButton = document.getElementById('settingsUpdateActionButton')
+const settingsUpdateVersionCheck = document.getElementById(
+    'settingsUpdateVersionCheck'
+)
+const settingsUpdateVersionTitle = document.getElementById(
+    'settingsUpdateVersionTitle'
+)
+const settingsUpdateVersionValue = document.getElementById(
+    'settingsUpdateVersionValue'
+)
+const settingsUpdateChangelogTitle = settingsTabUpdate.getElementsByClassName(
+    'settingsChangelogTitle'
+)[0]
+const settingsUpdateChangelogText = settingsTabUpdate.getElementsByClassName(
+    'settingsChangelogText'
+)[0]
+const settingsUpdateChangelogCont = settingsTabUpdate.getElementsByClassName(
+    'settingsChangelogContainer'
+)[0]
+const settingsUpdateActionButton = document.getElementById(
+    'settingsUpdateActionButton'
+)
 
 /**
  * Update the properties of the update action button.
- * 
+ *
  * @param {string} text The new button text.
  * @param {boolean} disabled Optional. Disable or enable the button
  * @param {function} handler Optional. New button event handler.
@@ -1282,28 +1489,44 @@ function settingsUpdateButtonStatus(text, disabled = false, handler = null) {
 
 /**
  * Populate the update tab with relevant information.
- * 
+ *
  * @param {Object} data The update data.
  */
 function populateSettingsUpdateInformation(data) {
     if (data != null) {
-        settingsUpdateTitle.innerHTML = `New ${isPrerelease(data.version) ? 'Pre-release' : 'Release'} Available`
+        settingsUpdateTitle.innerHTML = `New ${
+            isPrerelease(data.version) ? 'Pre-release' : 'Release'
+        } Available`
         settingsUpdateChangelogCont.style.display = null
         settingsUpdateChangelogTitle.innerHTML = data.releaseName
         settingsUpdateChangelogText.innerHTML = data.releaseNotes
-        populateVersionInformation(data.version, settingsUpdateVersionValue, settingsUpdateVersionTitle, settingsUpdateVersionCheck)
+        populateVersionInformation(
+            data.version,
+            settingsUpdateVersionValue,
+            settingsUpdateVersionTitle,
+            settingsUpdateVersionCheck
+        )
 
         if (process.platform === 'darwin') {
-            settingsUpdateButtonStatus('Download from GitHub<span style="font-size: 10px;color: gray;text-shadow: none !important;">Close the launcher and run the dmg to update.</span>', false, () => {
-                shell.openExternal(data.darwindownload)
-            })
+            settingsUpdateButtonStatus(
+                'Download from GitHub<span style="font-size: 10px;color: gray;text-shadow: none !important;">Close the launcher and run the dmg to update.</span>',
+                false,
+                () => {
+                    shell.openExternal(data.darwindownload)
+                }
+            )
         } else {
             settingsUpdateButtonStatus('Downloading..', true)
         }
     } else {
         settingsUpdateTitle.innerHTML = 'You Are Running the Latest Version'
         settingsUpdateChangelogCont.style.display = 'none'
-        populateVersionInformation(remote.app.getVersion(), settingsUpdateVersionValue, settingsUpdateVersionTitle, settingsUpdateVersionCheck)
+        populateVersionInformation(
+            remote.app.getVersion(),
+            settingsUpdateVersionValue,
+            settingsUpdateVersionTitle,
+            settingsUpdateVersionCheck
+        )
         settingsUpdateButtonStatus('Check for Updates', false, () => {
             if (!isDev) {
                 ipcRenderer.send('autoUpdateAction', 'checkForUpdate')
@@ -1315,7 +1538,7 @@ function populateSettingsUpdateInformation(data) {
 
 /**
  * Prepare update tab for display.
- * 
+ *
  * @param {Object} data The update data.
  */
 function prepareUpdateTab(data = null) {
@@ -1327,10 +1550,10 @@ function prepareUpdateTab(data = null) {
  */
 
 /**
-  * Prepare the entire settings UI.
-  * 
-  * @param {boolean} first Whether or not it is the first load.
-  */
+ * Prepare the entire settings UI.
+ *
+ * @param {boolean} first Whether or not it is the first load.
+ */
 function prepareSettings(first = false) {
     if (first) {
         setupSettingsTabs()

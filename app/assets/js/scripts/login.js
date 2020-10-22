@@ -19,14 +19,14 @@ const loginButton = document.getElementById('loginButton')
 const loginForm = document.getElementById('loginForm')
 
 // Control variables.
-let lu = false, lp = false
+let lu = false,
+    lp = false
 
 const loggerLogin = LoggerUtil('%c[Login]', 'color: #000668; font-weight: bold')
 
-
 /**
  * Show a login error.
- * 
+ *
  * @param {HTMLElement} element The element on which to display the error.
  * @param {string} value The error text.
  */
@@ -37,7 +37,7 @@ function showError(element, value) {
 
 /**
  * Shake a login error to add emphasis.
- * 
+ *
  * @param {HTMLElement} element The element to shake.
  */
 function shakeError(element) {
@@ -50,7 +50,7 @@ function shakeError(element) {
 
 /**
  * Validate that an email field is neither empty nor invalid.
- * 
+ *
  * @param {string} value The email value.
  */
 function validateEmail(value) {
@@ -75,7 +75,7 @@ function validateEmail(value) {
 
 /**
  * Validate that the password field is not empty.
- * 
+ *
  * @param {string} value The password value.
  */
 function validatePassword(value) {
@@ -112,7 +112,7 @@ loginPassword.addEventListener('input', (e) => {
 
 /**
  * Enable or disable the login button.
- * 
+ *
  * @param {boolean} v True to enable, false to disable.
  */
 function loginDisabled(v) {
@@ -123,22 +123,28 @@ function loginDisabled(v) {
 
 /**
  * Enable or disable loading elements.
- * 
+ *
  * @param {boolean} v True to enable, false to disable.
  */
 function loginLoading(v) {
     if (v) {
         loginButton.setAttribute('loading', v)
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.login'), Lang.queryJS('login.loggingIn'))
+        loginButton.innerHTML = loginButton.innerHTML.replace(
+            Lang.queryJS('login.login'),
+            Lang.queryJS('login.loggingIn')
+        )
     } else {
         loginButton.removeAttribute('loading')
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.login'))
+        loginButton.innerHTML = loginButton.innerHTML.replace(
+            Lang.queryJS('login.loggingIn'),
+            Lang.queryJS('login.login')
+        )
     }
 }
 
 /**
  * Enable or disable login form.
- * 
+ *
  * @param {boolean} v True to enable, false to disable.
  */
 function formDisabled(v) {
@@ -157,7 +163,7 @@ function formDisabled(v) {
 /**
  * Parses an error and returns a user-friendly title and description
  * for our error overlay.
- * 
+ *
  * @param {Error | {cause: string, error: string, errorMessage: string}} err A Node.js
  * error or Mojang error response.
  */
@@ -173,10 +179,17 @@ function resolveError(err) {
         if (err.error != null) {
             if (err.error === 'ForbiddenOperationException') {
                 if (err.errorMessage != null) {
-                    if (err.errorMessage === 'Invalid credentials. Invalid username or password.') {
+                    if (
+                        err.errorMessage ===
+                        'Invalid credentials. Invalid username or password.'
+                    ) {
                         return {
-                            title: Lang.queryJS('login.error.invalidCredentials.title'),
-                            desc: Lang.queryJS('login.error.invalidCredentials.desc')
+                            title: Lang.queryJS(
+                                'login.error.invalidCredentials.title'
+                            ),
+                            desc: Lang.queryJS(
+                                'login.error.invalidCredentials.desc'
+                            )
                         }
                     } else if (err.errorMessage === 'Invalid credentials.') {
                         return {
@@ -252,7 +265,9 @@ loginCancelButton.onclick = (e) => {
 }
 
 // Disable default form behavior.
-loginForm.onsubmit = () => { return false }
+loginForm.onsubmit = () => {
+    return false
+}
 
 // Bind login button behavior.
 loginButton.addEventListener('click', () => {
@@ -262,39 +277,50 @@ loginButton.addEventListener('click', () => {
     // Show loading stuff.
     loginLoading(true)
 
-    AuthManager.addAccount(loginUsername.value, loginPassword.value).then((value) => {
-        updateSelectedAccount(value)
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.success'))
-        $('.circle-loader').toggleClass('load-complete')
-        $('.checkmark').toggle()
-        setTimeout(() => {
-            switchView(VIEWS.login, loginViewOnSuccess, 500, 500, () => {
-                // Temporary workaround
-                if (loginViewOnSuccess === VIEWS.settings) {
-                    prepareSettings()
-                }
-                loginViewOnSuccess = VIEWS.landing // Reset this for good measure.
-                loginCancelEnabled(false) // Reset this for good measure.
-                loginViewCancelHandler = null // Reset this for good measure.
-                loginUsername.value = ''
-                loginPassword.value = ''
-                $('.circle-loader').toggleClass('load-complete')
-                $('.checkmark').toggle()
-                loginLoading(false)
-                loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.success'), Lang.queryJS('login.login'))
-                formDisabled(false)
-            })
-        }, 1000)
-    }).catch((err) => {
-        loginLoading(false)
-        const errF = resolveError(err)
-        setOverlayContent(errF.title, errF.desc, Lang.queryJS('login.tryAgain'))
-        setOverlayHandler(() => {
-            formDisabled(false)
-            toggleOverlay(false)
+    AuthManager.addAccount(loginUsername.value, loginPassword.value)
+        .then((value) => {
+            updateSelectedAccount(value)
+            loginButton.innerHTML = loginButton.innerHTML.replace(
+                Lang.queryJS('login.loggingIn'),
+                Lang.queryJS('login.success')
+            )
+            $('.circle-loader').toggleClass('load-complete')
+            $('.checkmark').toggle()
+            setTimeout(() => {
+                switchView(VIEWS.login, loginViewOnSuccess, 500, 500, () => {
+                    // Temporary workaround
+                    if (loginViewOnSuccess === VIEWS.settings) {
+                        prepareSettings()
+                    }
+                    loginViewOnSuccess = VIEWS.landing // Reset this for good measure.
+                    loginCancelEnabled(false) // Reset this for good measure.
+                    loginViewCancelHandler = null // Reset this for good measure.
+                    loginUsername.value = ''
+                    loginPassword.value = ''
+                    $('.circle-loader').toggleClass('load-complete')
+                    $('.checkmark').toggle()
+                    loginLoading(false)
+                    loginButton.innerHTML = loginButton.innerHTML.replace(
+                        Lang.queryJS('login.success'),
+                        Lang.queryJS('login.login')
+                    )
+                    formDisabled(false)
+                })
+            }, 1000)
         })
-        toggleOverlay(true)
-        loggerLogin.log('Error while logging in.', err)
-    })
-
+        .catch((err) => {
+            loginLoading(false)
+            const errF = resolveError(err)
+            setOverlayContent(
+                errF.title,
+                errF.desc,
+                Lang.queryJS('login.tryAgain')
+            )
+            setOverlayHandler(() => {
+                formDisabled(false)
+                toggleOverlay(false)
+            })
+            toggleOverlay(true)
+            loggerLogin.log('Error while logging in.', err)
+        })
 })

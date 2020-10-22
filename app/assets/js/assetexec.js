@@ -4,7 +4,7 @@ if (target == null) {
     console.error('Invalid class name passed to argv[2], cannot continue.')
     process.exit(1)
 }
-let tracker = new target(...(process.argv.splice(3)))
+let tracker = new target(...process.argv.splice(3))
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
@@ -12,7 +12,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 console.log('AssetExec Started')
 
 // Temporary for debug purposes.
-process.on('unhandledRejection', r => console.log(r))
+process.on('unhandledRejection', (r) => console.log(r))
 
 let percent = 0
 function assignListeners() {
@@ -23,7 +23,13 @@ function assignListeners() {
         const currPercent = parseInt((acc / total) * 100)
         if (currPercent !== percent) {
             percent = currPercent
-            process.send({ context: 'progress', data, value: acc, total, percent })
+            process.send({
+                context: 'progress',
+                data,
+                value: acc,
+                total,
+                percent
+            })
         }
     })
     tracker.on('complete', (data, ...args) => {
@@ -54,14 +60,22 @@ process.on('message', (msg) => {
                 process.send({ result: res, context: func })
             }
         } else {
-            process.send({ context: 'error', data: null, error: `Function ${func} not found on ${process.argv[2]}` })
+            process.send({
+                context: 'error',
+                data: null,
+                error: `Function ${func} not found on ${process.argv[2]}`
+            })
         }
     } else if (msg.task === 'changeContext') {
         target = require('./assetguard')[msg.class]
         if (target == null) {
-            process.send({ context: 'error', data: null, error: `Invalid class ${msg.class}` })
+            process.send({
+                context: 'error',
+                data: null,
+                error: `Invalid class ${msg.class}`
+            })
         } else {
-            tracker = new target(...(msg.args))
+            tracker = new target(...msg.args)
             assignListeners()
         }
     }

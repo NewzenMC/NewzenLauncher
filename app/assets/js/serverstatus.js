@@ -2,24 +2,23 @@ const net = require('net')
 
 /**
  * Retrieves the status of a minecraft server.
- * 
+ *
  * @param {string} address The server address.
  * @param {number} port Optional. The port of the server. Defaults to 25565.
  * @returns {Promise.<Object>} A promise which resolves to an object containing
  * status information.
  */
-exports.getStatus = function(address, port = 25565){
-
-    if(port == null || port == ''){
+exports.getStatus = function (address, port = 25565) {
+    if (port == null || port == '') {
         port = 25565
     }
-    if(typeof port === 'string'){
+    if (typeof port === 'string') {
         port = parseInt(port)
     }
 
     return new Promise((resolve, reject) => {
         const socket = net.connect(port, address, () => {
-            let buff = Buffer.from([0xFE, 0x01])
+            let buff = Buffer.from([0xfe, 0x01])
             socket.write(buff)
         })
 
@@ -34,16 +33,16 @@ exports.getStatus = function(address, port = 25565){
         })
 
         socket.on('data', (data) => {
-            if(data != null && data != ''){
+            if (data != null && data != '') {
                 let server_info = data.toString().split('\x00\x00\x00')
                 const NUM_FIELDS = 6
-                if(server_info != null && server_info.length >= NUM_FIELDS){
+                if (server_info != null && server_info.length >= NUM_FIELDS) {
                     resolve({
                         online: true,
                         version: server_info[2].replace(/\u0000/g, ''),
                         motd: server_info[3].replace(/\u0000/g, ''),
                         onlinePlayers: server_info[4].replace(/\u0000/g, ''),
-                        maxPlayers: server_info[5].replace(/\u0000/g,'')
+                        maxPlayers: server_info[5].replace(/\u0000/g, '')
                     })
                 } else {
                     resolve({
@@ -61,5 +60,4 @@ exports.getStatus = function(address, port = 25565){
             // ECONNREFUSED = Unable to connect to port.
         })
     })
-
 }

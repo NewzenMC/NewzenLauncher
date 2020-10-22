@@ -1,5 +1,4 @@
 class LoggerUtil {
-
     constructor(prefix, style) {
         this.prefix = prefix
         this.style = style
@@ -24,7 +23,6 @@ class LoggerUtil {
     error() {
         console.error.apply(null, [this.prefix, this.style, ...arguments])
     }
-
 }
 
 module.exports = function (prefix, style) {

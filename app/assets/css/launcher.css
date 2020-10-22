@@ -1,5 +1,5 @@
 /* Github Code Highlighting. */
-@import "../../../node_modules/github-syntax-dark/lib/github-dark.css";
+@import '../../../node_modules/github-syntax-dark/lib/github-dark.css';
 
 /*******************************************************************************
  *                                                                             *
@@ -29,7 +29,9 @@
  ******************************************************************************/
 
 /* Reset body, html, and div presets. */
-body, html, div {
+body,
+html,
+div {
     margin: 0px;
     padding: 0px;
 }
@@ -41,7 +43,8 @@ p {
 }
 
 /* Set default font and color. */
-body, button {
+body,
+button {
     font-family: 'Avenir Book';
     color: white;
 }
@@ -78,7 +81,7 @@ body, button {
 /* Flexbox to wrap the main frame content. */
 #frameMain {
     display: flex;
-    height: 20px
+    height: 20px;
 }
 
 /* Undraggable region on the left and right of the frame. */
@@ -181,7 +184,7 @@ body, button {
 }
 #frameButtonDarwin_close:hover,
 #frameButtonDarwin_close:focus {
-    background-color: #FF9A8A;
+    background-color: #ff9a8a;
 }
 #frameButtonDarwin_close:active {
     background-color: #ff8d7b;
@@ -192,7 +195,7 @@ body, button {
 }
 #frameButtonDarwin_minimize:hover,
 #frameButtonDarwin_minimize:focus {
-    background-color: #FFE9A9;
+    background-color: #ffe9a9;
 }
 #frameButtonDarwin_minimize:active {
     background-color: #ffde7b;
@@ -203,7 +206,7 @@ body, button {
 }
 #frameButtonDarwin_restoredown:hover,
 #frameButtonDarwin_restoredown:focus {
-    background-color: #D6FFA6;
+    background-color: #d6ffa6;
 }
 #frameButtonDarwin_restoredown:active {
     background-color: #bfff76;
@@ -291,14 +294,14 @@ body, button {
     text-align: justify;
     font-size: 13px;
     font-weight: 100;
-    text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px
+    text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px;
 }
 
 #welcomeDescCTA {
     text-align: center;
     font-size: 14px;
     font-weight: 100;
-    text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px
+    text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px;
 }
 
 /* Login button styles. */
@@ -379,7 +382,7 @@ body, button {
     height: 100%;
     width: 100%;
     transition: filter 0.25s ease;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /* Login cancel button styles. */
@@ -529,23 +532,28 @@ body, button {
 }
 
 .shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes shake {
-    10%, 90% {
+    10%,
+    90% {
         transform: translate3d(-1px, 0, 0);
     }
-    
-    20%, 80% {
+
+    20%,
+    80% {
         transform: translate3d(2px, 0, 0);
     }
-  
-    30%, 50%, 70% {
+
+    30%,
+    50%,
+    70% {
         transform: translate3d(-4px, 0, 0);
     }
-  
-    40%, 60% {
+
+    40%,
+    60% {
         transform: translate3d(4px, 0, 0);
     }
 }
@@ -571,7 +579,7 @@ body, button {
     outline: none;
 }
 .loginField:disabled {
-    color: rgba(255, 255, 255, 0.50);
+    color: rgba(255, 255, 255, 0.5);
 }
 .loginField::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.75);
@@ -629,7 +637,7 @@ body, button {
 }
 #loginButton:active {
     color: #c7c7c7;
-    text-shadow:  0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7;
 }
 #loginSVG {
     -webkit-transform: translate3d(0, 0, 0);
@@ -667,7 +675,6 @@ body, button {
 #loginButton #loginSVG {
     display: initial;
 }
-
 
 .circle-loader {
     margin-left: 20px;
@@ -740,8 +747,6 @@ body, button {
         opacity: 1;
     }
 }
-
-
 
 /*.spinningCircle {
     margin-left: 20px;
@@ -835,7 +840,7 @@ body, button {
 /* For checked -> #checkmarkContainer input:checked ~ * */
 /* Create the checkmark/indicator (hidden when not checked). */
 .loginCheckmark:after {
-    content: "";
+    content: '';
     display: none;
 }
 /* Show the checkmark when checked. */
@@ -878,8 +883,8 @@ body, button {
     position: relative;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.50);
-    transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background-color 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
 }
 
 /* Drop shadow displayed when content is scrolled out of view. */
@@ -997,7 +1002,9 @@ body, button {
     text-shadow: 0px 0px 20px white, 0px 0px 20px white, 0px 0px 20px white;
 }
 #settingsNavDone:active {
-    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75);
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75),
+        0px 0px 20px rgba(255, 255, 255, 0.75),
+        0px 0px 20px rgba(255, 255, 255, 0.75);
     color: rgba(255, 255, 255, 0.75);
 }
 #settingsNavDone:disabled {
@@ -1026,7 +1033,7 @@ body, button {
 }
 .settingsTab::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.50);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Add spacing to the top of each settings tab. */
@@ -1054,13 +1061,13 @@ body, button {
 }
 
 /* Remove spin button from number inputs. */
-#settingsContainer input[type=number]::-webkit-inner-spin-button {
+#settingsContainer input[type='number']::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
 /* Default styles for text/number inputs. */
-#settingsContainer input[type=number],
-#settingsContainer input[type=text] {
+#settingsContainer input[type='number'],
+#settingsContainer input[type='text'] {
     color: white;
     background: rgba(0, 0, 0, 0.25);
     border-radius: 3px;
@@ -1068,12 +1075,12 @@ body, button {
     font-family: 'Avenir Book';
     transition: 0.25s ease;
 }
-#settingsContainer input[type=number]:focus,
-#settingsContainer input[type=text]:focus {
+#settingsContainer input[type='number']:focus,
+#settingsContainer input[type='text']:focus {
     outline: none;
     border-color: rgba(126, 126, 126, 0.87);
 }
-#settingsContainer input[type=number][error] {
+#settingsContainer input[type='number'][error] {
     border-color: rgb(255, 27, 12);
     background: rgba(236, 0, 0, 0.25);
     color: rgb(255, 27, 12);
@@ -1086,7 +1093,7 @@ body, button {
     justify-content: space-between;
     padding: 20px 0px;
     width: 75%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.50);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 .settingsFieldLeft {
     display: flex;
@@ -1099,7 +1106,7 @@ body, button {
 }
 .settingsFieldDesc {
     font-size: 12px;
-    color: rgba(255, 255, 255, .95);
+    color: rgba(255, 255, 255, 0.95);
     margin-top: 5px;
 }
 .settingsDivider {
@@ -1118,7 +1125,7 @@ body, button {
     box-sizing: border-box;
 }
 .toggleSwitch input {
-    display:none;
+    display: none;
 }
 .toggleSwitchSlider {
     position: absolute;
@@ -1128,13 +1135,13 @@ body, button {
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.35);
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 50px;
     border: 1px solid rgba(126, 126, 126, 0.57);
 }
 .toggleSwitchSlider:before {
     position: absolute;
-    content: "";
+    content: '';
     height: 13px;
     width: 16px;
     left: 3px;
@@ -1142,7 +1149,7 @@ body, button {
     background-color: white;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.75);
     border-radius: 50px;
-    transition: .4s;
+    transition: 0.4s;
 }
 input:checked + .toggleSwitchSlider {
     background-color: rgb(31, 140, 11);
@@ -1187,7 +1194,7 @@ input:checked + .toggleSwitchSlider:before {
 .settingsFileSelContainer {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.50);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     margin-bottom: 20px;
     margin-top: 20px;
     width: 75%;
@@ -1421,7 +1428,7 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.50);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     width: 75%;
 }
 #settingsGameResolutionContent {
@@ -1579,7 +1586,10 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Set the status color of an enabled mod. */
-.settingsBaseMod[enabled] > .settingsModContent > .settingsModMainWrapper > .settingsModStatus {
+.settingsBaseMod[enabled]
+    > .settingsModContent
+    > .settingsModMainWrapper
+    > .settingsModStatus {
     background-color: rgb(165, 195, 37);
 }
 
@@ -1646,11 +1656,13 @@ input:checked + .toggleSwitchSlider:before {
 }
 .settingsDropinRemoveButton:hover,
 .settingsDropinRemoveButton:focus {
-    text-shadow: 0px 0px 20px #c32625, 0px 0px 20px #c32625, 0px 0px 20px #c32625;
+    text-shadow: 0px 0px 20px #c32625, 0px 0px 20px #c32625,
+        0px 0px 20px #c32625;
 }
 .settingsDropinRemoveButton:active {
     color: #9b1f1f;
-    text-shadow: 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f;
+    text-shadow: 0px 0px 20px #9b1f1f, 0px 0px 20px #9b1f1f,
+        0px 0px 20px #9b1f1f;
 }
 
 /* Shaderpack settings description. */
@@ -1703,7 +1715,7 @@ input:checked + .toggleSwitchSlider:before {
 /* Style the arrow inside the select element. */
 .settingsSelectSelected:after {
     position: absolute;
-    content: "";
+    content: '';
     top: calc(50% - 3px);
     right: 10px;
     width: 0;
@@ -1746,7 +1758,7 @@ input:checked + .toggleSwitchSlider:before {
 }
 .settingsSelectOptions::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.50);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Shared styles between options and selection div. */
@@ -1768,7 +1780,8 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Hover + selected styles. */
-.settingsSelectOptions div:hover, .settingsSelectOptions div[selected] {
+.settingsSelectOptions div:hover,
+.settingsSelectOptions div[selected] {
     background-color: rgba(255, 255, 255, 0.25) !important;
 }
 
@@ -1799,7 +1812,7 @@ input:checked + .toggleSwitchSlider:before {
     width: 75%;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.50);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     margin-bottom: 20px;
 }
 
@@ -1854,7 +1867,7 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     flex-direction: column;
 }
-#settingsMemoryStatus > .settingsMemoryStatusContainer:not(:last-child){
+#settingsMemoryStatus > .settingsMemoryStatusContainer:not(:last-child) {
     margin-bottom: 50%;
 }
 .settingsMemoryStatusContainer {
@@ -2091,8 +2104,8 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 3px;
     font-family: 'Avenir Book';
 }
-.settingsChangelogText li+li {
-    margin-top: .25em;
+.settingsChangelogText li + li {
+    margin-top: 0.25em;
 }
 .settingsChangelogText a.commit-link {
     font-weight: 400;
@@ -2116,7 +2129,7 @@ input:checked + .toggleSwitchSlider:before {
     text-decoration-color: black;
 }
 .settingsChangelogText .highlight {
-    background: rgba(0, 0, 0, 0.30);
+    background: rgba(0, 0, 0, 0.3);
     user-select: initial;
     padding: 5px 10px;
 }
@@ -2237,7 +2250,8 @@ input:checked + .toggleSwitchSlider:before {
     text-shadow: 0px 0px 20px white, 0px 0px 20px white, 0px 0px 20px white;
 }
 #settingsUpdateActionButton:active {
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
+        0px 0px 20px #c7c7c7;
     color: #c7c7c7;
 }
 #settingsUpdateActionButton:disabled {
@@ -2508,7 +2522,7 @@ input:checked + .toggleSwitchSlider:before {
 }
 #newsArticleContentScrollable::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.50);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 .bbCodeSpoilerButton {
     background: none;
@@ -2523,18 +2537,19 @@ input:checked + .toggleSwitchSlider:before {
 }
 .bbCodeSpoilerButton:hover,
 .bbCodeSpoilerButton:focus {
-    text-shadow: 0px 0px 20px #ffffff, 0px 0px 20px #ffffff, 0px 0px 20px #ffffff;
+    text-shadow: 0px 0px 20px #ffffff, 0px 0px 20px #ffffff,
+        0px 0px 20px #ffffff;
 }
 .bbCodeSpoilerButton:active {
     color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
+        0px 0px 20px #c7c7c7;
 }
 .bbCodeSpoilerText {
     display: none;
     padding: 15px 0px;
     border-bottom: 1px solid white;
 }
-
 
 #newsArticleContentWrapper {
     width: 80%;
@@ -2676,8 +2691,8 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Logo container styles w/ update. */
-#image_seal_container[update]{
-    cursor: pointer
+#image_seal_container[update] {
+    cursor: pointer;
 }
 #image_seal_container[update]:before,
 #image_seal_container[update]:after {
@@ -2718,7 +2733,7 @@ input:checked + .toggleSwitchSlider:before {
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
 #updateAvailableTooltip::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     left: 50%;
     bottom: 100%;
@@ -2839,7 +2854,8 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Social Media Icon division containers. */
-#internalMedia, #externalMedia {
+#internalMedia,
+#externalMedia {
     display: flex;
     flex-direction: column;
 }
@@ -2922,7 +2938,7 @@ input:checked + .toggleSwitchSlider:before {
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
 #settingsTooltip::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 100%;
@@ -2936,7 +2952,7 @@ input:checked + .toggleSwitchSlider:before {
 .mediaButton:active #settingsTooltip {
     visibility: visible;
     opacity: 1;
-    transition-delay:0s;
+    transition-delay: 0s;
 }
 
 /* Twitter icon colors. */
@@ -2951,11 +2967,11 @@ input:checked + .toggleSwitchSlider:before {
 /* Instagram icon colors. */
 #instagramSVG:hover,
 #instagramURL:focus #instagramSVG {
-    fill: url('#instaFill')
+    fill: url('#instaFill');
     /*fill: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); */
 }
 #instagramSVG:active {
-    fill: url('#instaFill')
+    fill: url('#instaFill');
 }
 
 /* Youtube icon colors. */
@@ -3055,7 +3071,7 @@ input:checked + .toggleSwitchSlider:before {
     cursor: default;
 }
 #mojangStatusTooltip:after {
-    content: " ";
+    content: ' ';
     position: absolute;
     left: 50%;
     top: 100%;
@@ -3229,7 +3245,7 @@ input:checked + .toggleSwitchSlider:before {
     top: 25px;
     display: none;
 }
- 
+
 /* Left side of launch details container, displays percentage and a divider. */
 #launch_details_left {
     display: flex;
@@ -3269,7 +3285,8 @@ input:checked + .toggleSwitchSlider:before {
 }
 #server_selection_button:active {
     color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
+    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7,
+        0px 0px 20px #c7c7c7;
 }
 
 /* Progress bar styles. */
@@ -3313,7 +3330,7 @@ input:checked + .toggleSwitchSlider:before {
     justify-content: center;
     width: 100%;
     height: calc(100% - 22px);
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /* Main overlay content. */
@@ -3473,7 +3490,7 @@ input:checked + .toggleSwitchSlider:before {
 #serverSelectListScrollable::-webkit-scrollbar-thumb,
 #accountSelectListScrollable::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.50);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* Content container for a server listing. */
@@ -3493,12 +3510,12 @@ input:checked + .toggleSwitchSlider:before {
 }
 .serverListing[selected] {
     cursor: default;
-    opacity: 1.0;
+    opacity: 1;
 }
 .serverListing:hover,
 .serverListing:focus {
     outline: none;
-    opacity: 1.0;
+    opacity: 1;
 }
 
 .accountListing {
@@ -3518,12 +3535,12 @@ input:checked + .toggleSwitchSlider:before {
 }
 .accountListing[selected] {
     cursor: default;
-    opacity: 1.0;
+    opacity: 1;
 }
 .accountListing:hover,
 .accountListing:focus {
     outline: none;
-    opacity: 1.0;
+    opacity: 1;
 }
 
 .accountListingName {
@@ -3535,7 +3552,8 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Add spacing between server listings. */
 #serverSelectListScrollable > .serverListing:not(:first-child):not(:last-child),
-#accountSelectListScrollable > .accountListing:not(:first-child):not(:last-child) {
+#accountSelectListScrollable
+    > .accountListing:not(:first-child):not(:last-child) {
     margin: 5px 0px;
 }
 #serverSelectListScrollable > .serverListing:first-child,
@@ -3619,7 +3637,7 @@ input:checked + .toggleSwitchSlider:before {
     visibility: hidden;
     opacity: 0;
     width: 65px;
-    background-color: rgba(0, 0, 0, 0.40);
+    background-color: rgba(0, 0, 0, 0.4);
     text-align: center;
     border-radius: 4px;
     position: absolute;
@@ -3629,19 +3647,19 @@ input:checked + .toggleSwitchSlider:before {
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
 .serverListingStarTooltip::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     right: 100%; /* To the left of the tooltip */
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent rgba(0, 0, 0, 0.40) transparent transparent;
+    border-color: transparent rgba(0, 0, 0, 0.4) transparent transparent;
 }
 .serverListingStarWrapper:hover .serverListingStarTooltip {
     visibility: visible;
     opacity: 1;
-    transition-delay:0s;
+    transition-delay: 0s;
 }
 
 /* Content container which contains the server select actions. */

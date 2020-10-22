@@ -28,7 +28,7 @@ const isDev = require('./isdev')
 class Asset {
     /**
      * Create an asset.
-     * 
+     *
      * @param {any} id The id of the asset.
      * @param {string} hash The hash value of the asset.
      * @param {number} size The size in bytes of the asset.
@@ -46,7 +46,6 @@ class Asset {
 
 /** Class representing a mojang library. */
 class Library extends Asset {
-
     /**
      * Converts the process.platform OS names to match mojang's OS names.
      */
@@ -69,10 +68,10 @@ class Library extends Asset {
      * an OS specified, then the library can ONLY be downloaded on that OS. If the disallow
      * property has instead specified an OS, the library can be downloaded on any OS EXCLUDING
      * the one specified.
-     * 
+     *
      * If the rules are undefined, the natives property will be checked for a matching entry
      * for the current OS.
-     * 
+     *
      * @param {Array.<Object>} rules The Library's download rules.
      * @param {Object} natives The Library's natives object.
      * @returns {boolean} True if the Library follows the specified rules, otherwise false.
@@ -104,12 +103,11 @@ class Library extends Asset {
 }
 
 class DistroModule extends Asset {
-
     /**
      * Create a DistroModule. This is for processing,
      * not equivalent to the module objects in the
      * distro index.
-     * 
+     *
      * @param {any} id The id of the asset.
      * @param {string} hash The hash value of the asset.
      * @param {number} size The size in bytes of the asset.
@@ -121,7 +119,6 @@ class DistroModule extends Asset {
         super(id, hash, size, from, to)
         this.type = type
     }
-
 }
 
 /**
@@ -129,10 +126,9 @@ class DistroModule extends Asset {
  * about a download queue, including the queue itself.
  */
 class DLTracker {
-
     /**
      * Create a DLTracker
-     * 
+     *
      * @param {Array.<Asset>} dlqueue An array containing assets queued for download.
      * @param {number} dlsize The combined size of each asset in the download queue array.
      * @param {function(Asset)} callback Optional callback which is called when an asset finishes downloading.
@@ -142,15 +138,13 @@ class DLTracker {
         this.dlsize = dlsize
         this.callback = callback
     }
-
 }
 
 class Util {
-
     /**
      * Returns true if the actual version is greater than
      * or equal to the desired version.
-     * 
+     *
      * @param {string} desired The desired version.
      * @param {string} actual The actual version.
      */
@@ -167,17 +161,15 @@ class Util {
     }
 
     static isForgeGradle3(mcVersion, forgeVersion) {
-
         if (Util.mcVersionAtLeast('1.13', mcVersion)) {
             return true
         }
 
         try {
-
             const forgeVer = forgeVersion.split('-')[1]
 
             const maxFG2 = [14, 23, 5, 2847]
-            const verSplit = forgeVer.split('.').map(v => Number(v))
+            const verSplit = forgeVer.split('.').map((v) => Number(v))
 
             for (let i = 0; i < maxFG2.length; i++) {
                 if (verSplit[i] > maxFG2[i]) {
@@ -188,18 +180,18 @@ class Util {
             }
 
             return false
-
         } catch (err) {
-            throw new Error('Forge version is complex (changed).. launcher requires a patch.')
+            throw new Error(
+                'Forge version is complex (changed).. launcher requires a patch.'
+            )
         }
     }
 
     static isAutoconnectBroken(forgeVersion) {
-
         const forgeVer = forgeVersion.split('-')[1]
 
         const minWorking = [31, 2, 15]
-        const verSplit = forgeVer.split('.').map(v => Number(v))
+        const verSplit = forgeVer.split('.').map((v) => Number(v))
 
         if (verSplit[0] === 31) {
             for (let i = 0; i < minWorking.length; i++) {
@@ -213,12 +205,9 @@ class Util {
 
         return false
     }
-
 }
 
-
 class JavaGuard extends EventEmitter {
-
     constructor(mcVersion) {
         super()
         this.mcVersion = mcVersion
@@ -232,7 +221,7 @@ class JavaGuard extends EventEmitter {
 
     // /**
     //  * Resolves the latest version of Oracle's JRE and parses its download link.
-    //  * 
+    //  *
     //  * @returns {Promise.<OracleJREData>} Promise which resolved to an object containing the JRE download data.
     //  */
     // static _latestJREOracle(){
@@ -269,14 +258,18 @@ class JavaGuard extends EventEmitter {
 
     /**
      * Fetch the last open JDK binary. Uses https://api.adoptopenjdk.net/
-     * 
+     *
      * @param {string} major The major version of Java to fetch.
-     * 
+     *
      * @returns {Promise.<OpenJDKData>} Promise which resolved to an object containing the JRE download data.
      */
     static _latestOpenJDK(major = '8') {
-
-        const sanitizedOS = process.platform === 'win32' ? 'windows' : (process.platform === 'darwin' ? 'mac' : process.platform)
+        const sanitizedOS =
+            process.platform === 'win32'
+                ? 'windows'
+                : process.platform === 'darwin'
+                ? 'mac'
+                : process.platform
 
         const url = `https://api.adoptopenjdk.net/v2/latestAssets/nightly/openjdk${major}?os=${sanitizedOS}&arch=x64&heap_size=normal&openjdk_impl=hotspot&type=jre`
 
@@ -298,7 +291,7 @@ class JavaGuard extends EventEmitter {
     /**
      * Returns the path of the OS-specific executable for the given Java
      * installation. Supported OS's are win32, darwin, linux.
-     * 
+     *
      * @param {string} rootDir The root directory of the Java installation.
      * @returns {string} The path to the Java executable.
      */
@@ -315,7 +308,7 @@ class JavaGuard extends EventEmitter {
 
     /**
      * Check to see if the given path points to a Java executable.
-     * 
+     *
      * @param {string} pth The path to check against.
      * @returns {boolean} True if the path points to a Java executable, otherwise false.
      */
@@ -332,18 +325,21 @@ class JavaGuard extends EventEmitter {
 
     /**
      * Load Mojang's launcher.json file.
-     * 
+     *
      * @returns {Promise.<Object>} Promise which resolves to Mojang's launcher.json object.
      */
     static loadMojangLauncherData() {
         return new Promise((resolve, reject) => {
-            request.get('https://launchermeta.mojang.com/mc/launcher.json', (err, resp, body) => {
-                if (err) {
-                    resolve(null)
-                } else {
-                    resolve(JSON.parse(body))
+            request.get(
+                'https://launchermeta.mojang.com/mc/launcher.json',
+                (err, resp, body) => {
+                    if (err) {
+                        resolve(null)
+                    } else {
+                        resolve(JSON.parse(body))
+                    }
                 }
-            })
+            )
         })
     }
 
@@ -351,7 +347,7 @@ class JavaGuard extends EventEmitter {
      * Parses a **full** Java Runtime version string and resolves
      * the version information. Dynamically detects the formatting
      * to use.
-     * 
+     *
      * @param {string} verString Full version string to parse.
      * @returns Object containing the version information.
      */
@@ -367,7 +363,7 @@ class JavaGuard extends EventEmitter {
     /**
      * Parses a **full** Java Runtime version string and resolves
      * the version information. Uses Java 8 formatting.
-     * 
+     *
      * @param {string} verString Full version string to parse.
      * @returns Object containing the version information.
      */
@@ -386,7 +382,7 @@ class JavaGuard extends EventEmitter {
     /**
      * Parses a **full** Java Runtime version string and resolves
      * the version information. Uses Java 9+ formatting.
-     * 
+     *
      * @param {string} verString Full version string to parse.
      * @returns Object containing the version information.
      */
@@ -406,9 +402,9 @@ class JavaGuard extends EventEmitter {
     /**
      * Validates the output of a JVM's properties. Currently validates that a JRE is x64
      * and that the major = 8, update > 52.
-     * 
+     *
      * @param {string} stderr The output to validate.
-     * 
+     *
      * @returns {Promise.<Object>} A promise which resolves to a meta object about the JVM.
      * The validity is stored inside the `valid` property.
      */
@@ -472,14 +468,13 @@ class JavaGuard extends EventEmitter {
      * in Java 8 and 9. Since this is a non-standard option. This will resolve to true if
      * the function's code throws errors. That would indicate that the option is changed or
      * removed.
-     * 
+     *
      * @param {string} binaryExecPath Path to the java executable we wish to validate.
-     * 
+     *
      * @returns {Promise.<Object>} A promise which resolves to a meta object about the JVM.
      * The validity is stored inside the `valid` property.
      */
     _validateJavaBinary(binaryExecPath) {
-
         return new Promise((resolve, reject) => {
             if (!JavaGuard.isJavaExecPath(binaryExecPath)) {
                 resolve({ valid: false })
@@ -489,26 +484,28 @@ class JavaGuard extends EventEmitter {
                 if (binaryExecPath.indexOf('javaw.exe') > -1) {
                     binaryExecPath.replace('javaw.exe', 'java.exe')
                 }
-                child_process.exec('"' + binaryExecPath + '" -XshowSettings:properties', (err, stdout, stderr) => {
-                    try {
-                        // Output is stored in stderr?
-                        resolve(this._validateJVMProperties(stderr))
-                    } catch (err) {
-                        // Output format might have changed, validation cannot be completed.
-                        resolve({ valid: false })
+                child_process.exec(
+                    '"' + binaryExecPath + '" -XshowSettings:properties',
+                    (err, stdout, stderr) => {
+                        try {
+                            // Output is stored in stderr?
+                            resolve(this._validateJVMProperties(stderr))
+                        } catch (err) {
+                            // Output format might have changed, validation cannot be completed.
+                            resolve({ valid: false })
+                        }
                     }
-                })
+                )
             } else {
                 resolve({ valid: false })
             }
         })
-
     }
 
     /**
      * Checks for the presence of the environment variable JAVA_HOME. If it exits, we will check
      * to see if the value points to a path which exists. If the path exits, the path is returned.
-     * 
+     *
      * @returns {string} The path defined by JAVA_HOME, if it exists. Otherwise null.
      */
     static _scanJavaHome() {
@@ -525,12 +522,11 @@ class JavaGuard extends EventEmitter {
     /**
      * Scans the registry for 64-bit Java entries. The paths of each entry are added to
      * a set and returned. Currently, only Java 8 (1.8) is supported.
-     * 
+     *
      * @returns {Promise.<Set.<string>>} A promise which resolves to a set of 64-bit Java root
      * paths found in the registry.
      */
     static _scanRegistry() {
-
         return new Promise((resolve, reject) => {
             // Keys for Java v9.0.0 and later:
             // 'SOFTWARE\\JavaSoft\\JRE'
@@ -574,39 +570,54 @@ class JavaGuard extends EventEmitter {
                                         resolve(candidates)
                                     }
                                 } else {
-
                                     let numDone = 0
 
                                     for (let j = 0; j < javaVers.length; j++) {
                                         const javaVer = javaVers[j]
-                                        const vKey = javaVer.key.substring(javaVer.key.lastIndexOf('\\') + 1)
+                                        const vKey = javaVer.key.substring(
+                                            javaVer.key.lastIndexOf('\\') + 1
+                                        )
                                         // Only Java 8 is supported currently.
                                         if (parseFloat(vKey) === 1.8) {
-                                            javaVer.get('JavaHome', (err, res) => {
-                                                const jHome = res.value
-                                                if (jHome.indexOf('(x86)') === -1) {
-                                                    candidates.add(jHome)
-                                                }
+                                            javaVer.get(
+                                                'JavaHome',
+                                                (err, res) => {
+                                                    const jHome = res.value
+                                                    if (
+                                                        jHome.indexOf(
+                                                            '(x86)'
+                                                        ) === -1
+                                                    ) {
+                                                        candidates.add(jHome)
+                                                    }
 
-                                                // SUBKEY DONE
+                                                    // SUBKEY DONE
 
-                                                numDone++
-                                                if (numDone === javaVers.length) {
-                                                    keysDone++
-                                                    if (keysDone === regKeys.length) {
-                                                        resolve(candidates)
+                                                    numDone++
+                                                    if (
+                                                        numDone ===
+                                                        javaVers.length
+                                                    ) {
+                                                        keysDone++
+                                                        if (
+                                                            keysDone ===
+                                                            regKeys.length
+                                                        ) {
+                                                            resolve(candidates)
+                                                        }
                                                     }
                                                 }
-                                            })
+                                            )
                                         } else {
-
                                             // SUBKEY DONE
                                             // NOT JAVA 8
 
                                             numDone++
                                             if (numDone === javaVers.length) {
                                                 keysDone++
-                                                if (keysDone === regKeys.length) {
+                                                if (
+                                                    keysDone === regKeys.length
+                                                ) {
                                                     resolve(candidates)
                                                 }
                                             }
@@ -616,7 +627,6 @@ class JavaGuard extends EventEmitter {
                             }
                         })
                     } else {
-
                         // REG KEY DONE
                         // DUE TO NON-EXISTANCE
 
@@ -627,14 +637,12 @@ class JavaGuard extends EventEmitter {
                     }
                 })
             }
-
         })
-
     }
 
     /**
      * See if JRE exists in the Internet Plug-Ins folder.
-     * 
+     *
      * @returns {string} The path of the JRE if found, otherwise null.
      */
     static _scanInternetPlugins() {
@@ -646,16 +654,14 @@ class JavaGuard extends EventEmitter {
 
     /**
      * Scan a directory for root JVM folders.
-     * 
+     *
      * @param {string} scanDir The directory to scan.
      * @returns {Promise.<Set.<string>>} A promise which resolves to a set of the discovered
      * root JVM folders.
      */
     static _scanFileSystem(scanDir) {
         return new Promise((resolve, reject) => {
-
             fs.exists(scanDir, (e) => {
-
                 let res = new Set()
 
                 if (e) {
@@ -667,12 +673,15 @@ class JavaGuard extends EventEmitter {
                             let pathsDone = 0
 
                             for (let i = 0; i < files.length; i++) {
-
-                                const combinedPath = path.join(scanDir, files[i])
-                                const execPath = JavaGuard.javaExecFromRoot(combinedPath)
+                                const combinedPath = path.join(
+                                    scanDir,
+                                    files[i]
+                                )
+                                const execPath = JavaGuard.javaExecFromRoot(
+                                    combinedPath
+                                )
 
                                 fs.exists(execPath, (v) => {
-
                                     if (v) {
                                         res.add(combinedPath)
                                     }
@@ -682,7 +691,6 @@ class JavaGuard extends EventEmitter {
                                     if (pathsDone === files.length) {
                                         resolve(res)
                                     }
-
                                 })
                             }
                             if (pathsDone === files.length) {
@@ -694,23 +702,20 @@ class JavaGuard extends EventEmitter {
                     resolve(res)
                 }
             })
-
         })
     }
 
     /**
-     * 
+     *
      * @param {Set.<string>} rootSet A set of JVM root strings to validate.
      * @returns {Promise.<Object[]>} A promise which resolves to an array of meta objects
      * for each valid JVM root directory.
      */
     async _validateJavaRootSet(rootSet) {
-
         const rootArr = Array.from(rootSet)
         const validArr = []
 
         for (let i = 0; i < rootArr.length; i++) {
-
             const execPath = JavaGuard.javaExecFromRoot(rootArr[i])
             const metaOb = await this._validateJavaBinary(execPath)
 
@@ -718,37 +723,34 @@ class JavaGuard extends EventEmitter {
                 metaOb.execPath = execPath
                 validArr.push(metaOb)
             }
-
         }
 
         return validArr
-
     }
 
     /**
      * Sort an array of JVM meta objects. Best candidates are placed before all others.
      * Sorts based on version and gives priority to JREs over JDKs if versions match.
-     * 
+     *
      * @param {Object[]} validArr An array of JVM meta objects.
      * @returns {Object[]} A sorted array of JVM meta objects.
      */
     static _sortValidJavaArray(validArr) {
         const retArr = validArr.sort((a, b) => {
-
             if (a.version.major === b.version.major) {
-
                 if (a.version.major < 9) {
                     // Java 8
                     if (a.version.update === b.version.update) {
                         if (a.version.build === b.version.build) {
-
                             // Same version, give priority to JRE.
                             if (a.execPath.toLowerCase().indexOf('jdk') > -1) {
-                                return b.execPath.toLowerCase().indexOf('jdk') > -1 ? 0 : 1
+                                return b.execPath.toLowerCase().indexOf('jdk') >
+                                    -1
+                                    ? 0
+                                    : 1
                             } else {
                                 return -1
                             }
-
                         } else {
                             return a.version.build > b.version.build ? -1 : 1
                         }
@@ -759,22 +761,24 @@ class JavaGuard extends EventEmitter {
                     // Java 9+
                     if (a.version.minor === b.version.minor) {
                         if (a.version.revision === b.version.revision) {
-
                             // Same version, give priority to JRE.
                             if (a.execPath.toLowerCase().indexOf('jdk') > -1) {
-                                return b.execPath.toLowerCase().indexOf('jdk') > -1 ? 0 : 1
+                                return b.execPath.toLowerCase().indexOf('jdk') >
+                                    -1
+                                    ? 0
+                                    : 1
                             } else {
                                 return -1
                             }
-
                         } else {
-                            return a.version.revision > b.version.revision ? -1 : 1
+                            return a.version.revision > b.version.revision
+                                ? -1
+                                : 1
                         }
                     } else {
                         return a.version.minor > b.version.minor ? -1 : 1
                     }
                 }
-
             } else {
                 return a.version.major > b.version.major ? -1 : 1
             }
@@ -789,16 +793,15 @@ class JavaGuard extends EventEmitter {
      * variable. The paths will be sorted with higher versions preceeding lower, and
      * JREs preceeding JDKs. The binaries at the sorted paths will then be validated.
      * The first validated is returned.
-     * 
+     *
      * Higher versions > Lower versions
      * If versions are equal, JRE > JDK.
-     * 
+     *
      * @param {string} dataDir The base launcher directory.
-     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
+     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid
      * x64 Java installation. If none are found, null is returned.
      */
     async _win32JavaValidate(dataDir) {
-
         // Get possible paths from the registry.
         let pathSet1 = await JavaGuard._scanRegistry()
         if (pathSet1.length === 0) {
@@ -807,7 +810,9 @@ class JavaGuard extends EventEmitter {
         }
 
         // Get possible paths from the data directory.
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet2 = await JavaGuard._scanFileSystem(
+            path.join(dataDir, 'runtime', 'x64')
+        )
 
         // Merge the results.
         const uberSet = new Set([...pathSet1, ...pathSet2])
@@ -826,7 +831,6 @@ class JavaGuard extends EventEmitter {
         } else {
             return null
         }
-
     }
 
     /**
@@ -834,18 +838,21 @@ class JavaGuard extends EventEmitter {
      * The system JVM directory is scanned for possible installations.
      * The JAVA_HOME enviroment variable and internet plugins directory
      * are also scanned and validated.
-     * 
+     *
      * Higher versions > Lower versions
      * If versions are equal, JRE > JDK.
-     * 
+     *
      * @param {string} dataDir The base launcher directory.
-     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
+     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid
      * x64 Java installation. If none are found, null is returned.
      */
     async _darwinJavaValidate(dataDir) {
-
-        const pathSet1 = await JavaGuard._scanFileSystem('/Library/Java/JavaVirtualMachines')
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet1 = await JavaGuard._scanFileSystem(
+            '/Library/Java/JavaVirtualMachines'
+        )
+        const pathSet2 = await JavaGuard._scanFileSystem(
+            path.join(dataDir, 'runtime', 'x64')
+        )
 
         const uberSet = new Set([...pathSet1, ...pathSet2])
 
@@ -879,18 +886,19 @@ class JavaGuard extends EventEmitter {
      * Attempts to find a valid x64 installation of Java on Linux.
      * The system JVM directory is scanned for possible installations.
      * The JAVA_HOME enviroment variable is also scanned and validated.
-     * 
+     *
      * Higher versions > Lower versions
      * If versions are equal, JRE > JDK.
-     * 
+     *
      * @param {string} dataDir The base launcher directory.
-     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid 
+     * @returns {Promise.<string>} A Promise which resolves to the executable path of a valid
      * x64 Java installation. If none are found, null is returned.
      */
     async _linuxJavaValidate(dataDir) {
-
         const pathSet1 = await JavaGuard._scanFileSystem('/usr/lib/jvm')
-        const pathSet2 = await JavaGuard._scanFileSystem(path.join(dataDir, 'runtime', 'x64'))
+        const pathSet2 = await JavaGuard._scanFileSystem(
+            path.join(dataDir, 'runtime', 'x64')
+        )
 
         const uberSet = new Set([...pathSet1, ...pathSet2])
 
@@ -912,34 +920,29 @@ class JavaGuard extends EventEmitter {
 
     /**
      * Retrieve the path of a valid x64 Java installation.
-     * 
+     *
      * @param {string} dataDir The base launcher directory.
      * @returns {string} A path to a valid x64 Java installation, null if none found.
      */
     async validateJava(dataDir) {
         return await this['_' + process.platform + 'JavaValidate'](dataDir)
     }
-
 }
-
-
-
 
 /**
  * Central object class used for control flow. This object stores data about
- * categories of downloads. Each category is assigned an identifier with a 
+ * categories of downloads. Each category is assigned an identifier with a
  * DLTracker object as its value. Combined information is also stored, such as
  * the total size of all the queued files in each category. This event is used
  * to emit events so that external modules can listen into processing done in
  * this module.
  */
 class AssetGuard extends EventEmitter {
-
     /**
      * Create an instance of AssetGuard.
      * On creation the object's properties are never-null default
      * values. Each identifier is resolved to an empty DLTracker.
-     * 
+     *
      * @param {string} commonPath The common path for shared game files.
      * @param {string} javaexec The path to a java executable which will be used
      * to finalize installation.
@@ -966,7 +969,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Calculates the hash for a file using the specified algorithm.
-     * 
+     *
      * @param {Buffer} buf The buffer containing file data.
      * @param {string} algo The hash algorithm.
      * @returns {string} The calculated hash in hex.
@@ -978,7 +981,7 @@ class AssetGuard extends EventEmitter {
     /**
      * Used to parse a checksums file. This is specifically designed for
      * the checksums.sha1 files found inside the forge scala dependencies.
-     * 
+     *
      * @param {string} content The string content of the checksums file.
      * @returns {Object} An object with keys being the file names, and values being the hashes.
      */
@@ -997,7 +1000,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Validate that a file exists and matches a given hash value.
-     * 
+     *
      * @param {string} filePath The path of the file to validate.
      * @param {string} algo The hash algorithm to check against.
      * @param {string} hash The existing hash to check against.
@@ -1018,7 +1021,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Validates a file in the style used by forge's version index.
-     * 
+     *
      * @param {string} filePath The path of the file to validate.
      * @param {Array.<string>} checksums The checksums listed in the forge version index.
      * @returns {boolean} True if the file exists and the hashes match, otherwise false.
@@ -1043,7 +1046,7 @@ class AssetGuard extends EventEmitter {
      * Validates a forge jar file dependency who declares a checksums.sha1 file.
      * This can be an expensive task as it usually requires that we calculate thousands
      * of hashes.
-     * 
+     *
      * @param {Buffer} buf The buffer of the jar file.
      * @param {Array.<string>} checksums The checksums listed in the forge version index.
      * @returns {boolean} True if all hashes declared in the checksums.sha1 file match the actual hashes.
@@ -1064,7 +1067,10 @@ class AssetGuard extends EventEmitter {
             if (entry.entryName === 'checksums.sha1') {
                 expected = AssetGuard._parseChecksumsFile(zip.readAsText(entry))
             }
-            hashes[entry.entryName] = AssetGuard._calculateHash(entry.getData(), 'sha1')
+            hashes[entry.entryName] = AssetGuard._calculateHash(
+                entry.getData(),
+                'sha1'
+            )
         }
 
         if (!checksums.includes(hashes['checksums.sha1'])) {
@@ -1088,27 +1094,49 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Extracts and unpacks a file from .pack.xz format.
-     * 
+     *
      * @param {Array.<string>} filePaths The paths of the files to be extracted and unpacked.
      * @returns {Promise.<void>} An empty promise to indicate the extraction has completed.
      */
     static _extractPackXZ(filePaths, javaExecutable) {
         console.log('[PackXZExtract] Starting')
         return new Promise((resolve, reject) => {
-
             let libPath
             if (isDev) {
-                libPath = path.join(process.cwd(), 'libraries', 'java', 'PackXZExtract.jar')
+                libPath = path.join(
+                    process.cwd(),
+                    'libraries',
+                    'java',
+                    'PackXZExtract.jar'
+                )
             } else {
                 if (process.platform === 'darwin') {
-                    libPath = path.join(process.cwd(), 'Contents', 'Resources', 'libraries', 'java', 'PackXZExtract.jar')
+                    libPath = path.join(
+                        process.cwd(),
+                        'Contents',
+                        'Resources',
+                        'libraries',
+                        'java',
+                        'PackXZExtract.jar'
+                    )
                 } else {
-                    libPath = path.join(process.cwd(), 'resources', 'libraries', 'java', 'PackXZExtract.jar')
+                    libPath = path.join(
+                        process.cwd(),
+                        'resources',
+                        'libraries',
+                        'java',
+                        'PackXZExtract.jar'
+                    )
                 }
             }
 
             const filePath = filePaths.join(',')
-            const child = child_process.spawn(javaExecutable, ['-jar', libPath, '-packxz', filePath])
+            const child = child_process.spawn(javaExecutable, [
+                '-jar',
+                libPath,
+                '-packxz',
+                filePath
+            ])
             child.stdout.on('data', (data) => {
                 console.log('[PackXZExtract]', data.toString('utf8'))
             })
@@ -1127,7 +1155,7 @@ class AssetGuard extends EventEmitter {
      * instance for forge and saves its version.json file into that instance. If that
      * instance already exists, the contents of the version.json file are read and returned
      * in a promise.
-     * 
+     *
      * @param {Asset} asset The Asset object representing Forge.
      * @param {string} commonPath The common path for shared game files.
      * @returns {Promise.<Object>} A promise which resolves to the contents of forge's version.json.
@@ -1140,22 +1168,43 @@ class AssetGuard extends EventEmitter {
 
                 for (let i = 0; i < zipEntries.length; i++) {
                     if (zipEntries[i].entryName === 'version.json') {
-                        const forgeVersion = JSON.parse(zip.readAsText(zipEntries[i]))
-                        const versionPath = path.join(commonPath, 'versions', forgeVersion.id)
-                        const versionFile = path.join(versionPath, forgeVersion.id + '.json')
+                        const forgeVersion = JSON.parse(
+                            zip.readAsText(zipEntries[i])
+                        )
+                        const versionPath = path.join(
+                            commonPath,
+                            'versions',
+                            forgeVersion.id
+                        )
+                        const versionFile = path.join(
+                            versionPath,
+                            forgeVersion.id + '.json'
+                        )
                         if (!fs.existsSync(versionFile)) {
                             fs.ensureDirSync(versionPath)
-                            fs.writeFileSync(path.join(versionPath, forgeVersion.id + '.json'), zipEntries[i].getData())
+                            fs.writeFileSync(
+                                path.join(
+                                    versionPath,
+                                    forgeVersion.id + '.json'
+                                ),
+                                zipEntries[i].getData()
+                            )
                             resolve(forgeVersion)
                         } else {
                             //Read the saved file to allow for user modifications.
-                            resolve(JSON.parse(fs.readFileSync(versionFile, 'utf-8')))
+                            resolve(
+                                JSON.parse(
+                                    fs.readFileSync(versionFile, 'utf-8')
+                                )
+                            )
                         }
                         return
                     }
                 }
                 //We didn't find forge's version.json.
-                reject('Unable to finalize Forge processing, version.json not found! Has forge changed their format?')
+                reject(
+                    'Unable to finalize Forge processing, version.json not found! Has forge changed their format?'
+                )
             })
         })
     }
@@ -1169,7 +1218,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Loads the version data for a given minecraft version.
-     * 
+     *
      * @param {string} version The game version for which to load the index data.
      * @param {boolean} force Optional. If true, the version index will be downloaded even if it exists locally. Defaults to false.
      * @returns {Promise.<Object>} Promise which resolves to the version data object.
@@ -1184,7 +1233,9 @@ class AssetGuard extends EventEmitter {
                 //This download will never be tracked as it's essential and trivial.
                 console.log('Preparing download of ' + version + ' assets.')
                 fs.ensureDirSync(versionPath)
-                const stream = request(url).pipe(fs.createWriteStream(versionFile))
+                const stream = request(url).pipe(
+                    fs.createWriteStream(versionFile)
+                )
                 stream.on('finish', () => {
                     resolve(JSON.parse(fs.readFileSync(versionFile)))
                 })
@@ -1197,31 +1248,33 @@ class AssetGuard extends EventEmitter {
     /**
      * Parses Mojang's version manifest and retrieves the url of the version
      * data index.
-     * 
+     *
      * @param {string} version The version to lookup.
      * @returns {Promise.<string>} Promise which resolves to the url of the version data index.
      * If the version could not be found, resolves to null.
      */
     _getVersionDataUrl(version) {
         return new Promise((resolve, reject) => {
-            request('https://launchermeta.mojang.com/mc/game/version_manifest.json', (error, resp, body) => {
-                if (error) {
-                    reject(error)
-                } else {
-                    const manifest = JSON.parse(body)
+            request(
+                'https://launchermeta.mojang.com/mc/game/version_manifest.json',
+                (error, resp, body) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        const manifest = JSON.parse(body)
 
-                    for (let v of manifest.versions) {
-                        if (v.id === version) {
-                            resolve(v.url)
+                        for (let v of manifest.versions) {
+                            if (v.id === version) {
+                                resolve(v.url)
+                            }
                         }
-                    }
 
-                    resolve(null)
+                        resolve(null)
+                    }
                 }
-            })
+            )
         })
     }
-
 
     // Asset (Category=''') Validation Functions
     // #region
@@ -1231,7 +1284,7 @@ class AssetGuard extends EventEmitter {
      * It will parse the asset index specified in the version data, analyzing each
      * asset entry. In this analysis it will check to see if the local file exists and is valid.
      * If not, it will be added to the download queue for the 'assets' identifier.
-     * 
+     *
      * @param {Object} versionData The version data for the assets.
      * @param {boolean} force Optional. If true, the asset index will be downloaded even if it exists locally. Defaults to false.
      * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
@@ -1266,12 +1319,16 @@ class AssetGuard extends EventEmitter {
             if (!fs.existsSync(assetIndexLoc) || force) {
                 console.log('Downloading ' + versionData.id + ' asset index.')
                 fs.ensureDirSync(indexPath)
-                const stream = request(assetIndex.url).pipe(fs.createWriteStream(assetIndexLoc))
+                const stream = request(assetIndex.url).pipe(
+                    fs.createWriteStream(assetIndexLoc)
+                )
                 stream.on('finish', () => {
                     data = JSON.parse(fs.readFileSync(assetIndexLoc, 'utf-8'))
-                    self._assetChainValidateAssets(versionData, data).then(() => {
-                        resolve()
-                    })
+                    self._assetChainValidateAssets(versionData, data).then(
+                        () => {
+                            resolve()
+                        }
+                    )
                 })
             } else {
                 data = JSON.parse(fs.readFileSync(assetIndexLoc, 'utf-8'))
@@ -1292,7 +1349,6 @@ class AssetGuard extends EventEmitter {
     _assetChainValidateAssets(versionData, indexData) {
         const self = this
         return new Promise((resolve, reject) => {
-
             //Asset constants
             const resourceURL = 'http://resources.download.minecraft.net/'
             const localPath = path.join(self.commonPath, 'assets')
@@ -1303,22 +1359,33 @@ class AssetGuard extends EventEmitter {
             let acc = 0
             const total = Object.keys(indexData.objects).length
             //const objKeys = Object.keys(data.objects)
-            async.forEachOfLimit(indexData.objects, 10, (value, key, cb) => {
-                acc++
-                self.emit('progress', 'assets', acc, total)
-                const hash = value.hash
-                const assetName = path.join(hash.substring(0, 2), hash)
-                const urlName = hash.substring(0, 2) + '/' + hash
-                const ast = new Asset(key, hash, value.size, resourceURL + urlName, path.join(objectPath, assetName))
-                if (!AssetGuard._validateLocal(ast.to, 'sha1', ast.hash)) {
-                    dlSize += (ast.size * 1)
-                    assetDlQueue.push(ast)
+            async.forEachOfLimit(
+                indexData.objects,
+                10,
+                (value, key, cb) => {
+                    acc++
+                    self.emit('progress', 'assets', acc, total)
+                    const hash = value.hash
+                    const assetName = path.join(hash.substring(0, 2), hash)
+                    const urlName = hash.substring(0, 2) + '/' + hash
+                    const ast = new Asset(
+                        key,
+                        hash,
+                        value.size,
+                        resourceURL + urlName,
+                        path.join(objectPath, assetName)
+                    )
+                    if (!AssetGuard._validateLocal(ast.to, 'sha1', ast.hash)) {
+                        dlSize += ast.size * 1
+                        assetDlQueue.push(ast)
+                    }
+                    cb()
+                },
+                (err) => {
+                    self.assets = new DLTracker(assetDlQueue, dlSize)
+                    resolve()
                 }
-                cb()
-            }, (err) => {
-                self.assets = new DLTracker(assetDlQueue, dlSize)
-                resolve()
-            })
+            )
         })
     }
 
@@ -1332,14 +1399,13 @@ class AssetGuard extends EventEmitter {
      * It will parse the version data, analyzing each library entry. In this analysis, it will
      * check to see if the local file exists and is valid. If not, it will be added to the download
      * queue for the 'libraries' identifier.
-     * 
+     *
      * @param {Object} versionData The version data for the assets.
      * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
      */
     validateLibraries(versionData) {
         const self = this
         return new Promise((resolve, reject) => {
-
             const libArr = versionData.libraries
             const libPath = path.join(self.commonPath, 'libraries')
 
@@ -1347,20 +1413,47 @@ class AssetGuard extends EventEmitter {
             let dlSize = 0
 
             //Check validity of each library. If the hashs don't match, download the library.
-            async.eachLimit(libArr, 5, (lib, cb) => {
-                if (Library.validateRules(lib.rules, lib.natives)) {
-                    let artifact = (lib.natives == null) ? lib.downloads.artifact : lib.downloads.classifiers[lib.natives[Library.mojangFriendlyOS()].replace('${arch}', process.arch.replace('x', ''))]
-                    const libItm = new Library(lib.name, artifact.sha1, artifact.size, artifact.url, path.join(libPath, artifact.path))
-                    if (!AssetGuard._validateLocal(libItm.to, 'sha1', libItm.hash)) {
-                        dlSize += (libItm.size * 1)
-                        libDlQueue.push(libItm)
+            async.eachLimit(
+                libArr,
+                5,
+                (lib, cb) => {
+                    if (Library.validateRules(lib.rules, lib.natives)) {
+                        let artifact =
+                            lib.natives == null
+                                ? lib.downloads.artifact
+                                : lib.downloads.classifiers[
+                                      lib.natives[
+                                          Library.mojangFriendlyOS()
+                                      ].replace(
+                                          '${arch}',
+                                          process.arch.replace('x', '')
+                                      )
+                                  ]
+                        const libItm = new Library(
+                            lib.name,
+                            artifact.sha1,
+                            artifact.size,
+                            artifact.url,
+                            path.join(libPath, artifact.path)
+                        )
+                        if (
+                            !AssetGuard._validateLocal(
+                                libItm.to,
+                                'sha1',
+                                libItm.hash
+                            )
+                        ) {
+                            dlSize += libItm.size * 1
+                            libDlQueue.push(libItm)
+                        }
                     }
+                    cb()
+                },
+                (err) => {
+                    self.libraries = new DLTracker(libDlQueue, dlSize)
+                    resolve()
                 }
-                cb()
-            }, (err) => {
-                self.libraries = new DLTracker(libDlQueue, dlSize)
-                resolve()
-            })
+            )
         })
     }
 
@@ -1372,7 +1465,7 @@ class AssetGuard extends EventEmitter {
     /**
      * Public miscellaneous mojang file validation function. These files will be enqueued under
      * the 'files' identifier.
-     * 
+     *
      * @param {Object} versionData The version data for the assets.
      * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
      */
@@ -1387,7 +1480,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Validate client file - artifact renamed from client.jar to '{version}'.jar.
-     * 
+     *
      * @param {Object} versionData The version data for the assets.
      * @param {boolean} force Optional. If true, the asset index will be downloaded even if it exists locally. Defaults to false.
      * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
@@ -1400,9 +1493,18 @@ class AssetGuard extends EventEmitter {
             const targetPath = path.join(self.commonPath, 'versions', version)
             const targetFile = version + '.jar'
 
-            let client = new Asset(version + ' client', clientData.sha1, clientData.size, clientData.url, path.join(targetPath, targetFile))
+            let client = new Asset(
+                version + ' client',
+                clientData.sha1,
+                clientData.size,
+                clientData.url,
+                path.join(targetPath, targetFile)
+            )
 
-            if (!AssetGuard._validateLocal(client.to, 'sha1', client.hash) || force) {
+            if (
+                !AssetGuard._validateLocal(client.to, 'sha1', client.hash) ||
+                force
+            ) {
                 self.files.dlqueue.push(client)
                 self.files.dlsize += client.size * 1
                 resolve()
@@ -1414,7 +1516,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Validate log config.
-     * 
+     *
      * @param {Object} versionData The version data for the assets.
      * @param {boolean} force Optional. If true, the asset index will be downloaded even if it exists locally. Defaults to false.
      * @returns {Promise.<void>} An empty promise to indicate the async processing has completed.
@@ -1424,11 +1526,23 @@ class AssetGuard extends EventEmitter {
         return new Promise((resolve, reject) => {
             const client = versionData.logging.client
             const file = client.file
-            const targetPath = path.join(self.commonPath, 'assets', 'log_configs')
+            const targetPath = path.join(
+                self.commonPath,
+                'assets',
+                'log_configs'
+            )
 
-            let logConfig = new Asset(file.id, file.sha1, file.size, file.url, path.join(targetPath, file.id))
+            let logConfig = new Asset(
+                file.id,
+                file.sha1,
+                file.size,
+                file.url,
+                path.join(targetPath, file.id)
+            )
 
-            if (!AssetGuard._validateLocal(logConfig.to, 'sha1', logConfig.hash)) {
+            if (
+                !AssetGuard._validateLocal(logConfig.to, 'sha1', logConfig.hash)
+            ) {
                 self.files.dlqueue.push(logConfig)
                 self.files.dlsize += logConfig.size * 1
                 resolve()
@@ -1445,14 +1559,18 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Validate the distribution.
-     * 
+     *
      * @param {Server} server The Server to validate.
      * @returns {Promise.<Object>} A promise which resolves to the server distribution object.
      */
     validateDistribution(server) {
         const self = this
         return new Promise((resolve, reject) => {
-            self.forge = self._parseDistroModules(server.getModules(), server.getMinecraftVersion(), server.getID())
+            self.forge = self._parseDistroModules(
+                server.getModules(),
+                server.getMinecraftVersion(),
+                server.getID()
+            )
             resolve(server)
         })
     }
@@ -1463,16 +1581,34 @@ class AssetGuard extends EventEmitter {
         for (let ob of modules) {
             let obArtifact = ob.getArtifact()
             let obPath = obArtifact.getPath()
-            let artifact = new DistroModule(ob.getIdentifier(), obArtifact.getHash(), obArtifact.getSize(), obArtifact.getURL(), obPath, ob.getType())
-            const validationPath = obPath.toLowerCase().endsWith('.pack.xz') ? obPath.substring(0, obPath.toLowerCase().lastIndexOf('.pack.xz')) : obPath
-            if (!AssetGuard._validateLocal(validationPath, 'MD5', artifact.hash)) {
+            let artifact = new DistroModule(
+                ob.getIdentifier(),
+                obArtifact.getHash(),
+                obArtifact.getSize(),
+                obArtifact.getURL(),
+                obPath,
+                ob.getType()
+            )
+            const validationPath = obPath.toLowerCase().endsWith('.pack.xz')
+                ? obPath.substring(
+                      0,
+                      obPath.toLowerCase().lastIndexOf('.pack.xz')
+                  )
+                : obPath
+            if (
+                !AssetGuard._validateLocal(validationPath, 'MD5', artifact.hash)
+            ) {
                 asize += artifact.size * 1
                 alist.push(artifact)
                 if (validationPath !== obPath) this.extractQueue.push(obPath)
             }
             //Recursively process the submodules then combine the results.
             if (ob.getSubModules() != null) {
-                let dltrack = this._parseDistroModules(ob.getSubModules(), version, servid)
+                let dltrack = this._parseDistroModules(
+                    ob.getSubModules(),
+                    version,
+                    servid
+                )
                 asize += dltrack.dlsize * 1
                 alist = alist.concat(dltrack.dlqueue)
             }
@@ -1483,7 +1619,7 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Loads Forge's version.json data into memory for the specified server id.
-     * 
+     *
      * @param {string} server The Server to load Forge data for.
      * @returns {Promise.<Object>} A promise which resolves to Forge's version.json data.
      */
@@ -1493,12 +1629,30 @@ class AssetGuard extends EventEmitter {
             const modules = server.getModules()
             for (let ob of modules) {
                 const type = ob.getType()
-                if (type === DistroManager.Types.ForgeHosted || type === DistroManager.Types.Forge) {
-                    if (Util.isForgeGradle3(server.getMinecraftVersion(), ob.getVersion())) {
+                if (
+                    type === DistroManager.Types.ForgeHosted ||
+                    type === DistroManager.Types.Forge
+                ) {
+                    if (
+                        Util.isForgeGradle3(
+                            server.getMinecraftVersion(),
+                            ob.getVersion()
+                        )
+                    ) {
                         // Read Manifest
                         for (let sub of ob.getSubModules()) {
-                            if (sub.getType() === DistroManager.Types.VersionManifest) {
-                                resolve(JSON.parse(fs.readFileSync(sub.getArtifact().getPath(), 'utf-8')))
+                            if (
+                                sub.getType() ===
+                                DistroManager.Types.VersionManifest
+                            ) {
+                                resolve(
+                                    JSON.parse(
+                                        fs.readFileSync(
+                                            sub.getArtifact().getPath(),
+                                            'utf-8'
+                                        )
+                                    )
+                                )
                                 return
                             }
                         }
@@ -1507,9 +1661,19 @@ class AssetGuard extends EventEmitter {
                     } else {
                         let obArtifact = ob.getArtifact()
                         let obPath = obArtifact.getPath()
-                        let asset = new DistroModule(ob.getIdentifier(), obArtifact.getHash(), obArtifact.getSize(), obArtifact.getURL(), obPath, type)
+                        let asset = new DistroModule(
+                            ob.getIdentifier(),
+                            obArtifact.getHash(),
+                            obArtifact.getSize(),
+                            obArtifact.getURL(),
+                            obPath,
+                            type
+                        )
                         try {
-                            let forgeData = await AssetGuard._finalizeForgeAsset(asset, self.commonPath)
+                            let forgeData = await AssetGuard._finalizeForgeAsset(
+                                asset,
+                                self.commonPath
+                            )
                             resolve(forgeData)
                         } catch (err) {
                             reject(err)
@@ -1524,10 +1688,10 @@ class AssetGuard extends EventEmitter {
 
     _parseForgeLibraries() {
         /* TODO
-        * Forge asset validations are already implemented. When there's nothing much
-        * to work on, implement forge downloads using forge's version.json. This is to
-        * have the code on standby if we ever need it (since it's half implemented already).
-        */
+         * Forge asset validations are already implemented. When there's nothing much
+         * to work on, implement forge downloads using forge's version.json. This is to
+         * have the code on standby if we ever need it (since it's half implemented already).
+         */
     }
 
     // #endregion
@@ -1537,48 +1701,64 @@ class AssetGuard extends EventEmitter {
 
     _enqueueOpenJDK(dataDir) {
         return new Promise((resolve, reject) => {
-            JavaGuard._latestOpenJDK('8').then(verData => {
+            JavaGuard._latestOpenJDK('8').then((verData) => {
                 if (verData != null) {
-
                     dataDir = path.join(dataDir, 'runtime', 'x64')
                     const fDir = path.join(dataDir, verData.name)
-                    const jre = new Asset(verData.name, null, verData.size, verData.uri, fDir)
+                    const jre = new Asset(
+                        verData.name,
+                        null,
+                        verData.size,
+                        verData.uri,
+                        fDir
+                    )
                     this.java = new DLTracker([jre], jre.size, (a, self) => {
                         if (verData.name.endsWith('zip')) {
-
                             const zip = new AdmZip(a.to)
-                            const pos = path.join(dataDir, zip.getEntries()[0].entryName)
+                            const pos = path.join(
+                                dataDir,
+                                zip.getEntries()[0].entryName
+                            )
                             zip.extractAllToAsync(dataDir, true, (err) => {
                                 if (err) {
                                     console.log(err)
-                                    self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
+                                    self.emit(
+                                        'complete',
+                                        'java',
+                                        JavaGuard.javaExecFromRoot(pos)
+                                    )
                                 } else {
-                                    fs.unlink(a.to, err => {
+                                    fs.unlink(a.to, (err) => {
                                         if (err) {
                                             console.log(err)
                                         }
-                                        self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
+                                        self.emit(
+                                            'complete',
+                                            'java',
+                                            JavaGuard.javaExecFromRoot(pos)
+                                        )
                                     })
                                 }
                             })
-
                         } else {
                             // Tar.gz
                             let h = null
                             fs.createReadStream(a.to)
-                                .on('error', err => console.log(err))
+                                .on('error', (err) => console.log(err))
                                 .pipe(zlib.createGunzip())
-                                .on('error', err => console.log(err))
-                                .pipe(tar.extract(dataDir, {
-                                    map: (header) => {
-                                        if (h == null) {
-                                            h = header.name
+                                .on('error', (err) => console.log(err))
+                                .pipe(
+                                    tar.extract(dataDir, {
+                                        map: (header) => {
+                                            if (h == null) {
+                                                h = header.name
+                                            }
                                         }
-                                    }
-                                }))
-                                .on('error', err => console.log(err))
+                                    })
+                                )
+                                .on('error', (err) => console.log(err))
                                 .on('finish', () => {
-                                    fs.unlink(a.to, err => {
+                                    fs.unlink(a.to, (err) => {
                                         if (err) {
                                             console.log(err)
                                         }
@@ -1586,19 +1766,21 @@ class AssetGuard extends EventEmitter {
                                             h = h.substring(0, h.indexOf('/'))
                                         }
                                         const pos = path.join(dataDir, h)
-                                        self.emit('complete', 'java', JavaGuard.javaExecFromRoot(pos))
+                                        self.emit(
+                                            'complete',
+                                            'java',
+                                            JavaGuard.javaExecFromRoot(pos)
+                                        )
                                     })
                                 })
                         }
                     })
                     resolve(true)
-
                 } else {
                     resolve(false)
                 }
             })
         })
-
     }
 
     // _enqueueOracleJRE(dataDir){
@@ -1700,7 +1882,6 @@ class AssetGuard extends EventEmitter {
     //     })
     // }
 
-
     // #endregion
 
     // #endregion
@@ -1710,13 +1891,12 @@ class AssetGuard extends EventEmitter {
 
     /**
      * Initiate an async download process for an AssetGuard DLTracker.
-     * 
+     *
      * @param {string} identifier The identifier of the AssetGuard DLTracker.
      * @param {number} limit Optional. The number of async processes to run in parallel.
      * @returns {boolean} True if the process began, otherwise false.
      */
     startAsyncProcess(identifier, limit = 5) {
-
         const self = this
         const dlTracker = this[identifier]
         const dlQueue = dlTracker.dlqueue
@@ -1724,99 +1904,133 @@ class AssetGuard extends EventEmitter {
         if (dlQueue.length > 0) {
             console.log('DLQueue', dlQueue)
 
-            async.eachLimit(dlQueue, limit, (asset, cb) => {
+            async.eachLimit(
+                dlQueue,
+                limit,
+                (asset, cb) => {
+                    fs.ensureDirSync(path.join(asset.to, '..'))
 
-                fs.ensureDirSync(path.join(asset.to, '..'))
+                    let req = request(asset.from)
+                    req.pause()
 
-                let req = request(asset.from)
-                req.pause()
+                    req.on('response', (resp) => {
+                        if (resp.statusCode === 200) {
+                            let doHashCheck = false
+                            const contentLength = parseInt(
+                                resp.headers['content-length']
+                            )
 
-                req.on('response', (resp) => {
+                            if (contentLength !== asset.size) {
+                                console.log(
+                                    `WARN: Got ${contentLength} bytes for ${asset.id}: Expected ${asset.size}`
+                                )
+                                doHashCheck = true
 
-                    if (resp.statusCode === 200) {
-
-                        let doHashCheck = false
-                        const contentLength = parseInt(resp.headers['content-length'])
-
-                        if (contentLength !== asset.size) {
-                            console.log(`WARN: Got ${contentLength} bytes for ${asset.id}: Expected ${asset.size}`)
-                            doHashCheck = true
-
-                            // Adjust download
-                            this.totaldlsize -= asset.size
-                            this.totaldlsize += contentLength
-                        }
-
-                        let writeStream = fs.createWriteStream(asset.to)
-                        writeStream.on('close', () => {
-                            if (dlTracker.callback != null) {
-                                dlTracker.callback.apply(dlTracker, [asset, self])
+                                // Adjust download
+                                this.totaldlsize -= asset.size
+                                this.totaldlsize += contentLength
                             }
 
-                            if (doHashCheck) {
-                                const v = AssetGuard._validateLocal(asset.to, asset.type != null ? 'md5' : 'sha1', asset.hash)
-                                if (v) {
-                                    console.log(`Hashes match for ${asset.id}, byte mismatch is an issue in the distro index.`)
-                                } else {
-                                    console.error(`Hashes do not match, ${asset.id} may be corrupted.`)
+                            let writeStream = fs.createWriteStream(asset.to)
+                            writeStream.on('close', () => {
+                                if (dlTracker.callback != null) {
+                                    dlTracker.callback.apply(dlTracker, [
+                                        asset,
+                                        self
+                                    ])
                                 }
-                            }
 
+                                if (doHashCheck) {
+                                    const v = AssetGuard._validateLocal(
+                                        asset.to,
+                                        asset.type != null ? 'md5' : 'sha1',
+                                        asset.hash
+                                    )
+                                    if (v) {
+                                        console.log(
+                                            `Hashes match for ${asset.id}, byte mismatch is an issue in the distro index.`
+                                        )
+                                    } else {
+                                        console.error(
+                                            `Hashes do not match, ${asset.id} may be corrupted.`
+                                        )
+                                    }
+                                }
+
+                                cb()
+                            })
+                            req.pipe(writeStream)
+                            req.resume()
+                        } else {
+                            req.abort()
+                            console.log(
+                                `Failed to download ${asset.id}(${
+                                    typeof asset.from === 'object'
+                                        ? asset.from.url
+                                        : asset.from
+                                }). Response code ${resp.statusCode}`
+                            )
+                            self.progress += asset.size * 1
+                            self.emit(
+                                'progress',
+                                'download',
+                                self.progress,
+                                self.totaldlsize
+                            )
                             cb()
-                        })
-                        req.pipe(writeStream)
-                        req.resume()
+                        }
+                    })
 
+                    req.on('error', (err) => {
+                        self.emit('error', 'download', err)
+                    })
+
+                    req.on('data', (chunk) => {
+                        self.progress += chunk.length
+                        self.emit(
+                            'progress',
+                            'download',
+                            self.progress,
+                            self.totaldlsize
+                        )
+                    })
+                },
+                (err) => {
+                    if (err) {
+                        console.log(
+                            'An item in ' + identifier + ' failed to process'
+                        )
                     } else {
-
-                        req.abort()
-                        console.log(`Failed to download ${asset.id}(${typeof asset.from === 'object' ? asset.from.url : asset.from}). Response code ${resp.statusCode}`)
-                        self.progress += asset.size * 1
-                        self.emit('progress', 'download', self.progress, self.totaldlsize)
-                        cb()
-
+                        console.log(
+                            'All ' +
+                                identifier +
+                                ' have been processed successfully'
+                        )
                     }
 
-                })
+                    //self.totaldlsize -= dlTracker.dlsize
+                    //self.progress -= dlTracker.dlsize
+                    self[identifier] = new DLTracker([], 0)
 
-                req.on('error', (err) => {
-                    self.emit('error', 'download', err)
-                })
-
-                req.on('data', (chunk) => {
-                    self.progress += chunk.length
-                    self.emit('progress', 'download', self.progress, self.totaldlsize)
-                })
-
-            }, (err) => {
-
-                if (err) {
-                    console.log('An item in ' + identifier + ' failed to process')
-                } else {
-                    console.log('All ' + identifier + ' have been processed successfully')
-                }
-
-                //self.totaldlsize -= dlTracker.dlsize
-                //self.progress -= dlTracker.dlsize
-                self[identifier] = new DLTracker([], 0)
-
-                if (self.progress >= self.totaldlsize) {
-                    if (self.extractQueue.length > 0) {
-                        self.emit('progress', 'extract', 1, 1)
-                        //self.emit('extracting')
-                        AssetGuard._extractPackXZ(self.extractQueue, self.javaexec).then(() => {
-                            self.extractQueue = []
+                    if (self.progress >= self.totaldlsize) {
+                        if (self.extractQueue.length > 0) {
+                            self.emit('progress', 'extract', 1, 1)
+                            //self.emit('extracting')
+                            AssetGuard._extractPackXZ(
+                                self.extractQueue,
+                                self.javaexec
+                            ).then(() => {
+                                self.extractQueue = []
+                                self.emit('complete', 'download')
+                            })
+                        } else {
                             self.emit('complete', 'download')
-                        })
-                    } else {
-                        self.emit('complete', 'download')
+                        }
                     }
                 }
-
-            })
+            )
 
             return true
-
         } else {
             return false
         }
@@ -1829,10 +2043,17 @@ class AssetGuard extends EventEmitter {
      * the files, it is likely nothing will be enqueued in the object and processing will complete
      * immediately. Once all downloads are complete, this function will fire the 'complete' event on the
      * global object instance.
-     * 
+     *
      * @param {Array.<{id: string, limit: number}>} identifiers Optional. The identifiers to process and corresponding parallel async task limit.
      */
-    processDlQueues(identifiers = [{ id: 'assets', limit: 20 }, { id: 'libraries', limit: 5 }, { id: 'files', limit: 5 }, { id: 'forge', limit: 5 }]) {
+    processDlQueues(
+        identifiers = [
+            { id: 'assets', limit: 20 },
+            { id: 'libraries', limit: 5 },
+            { id: 'files', limit: 5 },
+            { id: 'forge', limit: 5 }
+        ]
+    ) {
         return new Promise((resolve, reject) => {
             let shouldFire = true
 
@@ -1860,7 +2081,6 @@ class AssetGuard extends EventEmitter {
     }
 
     async validateEverything(serverid, dev = false) {
-
         try {
             if (!ConfigManager.isLoaded()) {
                 ConfigManager.load()
@@ -1874,7 +2094,9 @@ class AssetGuard extends EventEmitter {
 
             await this.validateDistribution(server)
             this.emit('validate', 'distribution')
-            const versionData = await this.loadVersionData(server.getMinecraftVersion())
+            const versionData = await this.loadVersionData(
+                server.getMinecraftVersion()
+            )
             this.emit('validate', 'version')
             await this.validateAssets(versionData)
             this.emit('validate', 'assets')
@@ -1890,7 +2112,6 @@ class AssetGuard extends EventEmitter {
                 versionData,
                 forgeData
             }
-
         } catch (err) {
             return {
                 versionData: null,
@@ -1898,12 +2119,9 @@ class AssetGuard extends EventEmitter {
                 error: err
             }
         }
-
-
     }
 
     // #endregion
-
 }
 
 module.exports = {

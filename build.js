@@ -15,54 +15,59 @@ function getCurrentPlatform() {
     }
 }
 
-builder.build({
-    targets: (process.argv[2] != null && Platform[process.argv[2]] != null ? Platform[process.argv[2]] : getCurrentPlatform()).createTarget(),
-    config: {
-        appId: 'newzenlauncher',
-        productName: 'Newzen Launcher',
-        artifactName: '${productName}-setup-${version}.${ext}',
-        copyright: 'Copyright © 2020 Newzen',
-        directories: {
-            buildResources: 'build',
-            output: 'dist'
-        },
-        win: {
-            target: [
-                {
-                    target: 'nsis',
-                    arch: 'x64'
-                }
-            ]
-        },
-        nsis: {
-            oneClick: false,
-            perMachine: false,
-            allowElevation: true,
-            allowToChangeInstallationDirectory: true
-        },
-        mac: {
-            target: 'dmg',
-            category: 'public.app-category.games'
-        },
-        linux: {
-            target: 'AppImage',
-            maintainer: 'Titouan Petit (TIEB62)',
-            vendor: 'Newzen',
-            synopsis: 'Launcher de Newzen',
-            description: 'Le Launcher Officiel de Newzen (Serveur Minecraft)',
-            category: 'Game'
-        },
-        compression: 'maximum',
-        files: [
-            '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js}'
-        ],
-        extraResources: [
-            'libraries'
-        ],
-        asar: true
-    }
-}).then(() => {
-    console.log('Build complete!')
-}).catch(err => {
-    console.error('Error during build!', err)
-})
+builder
+    .build({
+        targets: (process.argv[2] != null && Platform[process.argv[2]] != null
+            ? Platform[process.argv[2]]
+            : getCurrentPlatform()
+        ).createTarget(),
+        config: {
+            appId: 'newzenlauncher',
+            productName: 'Newzen Launcher',
+            artifactName: '${productName}-setup-${version}.${ext}',
+            copyright: 'Copyright © 2020 Newzen',
+            directories: {
+                buildResources: 'build',
+                output: 'dist'
+            },
+            win: {
+                target: [
+                    {
+                        target: 'nsis',
+                        arch: 'x64'
+                    }
+                ]
+            },
+            nsis: {
+                oneClick: false,
+                perMachine: false,
+                allowElevation: true,
+                allowToChangeInstallationDirectory: true
+            },
+            mac: {
+                target: 'dmg',
+                category: 'public.app-category.games'
+            },
+            linux: {
+                target: 'AppImage',
+                maintainer: 'Titouan Petit (TIEB62)',
+                vendor: 'Newzen',
+                synopsis: 'Launcher de Newzen',
+                description:
+                    'Le Launcher Officiel de Newzen (Serveur Minecraft)',
+                category: 'Game'
+            },
+            compression: 'maximum',
+            files: [
+                '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js}'
+            ],
+            extraResources: ['libraries'],
+            asar: true
+        }
+    })
+    .then(() => {
+        console.log('Build complete!')
+    })
+    .catch((err) => {
+        console.error('Error during build!', err)
+    })

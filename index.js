@@ -10,7 +10,6 @@ const url = require('url')
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
-
     if (data) {
         autoUpdater.allowPrerelease = true
     } else {
@@ -20,7 +19,10 @@ function initAutoUpdater(event, data) {
 
     if (isDev) {
         autoUpdater.autoInstallOnAppQuit = false
-        autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
+        autoUpdater.updateConfigPath = path.join(
+            __dirname,
+            'dev-app-update.yml'
+        )
     }
     if (process.platform === 'darwin') {
         autoUpdater.autoDownload = false
@@ -32,7 +34,11 @@ function initAutoUpdater(event, data) {
         event.sender.send('autoUpdateNotification', 'update-downloaded', info)
     })
     autoUpdater.on('update-not-available', (info) => {
-        event.sender.send('autoUpdateNotification', 'update-not-available', info)
+        event.sender.send(
+            'autoUpdateNotification',
+            'update-not-available',
+            info
+        )
     })
     autoUpdater.on('checking-for-update', () => {
         event.sender.send('autoUpdateNotification', 'checking-for-update')
@@ -51,10 +57,9 @@ ipcMain.on('autoUpdateAction', (event, arg, data) => {
             event.sender.send('autoUpdateNotification', 'ready')
             break
         case 'checkForUpdate':
-            autoUpdater.checkForUpdates()
-                .catch(err => {
-                    event.sender.send('autoUpdateNotification', 'realerror', err)
-                })
+            autoUpdater.checkForUpdates().catch((err) => {
+                event.sender.send('autoUpdateNotification', 'realerror', err)
+            })
             break
         case 'allowPrereleaseChange':
             if (!data) {
@@ -93,14 +98,19 @@ app.allowRendererProcessReuse = true
 let win
 
 function createWindow() {
-
     win = new BrowserWindow({
         width: 980,
         height: 552,
         icon: getPlatformIcon('SealCircle'),
         frame: false,
         webPreferences: {
-            preload: path.join(__dirname, 'app', 'assets', 'js', 'preloader.js'),
+            preload: path.join(
+                __dirname,
+                'app',
+                'assets',
+                'js',
+                'preloader.js'
+            ),
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
@@ -109,13 +119,29 @@ function createWindow() {
         backgroundColor: '#2C2F33'
     })
 
-    ejse.data('bkid', Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)))
+    ejse.data(
+        'bkid',
+        Math.floor(
+            Math.random() *
+                fs.readdirSync(
+                    path.join(
+                        __dirname,
+                        'app',
+                        'assets',
+                        'images',
+                        'backgrounds'
+                    )
+                ).length
+        )
+    )
 
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'app', 'app.ejs'),
-        protocol: 'file:',
-        slashes: true
-    }))
+    win.loadURL(
+        url.format({
+            pathname: path.join(__dirname, 'app', 'app.ejs'),
+            protocol: 'file:',
+            slashes: true
+        })
+    )
 
     /*win.once('ready-to-show', () => {
         win.show()
@@ -131,56 +157,66 @@ function createWindow() {
 }
 
 function createMenu() {
-
     if (process.platform === 'darwin') {
-
         // Extend default included application menu to continue support for quit keyboard shortcut
         let applicationSubMenu = {
             label: 'Application',
-            submenu: [{
-                label: 'About Application',
-                selector: 'orderFrontStandardAboutPanel:'
-            }, {
-                type: 'separator'
-            }, {
-                label: 'Quit',
-                accelerator: 'Command+Q',
-                click: () => {
-                    app.quit()
+            submenu: [
+                {
+                    label: 'About Application',
+                    selector: 'orderFrontStandardAboutPanel:'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Quit',
+                    accelerator: 'Command+Q',
+                    click: () => {
+                        app.quit()
+                    }
                 }
-            }]
+            ]
         }
 
         // New edit menu adds support for text-editing keyboard shortcuts
         let editSubMenu = {
             label: 'Edit',
-            submenu: [{
-                label: 'Undo',
-                accelerator: 'CmdOrCtrl+Z',
-                selector: 'undo:'
-            }, {
-                label: 'Redo',
-                accelerator: 'Shift+CmdOrCtrl+Z',
-                selector: 'redo:'
-            }, {
-                type: 'separator'
-            }, {
-                label: 'Cut',
-                accelerator: 'CmdOrCtrl+X',
-                selector: 'cut:'
-            }, {
-                label: 'Copy',
-                accelerator: 'CmdOrCtrl+C',
-                selector: 'copy:'
-            }, {
-                label: 'Paste',
-                accelerator: 'CmdOrCtrl+V',
-                selector: 'paste:'
-            }, {
-                label: 'Select All',
-                accelerator: 'CmdOrCtrl+A',
-                selector: 'selectAll:'
-            }]
+            submenu: [
+                {
+                    label: 'Undo',
+                    accelerator: 'CmdOrCtrl+Z',
+                    selector: 'undo:'
+                },
+                {
+                    label: 'Redo',
+                    accelerator: 'Shift+CmdOrCtrl+Z',
+                    selector: 'redo:'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Cut',
+                    accelerator: 'CmdOrCtrl+X',
+                    selector: 'cut:'
+                },
+                {
+                    label: 'Copy',
+                    accelerator: 'CmdOrCtrl+C',
+                    selector: 'copy:'
+                },
+                {
+                    label: 'Paste',
+                    accelerator: 'CmdOrCtrl+V',
+                    selector: 'paste:'
+                },
+                {
+                    label: 'Select All',
+                    accelerator: 'CmdOrCtrl+A',
+                    selector: 'selectAll:'
+                }
+            ]
         }
 
         // Bundle submenus into a single template and build a menu object with it
@@ -189,9 +225,7 @@ function createMenu() {
 
         // Assign it to the application
         Menu.setApplicationMenu(menuObject)
-
     }
-
 }
 
 function getPlatformIcon(filename) {

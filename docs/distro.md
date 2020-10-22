@@ -29,9 +29,7 @@ The distribution index is written in JSON. The general format of the index is as
             },
             "mainServer": true,
             "autoconnect": true,
-            "modules": [
-                "Module Objects Here"
-            ]
+            "modules": ["Module Objects Here"]
         }
     ]
 }
@@ -40,6 +38,7 @@ The distribution index is written in JSON. The general format of the index is as
 ## Distro Index Object
 
 #### Example
+
 ```JSON
 {
     "version": "1.0.0",
@@ -63,10 +62,9 @@ Global settings for [Discord Rich Presence](https://discordapp.com/developers/do
 
 **Properties**
 
-* `discord.clientId: string` - Client ID for th Application registered with Discord.
-* `discord.smallImageText: string` - Tootltip for the `smallImageKey`.
-* `discord.smallImageKey: string` - Name of the uploaded image for the small profile artwork.
-
+-   `discord.clientId: string` - Client ID for th Application registered with Discord.
+-   `discord.smallImageText: string` - Tootltip for the `smallImageKey`.
+-   `discord.smallImageKey: string` - Name of the uploaded image for the small profile artwork.
 
 ### `DistroIndex.rss: string/url`
 
@@ -77,6 +75,7 @@ A URL to a RSS feed. Used for loading news.
 ## Server Object
 
 #### Example
+
 ```JSON
 {
     "id": "Example_Server",
@@ -131,9 +130,9 @@ Server specific settings used for [Discord Rich Presence](https://discordapp.com
 
 **Properties**
 
-* `discord.shortId: string` - Short ID for the server. Displayed on the second status line as `Server: shortId`
-* `discord.largeImageText: string` - Ttooltip for the `largeImageKey`.
-* `discord.largeImageKey: string` - Name of the uploaded image for the large profile artwork.
+-   `discord.shortId: string` - Short ID for the server. Displayed on the second status line as `Server: shortId`
+-   `discord.largeImageText: string` - Ttooltip for the `largeImageKey`.
+-   `discord.largeImageKey: string` - Name of the uploaded image for the large profile artwork.
 
 ### `Server.mainServer: boolean`
 
@@ -154,6 +153,7 @@ An array of module objects.
 A module is a generic representation of a file required to run the minecraft client.
 
 #### Example
+
 ```JSON
 {
     "id": "com.example:artifact:1.0.0@jar.pack.xz",
@@ -212,13 +212,13 @@ The type of the module.
 
 **OPTIONAL**
 
-Defines whether or not the module is required. If omitted, then the module will be required. 
+Defines whether or not the module is required. If omitted, then the module will be required.
 
 Only applicable for modules of type:
-* `ForgeMod`
-* `LiteMod`
-* `LiteLoader`
 
+-   `ForgeMod`
+-   `LiteMod`
+-   `LiteLoader`
 
 ### `Module.artifact: Artifact`
 
@@ -230,7 +230,6 @@ The download artifact for the module.
 
 An array of sub modules declared by this module. Typically, files which require other files are declared as submodules. A quick example would be a mod, and the configuration file for that mod. Submodules can also declare submodules of their own. The file is parsed recursively, so there is no limit.
 
-
 ## Artifact Object
 
 The format of the module's artifact depends on several things. The most important factor is where the file will be stored. If you are providing a simple file to be placed in the root directory of the client files, you may decided to format the module as the `examplefile` module declared above. This module provides a `path` option, allowing you to directly set where the file will be saved to. Only the `path` will affect the final downloaded file.
@@ -239,14 +238,14 @@ Other times, you may want to store the files maven-style, such as with libraries
 
 The resolved/provided paths are appended to a base path depending on the module's declared type.
 
-| Type | Path |
-| ---- | ---- |
-| `ForgeHosted` | ({`commonDirectory`}/libraries/{`path` OR resolved}) |
-| `LiteLoader` | ({`commonDirectory`}/libraries/{`path` OR resolved}) |
-| `Library` | ({`commonDirectory`}/libraries/{`path` OR resolved}) |
-| `ForgeMod` | ({`commonDirectory`}/modstore/{`path` OR resolved}) |
-| `LiteMod` | ({`commonDirectory`}/modstore/{`path` OR resolved}) |
-| `File` | ({`instanceDirectory`}/{`Server.id`}/{`path` OR resolved}) |
+| Type          | Path                                                       |
+| ------------- | ---------------------------------------------------------- |
+| `ForgeHosted` | ({`commonDirectory`}/libraries/{`path` OR resolved})       |
+| `LiteLoader`  | ({`commonDirectory`}/libraries/{`path` OR resolved})       |
+| `Library`     | ({`commonDirectory`}/libraries/{`path` OR resolved})       |
+| `ForgeMod`    | ({`commonDirectory`}/modstore/{`path` OR resolved})        |
+| `LiteMod`     | ({`commonDirectory`}/modstore/{`path` OR resolved})        |
+| `File`        | ({`instanceDirectory`}/{`Server.id`}/{`path` OR resolved}) |
 
 The `commonDirectory` and `instanceDirectory` values are stored in the launcher's config.json.
 
@@ -276,13 +275,13 @@ The artifact's download url.
 
 **OPTIONAL**
 
-If the module is required. Defaults to true if this property is omited. 
+If the module is required. Defaults to true if this property is omited.
 
 ### `Required.def: boolean`
 
 **OPTIONAL**
 
-If the module is enabled by default. Has no effect unless `Required.value` is false. Defaults to true if this property is omited. 
+If the module is enabled by default. Has no effect unless `Required.value` is false. Defaults to true if this property is omited.
 
 ---
 
@@ -330,6 +329,7 @@ There were plans to add a `Forge` type, in which the required libraries would be
 The module type `LiteLoader` represents liteloader. It is handled as a library and added to the classpath at runtime. Special launch conditions are executed when liteloader is present and enabled. This module can be optional and toggled similarly to `ForgeMod` and `Litemod` modules.
 
 Ex.
+
 ```json
 {
     "id": "com.mumfrey:liteloader:1.11.2",
@@ -344,9 +344,7 @@ Ex.
         "MD5": "3a98b5ed95810bf164e71c1a53be568d",
         "url": "http://mc.westeroscraft.com/WesterosCraftLauncher/files/1.11.2/liteloader-1.11.2.jar"
     },
-    "subModules": [
-        "All LiteMods go here"
-    ]
+    "subModules": ["All LiteMods go here"]
 }
 ```
 
@@ -378,6 +376,7 @@ Ex.
 The module type `ForgeMod` represents a mod loaded by the Forge Mod Loader (FML). These files are stored maven-style and passed to FML using forge's [Modlist format](https://github.com/MinecraftForge/FML/wiki/New-JSON-Modlist-format).
 
 Ex.
+
 ```json
 {
     "id": "com.westeroscraft:westerosblocks:3.0.0-beta-6-133",
@@ -398,6 +397,7 @@ Ex.
 The module type `LiteMod` represents a mod loaded by liteloader. These files are stored maven-style and passed to liteloader using forge's [Modlist format](https://github.com/MinecraftForge/FML/wiki/New-JSON-Modlist-format). Documentation for liteloader's implementation of this can be found on [this issue](http://develop.liteloader.com/liteloader/LiteLoader/issues/34).
 
 Ex.
+
 ```json
 {
     "id": "com.mumfrey:macrokeybindmod:0.14.4-1.11.2@litemod",
@@ -428,7 +428,7 @@ Ex.
     "id": "com.westeroscraft:westeroscraftrp:2017-08-16",
     "name": "WesterosCraft Resource Pack (2017-08-16)",
     "type": "file",
-     "artifact": {
+    "artifact": {
         "size": 45241339,
         "MD5": "ec2d9fdb14d5c2eafe5975a240202f1a",
         "path": "resourcepacks/WesterosCraft.zip",

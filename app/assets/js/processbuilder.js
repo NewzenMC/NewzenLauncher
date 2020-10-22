@@ -11,12 +11,23 @@ const ConfigManager = require('./configmanager')
 const DistroManager = require('./distromanager')
 const LoggerUtil = require('./loggerutil')
 
-const logger = LoggerUtil('%c[ProcessBuilder]', 'color: #003996; font-weight: bold')
+const logger = LoggerUtil(
+    '%c[ProcessBuilder]',
+    'color: #003996; font-weight: bold'
+)
 
 class ProcessBuilder {
-
-    constructor(distroServer, versionData, forgeData, authUser, launcherVersion) {
-        this.gameDir = path.join(ConfigManager.getInstanceDirectory(), distroServer.getID())
+    constructor(
+        distroServer,
+        versionData,
+        forgeData,
+        authUser,
+        launcherVersion
+    ) {
+        this.gameDir = path.join(
+            ConfigManager.getInstanceDirectory(),
+            distroServer.getID()
+        )
         this.commonDir = ConfigManager.getCommonDirectory()
         this.server = distroServer
         this.versionData = versionData
@@ -36,11 +47,18 @@ class ProcessBuilder {
      */
     build() {
         fs.ensureDirSync(this.gameDir)
-        const tempNativePath = path.join(os.tmpdir(), ConfigManager.getTempNativeFolder(), crypto.pseudoRandomBytes(16).toString('hex'))
+        const tempNativePath = path.join(
+            os.tmpdir(),
+            ConfigManager.getTempNativeFolder(),
+            crypto.pseudoRandomBytes(16).toString('hex')
+        )
         process.throwDeprecation = true
         this.setupLiteLoader()
         logger.log('Using liteloader:', this.usingLiteLoader)
-        const modObj = this.resolveModConfiguration(ConfigManager.getModConfiguration(this.server.getID()).mods, this.server.getModules())
+        const modObj = this.resolveModConfiguration(
+            ConfigManager.getModConfiguration(this.server.getID()).mods,
+            this.server.getModules()
+        )
 
         // Mod list below 1.13
         if (!Util.mcVersionAtLeast('1.13', this.server.getMinecraftVersion())) {
@@ -59,10 +77,14 @@ class ProcessBuilder {
 
         logger.log('Launch Arguments:', args)
 
-        const child = child_process.spawn(ConfigManager.getJavaExecutable(), args, {
-            cwd: this.gameDir,
-            detached: ConfigManager.getLaunchDetached()
-        })
+        const child = child_process.spawn(
+            ConfigManager.getJavaExecutable(),
+            args,
+            {
+                cwd: this.gameDir,
+                detached: ConfigManager.getLaunchDetached()
+            }
+        )
 
         if (ConfigManager.getLaunchDetached()) {
             child.unref()
@@ -71,8 +93,14 @@ class ProcessBuilder {
         child.stdout.setEncoding('utf8')
         child.stderr.setEncoding('utf8')
 
-        const loggerMCstdout = LoggerUtil('%c[Minecraft]', 'color: #36b030; font-weight: bold')
-        const loggerMCstderr = LoggerUtil('%c[Minecraft]', 'color: #b03030; font-weight: bold')
+        const loggerMCstdout = LoggerUtil(
+            '%c[Minecraft]',
+            'color: #36b030; font-weight: bold'
+        )
+        const loggerMCstderr = LoggerUtil(
+            '%c[Minecraft]',
+            'color: #b03030; font-weight: bold'
+        )
 
         child.stdout.on('data', (data) => {
             loggerMCstdout.log(data)
@@ -98,7 +126,7 @@ class ProcessBuilder {
      * Determine if an optional mod is enabled from its configuration value. If the
      * configuration value is null, the required object will be used to
      * determine if it is enabled.
-     * 
+     *
      * A mod is enabled if:
      *   * The configuration is not null and one of the following:
      *     * The configuration is a boolean and true.
@@ -106,13 +134,21 @@ class ProcessBuilder {
      *   * The configuration is null and one of the following:
      *     * The required object is null.
      *     * The required object's 'def' property is null or true.
-     * 
+     *
      * @param {Object | boolean} modCfg The mod configuration object.
      * @param {Object} required Optional. The required object from the mod's distro declaration.
      * @returns {boolean} True if the mod is enabled, false otherwise.
      */
     static isModEnabled(modCfg, required = null) {
-        return modCfg != null ? ((typeof modCfg === 'boolean' && modCfg) || (typeof modCfg === 'object' && (typeof modCfg.value !== 'undefined' ? modCfg.value : true))) : required != null ? required.isDefault() : true
+        return modCfg != null
+            ? (typeof modCfg === 'boolean' && modCfg) ||
+                  (typeof modCfg === 'object' &&
+                      (typeof modCfg.value !== 'undefined'
+                          ? modCfg.value
+                          : true))
+            : required != null
+            ? required.isDefault()
+            : true
     }
 
     /**
@@ -125,8 +161,15 @@ class ProcessBuilder {
         for (let ll of this.server.getModules()) {
             if (ll.getType() === DistroManager.Types.LiteLoader) {
                 if (!ll.getRequired().isRequired()) {
-                    const modCfg = ConfigManager.getModConfiguration(this.server.getID()).mods
-                    if (ProcessBuilder.isModEnabled(modCfg[ll.getVersionlessID()], ll.getRequired())) {
+                    const modCfg = ConfigManager.getModConfiguration(
+                        this.server.getID()
+                    ).mods
+                    if (
+                        ProcessBuilder.isModEnabled(
+                            modCfg[ll.getVersionlessID()],
+                            ll.getRequired()
+                        )
+                    ) {
                         if (fs.existsSync(ll.getArtifact().getPath())) {
                             this.usingLiteLoader = true
                             this.llPath = ll.getArtifact().getPath()
@@ -145,7 +188,7 @@ class ProcessBuilder {
     /**
      * Resolve an array of all enabled mods. These mods will be constructed into
      * a mod list format and enabled at launch.
-     * 
+     *
      * @param {Object} modCfg The mod configuration object.
      * @param {Array.<Object>} mdls An array of modules to parse.
      * @returns {{fMods: Array.<Object>, lMods: Array.<Object>}} An object which contains
@@ -157,12 +200,22 @@ class ProcessBuilder {
 
         for (let mdl of mdls) {
             const type = mdl.getType()
-            if (type === DistroManager.Types.ForgeMod || type === DistroManager.Types.LiteMod || type === DistroManager.Types.LiteLoader) {
+            if (
+                type === DistroManager.Types.ForgeMod ||
+                type === DistroManager.Types.LiteMod ||
+                type === DistroManager.Types.LiteLoader
+            ) {
                 const o = !mdl.getRequired().isRequired()
-                const e = ProcessBuilder.isModEnabled(modCfg[mdl.getVersionlessID()], mdl.getRequired())
+                const e = ProcessBuilder.isModEnabled(
+                    modCfg[mdl.getVersionlessID()],
+                    mdl.getRequired()
+                )
                 if (!o || (o && e)) {
                     if (mdl.hasSubModules()) {
-                        const v = this.resolveModConfiguration(modCfg[mdl.getVersionlessID()].mods, mdl.getSubModules())
+                        const v = this.resolveModConfiguration(
+                            modCfg[mdl.getVersionlessID()].mods,
+                            mdl.getSubModules()
+                        )
                         fMods = fMods.concat(v.fMods)
                         lMods = lMods.concat(v.lMods)
                         if (mdl.type === DistroManager.Types.LiteLoader) {
@@ -185,7 +238,10 @@ class ProcessBuilder {
     }
 
     _lteMinorVersion(version) {
-        return Number(this.forgeData.id.split('-')[0].split('.')[1]) <= Number(version)
+        return (
+            Number(this.forgeData.id.split('-')[0].split('.')[1]) <=
+            Number(version)
+        )
     }
 
     /**
@@ -219,14 +275,17 @@ class ProcessBuilder {
 
     /**
      * Construct a mod list json object.
-     * 
+     *
      * @param {'forge' | 'liteloader'} type The mod list type to construct.
      * @param {Array.<Object>} mods An array of mods to add to the mod list.
      * @param {boolean} save Optional. Whether or not we should save the mod list file.
      */
     constructModList(type, mods, save = false) {
         const modList = {
-            repositoryRoot: ((type === 'forge' && this._requiresAbsolute()) ? 'absolute:' : '') + path.join(this.commonDir, 'modstore')
+            repositoryRoot:
+                (type === 'forge' && this._requiresAbsolute()
+                    ? 'absolute:'
+                    : '') + path.join(this.commonDir, 'modstore')
         }
 
         const ids = []
@@ -243,7 +302,11 @@ class ProcessBuilder {
 
         if (save) {
             const json = JSON.stringify(modList, null, 4)
-            fs.writeFileSync(type === 'forge' ? this.fmlDir : this.llDir, json, 'UTF-8')
+            fs.writeFileSync(
+                type === 'forge' ? this.fmlDir : this.llDir,
+                json,
+                'UTF-8'
+            )
         }
 
         return modList
@@ -251,13 +314,15 @@ class ProcessBuilder {
 
     /**
      * Construct the mod argument list for forge 1.13
-     * 
+     *
      * @param {Array.<Object>} mods An array of mods to add to the mod list.
      */
     constructModArguments(mods) {
-        const argStr = mods.map(mod => {
-            return mod.getExtensionlessID()
-        }).join(',')
+        const argStr = mods
+            .map((mod) => {
+                return mod.getExtensionlessID()
+            })
+            .join(',')
 
         if (argStr) {
             return [
@@ -269,7 +334,6 @@ class ProcessBuilder {
         } else {
             return []
         }
-
     }
 
     _processAutoConnectArg(args) {
@@ -286,7 +350,7 @@ class ProcessBuilder {
 
     /**
      * Construct the argument array that will be passed to the JVM process.
-     * 
+     *
      * @param {Array.<Object>} mods An array of enabled mods which will be launched with this process.
      * @param {string} tempNativePath The path to store the native libraries.
      * @returns {Array.<string>} An array containing the full JVM arguments for this process.
@@ -302,23 +366,29 @@ class ProcessBuilder {
     /**
      * Construct the argument array that will be passed to the JVM process.
      * This function is for 1.12 and below.
-     * 
+     *
      * @param {Array.<Object>} mods An array of enabled mods which will be launched with this process.
      * @param {string} tempNativePath The path to store the native libraries.
      * @returns {Array.<string>} An array containing the full JVM arguments for this process.
      */
     _constructJVMArguments112(mods, tempNativePath) {
-
         let args = []
 
         // Classpath Argument
         args.push('-cp')
-        args.push(this.classpathArg(mods, tempNativePath).join(process.platform === 'win32' ? ';' : ':'))
+        args.push(
+            this.classpathArg(mods, tempNativePath).join(
+                process.platform === 'win32' ? ';' : ':'
+            )
+        )
 
         // Java Arguments
         if (process.platform === 'darwin') {
             args.push('-Xdock:name=HeliosLauncher')
-            args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+            args.push(
+                '-Xdock:icon=' +
+                    path.join(__dirname, '..', 'images', 'minecraft.icns')
+            )
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM())
         args.push('-Xms' + ConfigManager.getMinRAM())
@@ -337,15 +407,14 @@ class ProcessBuilder {
     /**
      * Construct the argument array that will be passed to the JVM process.
      * This function is for 1.13+
-     * 
+     *
      * Note: Required Libs https://github.com/MinecraftForge/MinecraftForge/blob/af98088d04186452cb364280340124dfd4766a5c/src/fmllauncher/java/net/minecraftforge/fml/loading/LibraryFinder.java#L82
-     * 
+     *
      * @param {Array.<Object>} mods An array of enabled mods which will be launched with this process.
      * @param {string} tempNativePath The path to store the native libraries.
      * @returns {Array.<string>} An array containing the full JVM arguments for this process.
      */
     _constructJVMArguments113(mods, tempNativePath) {
-
         const argDiscovery = /\${*(.*)}/
 
         // JVM Arguments First
@@ -356,7 +425,10 @@ class ProcessBuilder {
         // Java Arguments
         if (process.platform === 'darwin') {
             args.push('-Xdock:name=HeliosLauncher')
-            args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+            args.push(
+                '-Xdock:icon=' +
+                    path.join(__dirname, '..', 'images', 'minecraft.icns')
+            )
         }
         args.push('-Xmx' + ConfigManager.getMaxRAM())
         args.push('-Xms' + ConfigManager.getMinRAM())
@@ -370,12 +442,14 @@ class ProcessBuilder {
 
         for (let i = 0; i < args.length; i++) {
             if (typeof args[i] === 'object' && args[i].rules != null) {
-
                 let checksum = 0
                 for (let rule of args[i].rules) {
                     if (rule.os != null) {
-                        if (rule.os.name === Library.mojangFriendlyOS()
-                            && (rule.os.version == null || new RegExp(rule.os.version).test(os.release))) {
+                        if (
+                            rule.os.name === Library.mojangFriendlyOS() &&
+                            (rule.os.version == null ||
+                                new RegExp(rule.os.version).test(os.release))
+                        ) {
                             if (rule.action === 'allow') {
                                 checksum++
                             }
@@ -387,12 +461,12 @@ class ProcessBuilder {
                     } else if (rule.features != null) {
                         // We don't have many 'features' in the index at the moment.
                         // This should be fine for a while.
-                        if (rule.features.has_custom_resolution != null && rule.features.has_custom_resolution === true) {
+                        if (
+                            rule.features.has_custom_resolution != null &&
+                            rule.features.has_custom_resolution === true
+                        ) {
                             if (ConfigManager.getFullscreen()) {
-                                args[i].value = [
-                                    '--fullscreen',
-                                    'true'
-                                ]
+                                args[i].value = ['--fullscreen', 'true']
                             }
                             checksum++
                         }
@@ -413,7 +487,6 @@ class ProcessBuilder {
                 } else {
                     args[i] = null
                 }
-
             } else if (typeof args[i] === 'string') {
                 if (argDiscovery.test(args[i])) {
                     const identifier = args[i].match(argDiscovery)[1]
@@ -457,13 +530,21 @@ class ProcessBuilder {
                             val = args[i].replace(argDiscovery, tempNativePath)
                             break
                         case 'launcher_name':
-                            val = args[i].replace(argDiscovery, 'Helios-Launcher')
+                            val = args[i].replace(
+                                argDiscovery,
+                                'Helios-Launcher'
+                            )
                             break
                         case 'launcher_version':
-                            val = args[i].replace(argDiscovery, this.launcherVersion)
+                            val = args[i].replace(
+                                argDiscovery,
+                                this.launcherVersion
+                            )
                             break
                         case 'classpath':
-                            val = this.classpathArg(mods, tempNativePath).join(process.platform === 'win32' ? ';' : ':')
+                            val = this.classpathArg(mods, tempNativePath).join(
+                                process.platform === 'win32' ? ';' : ':'
+                            )
                             break
                     }
                     if (val != null) {
@@ -476,24 +557,31 @@ class ProcessBuilder {
         // Autoconnect
         let isAutoconnectBroken
         try {
-            isAutoconnectBroken = Util.isAutoconnectBroken(this.forgeData.id.split('-')[2])
+            isAutoconnectBroken = Util.isAutoconnectBroken(
+                this.forgeData.id.split('-')[2]
+            )
         } catch (err) {
-            logger.error('Forge version format changed.. assuming autoconnect works.')
+            logger.error(
+                'Forge version format changed.. assuming autoconnect works.'
+            )
         }
 
         if (isAutoconnectBroken) {
-            logger.error('Server autoconnect disabled on Forge 1.15.2 for builds earlier than 31.2.15 due to OpenGL Stack Overflow issue.')
-            logger.error('Please upgrade your Forge version to at least 31.2.15!')
+            logger.error(
+                'Server autoconnect disabled on Forge 1.15.2 for builds earlier than 31.2.15 due to OpenGL Stack Overflow issue.'
+            )
+            logger.error(
+                'Please upgrade your Forge version to at least 31.2.15!'
+            )
         } else {
             this._processAutoConnectArg(args)
         }
-
 
         // Forge Specific Arguments
         args = args.concat(this.forgeData.arguments.game)
 
         // Filter null values
-        args = args.filter(arg => {
+        args = args.filter((arg) => {
             return arg != null
         })
 
@@ -502,7 +590,7 @@ class ProcessBuilder {
 
     /**
      * Resolve the arguments required by forge.
-     * 
+     *
      * @returns {Array.<string>} An array containing the arguments required by forge.
      */
     _resolveForgeArgs() {
@@ -575,7 +663,6 @@ class ProcessBuilder {
             mcArgs.push('absolute:' + this.fmlDir)
         }
 
-
         // LiteLoader
         if (this.usingLiteLoader) {
             mcArgs.push('--modRepo')
@@ -591,11 +678,10 @@ class ProcessBuilder {
 
     /**
      * Ensure that the classpath entries all point to jar files.
-     * 
+     *
      * @param {Array.<String>} list Array of classpath entries.
      */
     _processClassPathList(list) {
-
         const ext = '.jar'
         const extLen = ext.length
         for (let i = 0; i < list.length; i++) {
@@ -604,14 +690,13 @@ class ProcessBuilder {
                 list[i] = list[i].substring(0, extIndex + extLen)
             }
         }
-
     }
 
     /**
      * Resolve the full classpath argument list for this process. This method will resolve all Mojang-declared
      * libraries as well as the libraries declared by the server. Since mods are permitted to declare libraries,
      * this method requires all enabled mods as an input
-     * 
+     *
      * @param {Array.<Object>} mods An array of enabled mods which will be launched with this process.
      * @param {string} tempNativePath The path to store the native libraries.
      * @returns {Array.<string>} An array containing the paths of each library required by this process.
@@ -621,7 +706,9 @@ class ProcessBuilder {
 
         // Add the version.jar to the classpath.
         const version = this.versionData.id
-        cpArgs.push(path.join(this.commonDir, 'versions', version, version + '.jar'))
+        cpArgs.push(
+            path.join(this.commonDir, 'versions', version, version + '.jar')
+        )
 
         if (this.usingLiteLoader) {
             cpArgs.push(this.llPath)
@@ -647,9 +734,9 @@ class ProcessBuilder {
     /**
      * Resolve the libraries defined by Mojang's version data. This method will also extract
      * native libraries and point to the correct location for its classpath.
-     * 
+     *
      * TODO - clean up function
-     * 
+     *
      * @param {string} tempNativePath The path to store the native libraries.
      * @returns {{[id: string]: string}} An object containing the paths of each library mojang declares.
      */
@@ -665,12 +752,24 @@ class ProcessBuilder {
                     const dlInfo = lib.downloads
                     const artifact = dlInfo.artifact
                     const to = path.join(this.libPath, artifact.path)
-                    const versionIndependentId = lib.name.substring(0, lib.name.lastIndexOf(':'))
+                    const versionIndependentId = lib.name.substring(
+                        0,
+                        lib.name.lastIndexOf(':')
+                    )
                     libs[versionIndependentId] = to
                 } else {
                     // Extract the native library.
-                    const exclusionArr = lib.extract != null ? lib.extract.exclude : ['META-INF/']
-                    const artifact = lib.downloads.classifiers[lib.natives[Library.mojangFriendlyOS()].replace('${arch}', process.arch.replace('x', ''))]
+                    const exclusionArr =
+                        lib.extract != null
+                            ? lib.extract.exclude
+                            : ['META-INF/']
+                    const artifact =
+                        lib.downloads.classifiers[
+                            lib.natives[Library.mojangFriendlyOS()].replace(
+                                '${arch}',
+                                process.arch.replace('x', '')
+                            )
+                        ]
 
                     // Location of native zip.
                     const to = path.join(this.libPath, artifact.path)
@@ -693,13 +792,19 @@ class ProcessBuilder {
 
                         // Extract the file.
                         if (!shouldExclude) {
-                            fs.writeFile(path.join(tempNativePath, fileName), zipEntries[i].getData(), (err) => {
-                                if (err) {
-                                    logger.error('Error while extracting native library:', err)
+                            fs.writeFile(
+                                path.join(tempNativePath, fileName),
+                                zipEntries[i].getData(),
+                                (err) => {
+                                    if (err) {
+                                        logger.error(
+                                            'Error while extracting native library:',
+                                            err
+                                        )
+                                    }
                                 }
-                            })
+                            )
                         }
-
                     }
                 }
             }
@@ -712,7 +817,7 @@ class ProcessBuilder {
      * Resolve the libraries declared by this server in order to add them to the classpath.
      * This method will also check each enabled mod for libraries, as mods are permitted to
      * declare libraries.
-     * 
+     *
      * @param {Array.<Object>} mods An array of enabled mods which will be launched with this process.
      * @returns {{[id: string]: string}} An object containing the paths of each library this server requires.
      */
@@ -723,7 +828,10 @@ class ProcessBuilder {
         // Locate Forge/Libraries
         for (let mdl of mdls) {
             const type = mdl.getType()
-            if (type === DistroManager.Types.ForgeHosted || type === DistroManager.Types.Library) {
+            if (
+                type === DistroManager.Types.ForgeHosted ||
+                type === DistroManager.Types.Library
+            ) {
                 libs[mdl.getVersionlessID()] = mdl.getArtifact().getPath()
                 if (mdl.hasSubModules()) {
                     const res = this._resolveModuleLibraries(mdl)
@@ -749,7 +857,7 @@ class ProcessBuilder {
 
     /**
      * Recursively resolve the path of each library required by this module.
-     * 
+     *
      * @param {Object} mdl A module object from the server distro index.
      * @returns {Array.<string>} An array containing the paths of each library this module requires.
      */
@@ -773,7 +881,6 @@ class ProcessBuilder {
         }
         return libs
     }
-
 }
 
 module.exports = ProcessBuilder

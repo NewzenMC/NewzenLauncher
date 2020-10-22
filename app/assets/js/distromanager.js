@@ -3,19 +3,21 @@ const path = require('path')
 const request = require('request')
 
 const ConfigManager = require('./configmanager')
-const logger = require('./loggerutil')('%c[DistroManager]', 'color: #a02d2a; font-weight: bold')
+const logger = require('./loggerutil')(
+    '%c[DistroManager]',
+    'color: #a02d2a; font-weight: bold'
+)
 
 /**
  * Represents the download information
  * for a specific module.
  */
 class Artifact {
-
     /**
      * Parse a JSON object into an Artifact.
-     * 
+     *
      * @param {Object} json A JSON object representing an Artifact.
-     * 
+     *
      * @returns {Artifact} The parsed Artifact.
      */
     static fromJSON(json) {
@@ -26,7 +28,7 @@ class Artifact {
      * Get the MD5 hash of the artifact. This value may
      * be undefined for artifacts which are not to be
      * validated and updated.
-     * 
+     *
      * @returns {string} The MD5 hash of the Artifact or undefined.
      */
     getHash() {
@@ -53,7 +55,6 @@ class Artifact {
     getPath() {
         return this.path
     }
-
 }
 exports.Artifact
 
@@ -62,19 +63,21 @@ exports.Artifact
  * of a module.
  */
 class Required {
-
     /**
      * Parse a JSON object into a Required object.
-     * 
+     *
      * @param {Object} json A JSON object representing a Required object.
-     * 
+     *
      * @returns {Required} The parsed Required object.
      */
     static fromJSON(json) {
         if (json == null) {
             return new Required(true, true)
         } else {
-            return new Required(json.value == null ? true : json.value, json.def == null ? true : json.def)
+            return new Required(
+                json.value == null ? true : json.value,
+                json.def == null ? true : json.def
+            )
         }
     }
 
@@ -87,7 +90,7 @@ class Required {
      * Get the default value for a required object. If a module
      * is not required, this value determines whether or not
      * it is enabled by default.
-     * 
+     *
      * @returns {boolean} The default enabled value.
      */
     isDefault() {
@@ -100,7 +103,6 @@ class Required {
     isRequired() {
         return this.value
     }
-
 }
 exports.Required
 
@@ -108,24 +110,31 @@ exports.Required
  * Represents a module.
  */
 class Module {
-
     /**
      * Parse a JSON object into a Module.
-     * 
+     *
      * @param {Object} json A JSON object representing a Module.
      * @param {string} serverid The ID of the server to which this module belongs.
-     * 
+     *
      * @returns {Module} The parsed Module.
      */
     static fromJSON(json, serverid) {
-        return new Module(json.id, json.name, json.type, json.required, json.artifact, json.subModules, serverid)
+        return new Module(
+            json.id,
+            json.name,
+            json.type,
+            json.required,
+            json.artifact,
+            json.subModules,
+            serverid
+        )
     }
 
     /**
      * Resolve the default extension for a specific module type.
-     * 
+     *
      * @param {string} type The type of the module.
-     * 
+     *
      * @return {string} The default extension for the given type.
      */
     static _resolveDefaultExtension(type) {
@@ -156,10 +165,10 @@ class Module {
 
     _resolveMetaData() {
         try {
-
             const m0 = this.identifier.split('@')
 
-            this.artifactExt = m0[1] || Module._resolveDefaultExtension(this.type)
+            this.artifactExt =
+                m0[1] || Module._resolveDefaultExtension(this.type)
 
             const m1 = m0[0].split(':')
 
@@ -167,7 +176,6 @@ class Module {
             this.artifactVersion = m1[2] || '???'
             this.artifactID = m1[1] || '???'
             this.artifactGroup = m1[0] || '???'
-
         } catch (err) {
             // Improper identifier
             logger.error('Improper ID for module', this.identifier, err)
@@ -175,27 +183,55 @@ class Module {
     }
 
     _resolveArtifactPath(artifactPath, serverid) {
-        const pth = artifactPath == null ? path.join(...this.getGroup().split('.'), this.getID(), this.getVersion(), `${this.getID()}-${this.getVersion()}${this.artifactClassifier != undefined ? `-${this.artifactClassifier}` : ''}.${this.getExtension()}`) : artifactPath
+        const pth =
+            artifactPath == null
+                ? path.join(
+                      ...this.getGroup().split('.'),
+                      this.getID(),
+                      this.getVersion(),
+                      `${this.getID()}-${this.getVersion()}${
+                          this.artifactClassifier != undefined
+                              ? `-${this.artifactClassifier}`
+                              : ''
+                      }.${this.getExtension()}`
+                  )
+                : artifactPath
 
         switch (this.type) {
             case exports.Types.Library:
             case exports.Types.ForgeHosted:
             case exports.Types.LiteLoader:
-                this.artifact.path = path.join(ConfigManager.getCommonDirectory(), 'libraries', pth)
+                this.artifact.path = path.join(
+                    ConfigManager.getCommonDirectory(),
+                    'libraries',
+                    pth
+                )
                 break
             case exports.Types.ForgeMod:
             case exports.Types.LiteMod:
-                this.artifact.path = path.join(ConfigManager.getCommonDirectory(), 'modstore', pth)
+                this.artifact.path = path.join(
+                    ConfigManager.getCommonDirectory(),
+                    'modstore',
+                    pth
+                )
                 break
             case exports.Types.VersionManifest:
-                this.artifact.path = path.join(ConfigManager.getCommonDirectory(), 'versions', this.getIdentifier(), `${this.getIdentifier()}.json`)
+                this.artifact.path = path.join(
+                    ConfigManager.getCommonDirectory(),
+                    'versions',
+                    this.getIdentifier(),
+                    `${this.getIdentifier()}.json`
+                )
                 break
             case exports.Types.File:
             default:
-                this.artifact.path = path.join(ConfigManager.getInstanceDirectory(), serverid, pth)
+                this.artifact.path = path.join(
+                    ConfigManager.getInstanceDirectory(),
+                    serverid,
+                    pth
+                )
                 break
         }
-
     }
 
     _resolveSubModules(json, serverid) {
@@ -305,7 +341,6 @@ class Module {
     getType() {
         return this.type
     }
-
 }
 exports.Module
 
@@ -313,16 +348,14 @@ exports.Module
  * Represents a server configuration.
  */
 class Server {
-
     /**
      * Parse a JSON object into a Server.
-     * 
+     *
      * @param {Object} json A JSON object representing a Server.
-     * 
+     *
      * @returns {Server} The parsed Server object.
      */
     static fromJSON(json) {
-
         const mdls = json.modules
         json.modules = []
 
@@ -412,7 +445,6 @@ class Server {
     getModules() {
         return this.modules
     }
-
 }
 exports.Server
 
@@ -420,16 +452,14 @@ exports.Server
  * Represents the Distribution Index.
  */
 class DistroIndex {
-
     /**
      * Parse a JSON object into a DistroIndex.
-     * 
+     *
      * @param {Object} json A JSON object representing a DistroIndex.
-     * 
+     *
      * @returns {DistroIndex} The parsed Server object.
      */
     static fromJSON(json) {
-
         const servers = json.servers
         json.servers = []
 
@@ -449,7 +479,6 @@ class DistroIndex {
     }
 
     _resolveMainServer() {
-
         for (let serv of this.servers) {
             if (serv.mainServer) {
                 this.mainServer = serv.id
@@ -458,7 +487,8 @@ class DistroIndex {
         }
 
         // If no server declares default_selected, default to the first one declared.
-        this.mainServer = (this.servers.length > 0) ? this.servers[0].getID() : null
+        this.mainServer =
+            this.servers.length > 0 ? this.servers[0].getID() : null
     }
 
     /**
@@ -485,9 +515,9 @@ class DistroIndex {
     /**
      * Get a server configuration by its ID. If it does not
      * exist, null will be returned.
-     * 
+     *
      * @param {string} id The ID of the server.
-     * 
+     *
      * @returns {Server} The server configuration with the given ID or null.
      */
     getServer(id) {
@@ -501,13 +531,12 @@ class DistroIndex {
 
     /**
      * Get the main server.
-     * 
+     *
      * @returns {Server} The main server.
      */
     getMainServer() {
         return this.mainServer != null ? this.getServer(this.mainServer) : null
     }
-
 }
 exports.DistroIndex
 
@@ -524,8 +553,14 @@ exports.Types = {
 
 let DEV_MODE = false
 
-const DISTRO_PATH = path.join(ConfigManager.getLauncherDirectory(), 'distribution.json')
-const DEV_PATH = path.join(ConfigManager.getLauncherDirectory(), 'dev_distribution.json')
+const DISTRO_PATH = path.join(
+    ConfigManager.getLauncherDirectory(),
+    'distribution.json'
+)
+const DEV_PATH = path.join(
+    ConfigManager.getLauncherDirectory(),
+    'dev_distribution.json'
+)
 
 let data = null
 
@@ -538,15 +573,18 @@ exports.pullRemote = function () {
     }
     return new Promise((resolve, reject) => {
         //const distroURL = 'http://mc.westeroscraft.com/WesterosCraftLauncher/distribution.json'
-        const distroURL = 'https://gist.githubusercontent.com/petittitouan/486974fe77bfc7ccd54e50a8ffc40a36/raw/distribution.json'
+        const distroURL =
+            'https://gist.githubusercontent.com/petittitouan/486974fe77bfc7ccd54e50a8ffc40a36/raw/distribution.json'
         const opts = {
             url: distroURL,
             timeout: 2500
         }
-        const distroDest = path.join(ConfigManager.getLauncherDirectory(), 'distribution.json')
+        const distroDest = path.join(
+            ConfigManager.getLauncherDirectory(),
+            'distribution.json'
+        )
         request(opts, (error, resp, body) => {
             if (!error) {
-
                 try {
                     data = DistroIndex.fromJSON(JSON.parse(body))
                 } catch (e) {
@@ -586,7 +624,7 @@ exports.pullLocal = function () {
 exports.setDevMode = function (value) {
     if (value) {
         logger.log('Developer mode enabled.')
-        logger.log('If you don\'t know what that means, revert immediately.')
+        logger.log("If you don't know what that means, revert immediately.")
     } else {
         logger.log('Developer mode disabled.')
     }

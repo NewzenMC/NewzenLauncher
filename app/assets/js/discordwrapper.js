@@ -1,4 +1,7 @@
-const logger = require('./loggerutil')('%c[DiscordWrapper]', 'color: #7289da; font-weight: bold')
+const logger = require('./loggerutil')(
+    '%c[DiscordWrapper]',
+    'color: #7289da; font-weight: bold'
+)
 
 const RPC = require('discord-rpc')
 let client
@@ -21,11 +24,17 @@ exports.initRPC = function () {
         client.setActivity(activity)
     })
 
-    client.login({ clientId: '726151873983283300' }).catch(error => {
+    client.login({ clientId: '726151873983283300' }).catch((error) => {
         if (error.message.includes('ENOENT')) {
-            logger.log('Impossible d\'initialiser Discord Rich Presence, aucun client détecté !')
+            logger.log(
+                "Impossible d'initialiser Discord Rich Presence, aucun client détecté !"
+            )
         } else {
-            logger.log('Impossible d\'initialiser Discord Rich Presence : ' + error.message, error)
+            logger.log(
+                "Impossible d'initialiser Discord Rich Presence : " +
+                    error.message,
+                error
+            )
         }
     })
 }
