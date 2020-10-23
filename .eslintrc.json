@@ -17,6 +17,8 @@
         "spaced-comment": "off",
         "no-tabs": "warn",
         "space-before-function-paren": "off",
-        "quotes": "off"
+        "quotes": "off",
+        "no-throw-literal": "off",
+        "curly": "off"
     }
 }
