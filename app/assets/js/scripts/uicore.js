@@ -48,7 +48,7 @@ remote.getCurrentWebContents().on('devtools-opened', () => {
         'font-size: 20px'
     )
     console.log(
-        '%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, vous vous exposez à de gros riques de piratage de données !',
+        '%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, vous vous exposez à de gros risques de piratage de données !',
         'font-size: 20px'
     )
 })
