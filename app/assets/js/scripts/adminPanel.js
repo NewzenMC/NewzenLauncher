@@ -1,8 +1,10 @@
+const Octicons = require('@primer/octicons')
+
 function refreshAdminPanelAccess() {
     for (const account in ConfigManager.getAuthAccounts()) {
         $.get({
             url: 'http://tieb62.freeboxos.fr/authorized/' + account,
-            success: response => {
+            success: (response) => {
                 if (response === 'true') {
                     $('#adminPanelBtn').fadeIn(200)
                 } else {
@@ -12,9 +14,21 @@ function refreshAdminPanelAccess() {
         })
     }
 }
+refreshAdminPanelAccess()
+//NEWFEATURE Refresh dès que l'utilisateur ajoute ou supprime un compte du launcher
 
 $('#adminPanelBtn').on('click', () => {
     switchView(getCurrentView(), VIEWS.adminPanel)
+})
+
+$('#backAdminPanelSVG').html(Octicons['chevron-left'].toSVG())
+
+$('#backAdminPanelBtn').on('click', () => {
+    switchView(getCurrentView(), VIEWS.landing)
+})
+
+$('#adminPanelLoginBtn').on('click', () => {
+    $('.c-form__toggle').attr('data-title', 'OK/ERROR')
 })
 
 // Escape key return to main menu
@@ -23,6 +37,3 @@ document.onkeyup = (e) => {
         switchView(getCurrentView(), VIEWS.landing)
     }
 }
-
-refreshAdminPanelAccess()
-//NEWFEATURE Refresh dès que l'utilisateur ajoute ou supprime un compte du launcher
