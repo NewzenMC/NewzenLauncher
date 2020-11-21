@@ -19,8 +19,8 @@ const loginButton = document.getElementById('loginButton')
 const loginForm = document.getElementById('loginForm')
 
 // Control variables.
-let lu = false,
-    lp = false
+let lu = false
+    let lp = false
 
 const loggerLogin = LoggerUtil('%c[Login]', 'color: #000668; font-weight: bold')
 
