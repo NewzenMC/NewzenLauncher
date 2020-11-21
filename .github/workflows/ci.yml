@@ -3,8 +3,6 @@ name: Build
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build-windows:
@@ -23,6 +21,8 @@ jobs:
 
     - name: Build
       run: npm run dist:win
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-linux:
     name: Linux
@@ -40,6 +40,8 @@ jobs:
 
     - name: Build
       run: npm run dist:linux
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-macos:
     name: MacOS
@@ -57,3 +59,5 @@ jobs:
 
     - name: Build
       run: npm run dist:mac
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
