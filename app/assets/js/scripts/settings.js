@@ -1407,7 +1407,7 @@ function populateAboutVersionInformation() {
  */
 function populateReleaseNotes() {
     $.ajax({
-        url: 'https://github.com/dscalzi/HeliosLauncher/releases.atom',
+        url: 'https://github.com/NewzenMC/NewzenLauncher/releases.atom',
         success: (data) => {
             const version = 'v' + remote.app.getVersion()
             const entries = $(data).find('entry')
@@ -1432,7 +1432,8 @@ function populateReleaseNotes() {
         },
         timeout: 2500
     }).catch((err) => {
-        settingsAboutChangelogText.innerHTML = 'Failed to load release notes.'
+        settingsAboutChangelogText.innerHTML =
+            'Impossible de charger les notes de mise à jour'
     })
 }
 
@@ -1519,7 +1520,7 @@ function populateSettingsUpdateInformation(data) {
             settingsUpdateButtonStatus('Downloading..', true)
         }
     } else {
-        settingsUpdateTitle.innerHTML = 'You Are Running the Latest Version'
+        settingsUpdateTitle.innerHTML = 'Vous Avez la Dernière Version !'
         settingsUpdateChangelogCont.style.display = 'none'
         populateVersionInformation(
             remote.app.getVersion(),
@@ -1527,10 +1528,13 @@ function populateSettingsUpdateInformation(data) {
             settingsUpdateVersionTitle,
             settingsUpdateVersionCheck
         )
-        settingsUpdateButtonStatus('Check for Updates', false, () => {
+        settingsUpdateButtonStatus('Vérifier les mises à jour', false, () => {
             if (!isDev) {
                 ipcRenderer.send('autoUpdateAction', 'checkForUpdate')
-                settingsUpdateButtonStatus('Checking for Updates..', true)
+                settingsUpdateButtonStatus(
+                    'Vérification des Mises à Jour...',
+                    true
+                )
             }
         })
     }

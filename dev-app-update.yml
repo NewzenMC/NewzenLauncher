@@ -1,3 +1,4 @@
 owner: NewzenMC
 repo: NewzenLauncher
 provider: github
+vPrefixedTagName: true
