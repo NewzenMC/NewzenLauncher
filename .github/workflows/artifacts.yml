@@ -22,11 +22,17 @@ jobs:
     - name: Build
       run: npm run dist:win
 
-    - name: Upload Artifact
+    - name: Upload Setup Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Windows
+        name: Windows-Dist
         path: dist/*.exe
+
+    - name: Upload latest.yml Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Windows-LatestYML
+        path: latest.yml
 
   build-linux:
     name: Linux
