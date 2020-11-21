@@ -1495,8 +1495,8 @@ function settingsUpdateButtonStatus(text, disabled = false, handler = null) {
  */
 function populateSettingsUpdateInformation(data) {
     if (data != null) {
-        settingsUpdateTitle.innerHTML = `New ${
-            isPrerelease(data.version) ? 'Pre-release' : 'Release'
+        settingsUpdateTitle.innerHTML = `Nouvelle ${
+            isPrerelease(data.version) ? 'Bêta' : 'Version'
         } Available`
         settingsUpdateChangelogCont.style.display = null
         settingsUpdateChangelogTitle.innerHTML = data.releaseName
@@ -1510,17 +1510,17 @@ function populateSettingsUpdateInformation(data) {
 
         if (process.platform === 'darwin') {
             settingsUpdateButtonStatus(
-                'Download from GitHub<span style="font-size: 10px;color: gray;text-shadow: none !important;">Close the launcher and run the dmg to update.</span>',
+                'Télécharger depuis GitHub<span style="font-size: 10px;color: gray;text-shadow: none !important;">Fermer le Launcher et lancer le DMG pour mettre à jour</span>',
                 false,
                 () => {
                     shell.openExternal(data.darwindownload)
                 }
             )
         } else {
-            settingsUpdateButtonStatus('Downloading..', true)
+            settingsUpdateButtonStatus('Téléchargement..', true)
         }
     } else {
-        settingsUpdateTitle.innerHTML = 'Vous Avez la Dernière Version !'
+        settingsUpdateTitle.innerHTML = 'Vous avez la Dernière Version !'
         settingsUpdateChangelogCont.style.display = 'none'
         populateVersionInformation(
             remote.app.getVersion(),
