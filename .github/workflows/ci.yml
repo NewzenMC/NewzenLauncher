@@ -20,7 +20,7 @@ jobs:
       run: npm run lint
 
     - name: Build
-      run: npm run dist:win
+      run: npm run dist:win --publish always
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -39,7 +39,7 @@ jobs:
       run: npm run lint
 
     - name: Build
-      run: npm run dist:linux
+      run: npm run dist:linux --publish always
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -58,6 +58,6 @@ jobs:
       run: npm run lint
 
     - name: Build
-      run: npm run dist:mac
+      run: npm run dist:mac --publish always
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
