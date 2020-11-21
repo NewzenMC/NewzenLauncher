@@ -83,16 +83,23 @@ if (!isDev) {
                 loggerAutoUpdaterSuccess.log(
                     'Update ' + info.version + ' ready to be installed.'
                 )
-                settingsUpdateButtonStatus('Install Now', false, () => {
-                    if (!isDev) {
-                        ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
+                settingsUpdateButtonStatus(
+                    'Installer Maintenant',
+                    false,
+                    () => {
+                        if (!isDev) {
+                            ipcRenderer.send(
+                                'autoUpdateAction',
+                                'installUpdateNow'
+                            )
+                        }
                     }
-                })
+                )
                 showUpdateUI(info)
                 break
             case 'update-not-available':
                 loggerAutoUpdater.log('No new update found.')
-                settingsUpdateButtonStatus('Check for Updates')
+                settingsUpdateButtonStatus('Vérifier les Mises à Jour')
                 break
             case 'ready':
                 updateCheckListener = setInterval(() => {
