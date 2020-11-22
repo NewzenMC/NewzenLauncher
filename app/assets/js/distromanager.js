@@ -572,9 +572,7 @@ exports.pullRemote = function () {
         return exports.pullLocal()
     }
     return new Promise((resolve, reject) => {
-        //const distroURL = 'http://mc.westeroscraft.com/WesterosCraftLauncher/distribution.json'
-        const distroURL =
-            'https://gist.githubusercontent.com/petittitouan/486974fe77bfc7ccd54e50a8ffc40a36/raw/distribution.json'
+        const distroURL = 'https://tieb62.freeboxos.fr/distribution.json'
         const opts = {
             url: distroURL,
             timeout: 2500
@@ -623,10 +621,10 @@ exports.pullLocal = function () {
 
 exports.setDevMode = function (value) {
     if (value) {
-        logger.log('Developer mode enabled.')
-        logger.log("If you don't know what that means, revert immediately.")
+        logger.log('Mode Développeur activé !')
+        logger.log("Si vous ne savez pas ce que cela veut dire, désactivez immédiatement !")
     } else {
-        logger.log('Developer mode disabled.')
+        logger.log('Mode Développeur désactivé !')
     }
     DEV_MODE = value
 }
