@@ -1,6 +1,11 @@
+# Ignore Node Modules Directory
 /node_modules/
+
+# Ignore Visual Studio Code Files
 /.vs/
 /.vscode/
+
+# Ignore Logs and Build data
 /target/
 /logs/
 /dist/
