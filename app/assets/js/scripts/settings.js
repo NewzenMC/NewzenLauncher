@@ -1497,7 +1497,7 @@ function populateSettingsUpdateInformation(data) {
     if (data != null) {
         settingsUpdateTitle.innerHTML = `Nouvelle ${
             isPrerelease(data.version) ? 'Bêta' : 'Version'
-        } Available`
+        } Disponible`
         settingsUpdateChangelogCont.style.display = null
         settingsUpdateChangelogTitle.innerHTML = data.releaseName
         settingsUpdateChangelogText.innerHTML = data.releaseNotes
