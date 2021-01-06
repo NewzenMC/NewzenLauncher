@@ -39,7 +39,7 @@
         "winreg": "^1.2.4"
     },
     "devDependencies": {
-        "cross-env": "^7.0.2",
+        "cross-env": "^7.0.3",
         "ejs-lint": "^1.1.0",
         "electron": "^9.0.5",
         "electron-builder": "^22.7.0",
