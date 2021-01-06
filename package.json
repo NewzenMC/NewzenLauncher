@@ -41,7 +41,7 @@
     "devDependencies": {
         "cross-env": "^7.0.2",
         "ejs-lint": "^1.1.0",
-        "electron": "^9.0.5",
+        "electron": "^11.1.1",
         "electron-builder": "^22.7.0",
         "eslint": "^7.17.0",
         "eslint-config-standard": "^15.0.0",
