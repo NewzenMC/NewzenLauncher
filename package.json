@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "@primer/octicons": "^11.0.0",
-        "adm-zip": "^0.4.16",
+        "adm-zip": "^0.5.1",
         "async": "^3.2.0",
         "bcrypt": "^5.0.0",
         "discord-rpc": "^3.1.1",
