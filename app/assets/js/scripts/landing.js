@@ -158,14 +158,14 @@ function updateSelectedServer(serv) {
     ConfigManager.setSelectedServer(serv != null ? serv.getID() : null)
     ConfigManager.save()
     server_selection_button.innerHTML =
-        '\u2022 ' + (serv != null ? serv.getName() : 'No Server Selected')
+        '\u2022 ' + (serv != null ? serv.getName() : 'Aucun Serveur Sélectionné')
     if (getCurrentView() === VIEWS.settings) {
         animateModsTabRefresh()
     }
     setLaunchEnabled(serv != null)
 }
 // Real text is set in uibinder.js on distributionIndexDone.
-server_selection_button.innerHTML = '\u2022 Loading..'
+server_selection_button.innerHTML = '\u2022 Chargement...'
 server_selection_button.onclick = (e) => {
     e.target.blur()
     toggleServerSelection(true)
@@ -245,7 +245,7 @@ const refreshServerStatus = async function (fade = false) {
     )
 
     let pLabel = 'SERVER'
-    let pVal = 'OFFLINE'
+    let pVal = 'Hors-Ligne'
 
     try {
         const serverURL = new URL('my://' + serv.getAddress())
