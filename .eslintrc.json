@@ -38,6 +38,7 @@
         "no-labels": "off",
         "node/no-deprecated-api": "off",
         "no-unused-expressions": "off",
-        "no-irregular-whitespace": "off"
+        "no-irregular-whitespace": "off",
+        "array-callback-return": "off"
     }
 }
