@@ -455,12 +455,12 @@ function refreshAuthAccountSelected(uuid) {
             )[0]
             if (uuid === val.getAttribute('uuid')) {
                 selBtn.setAttribute('selected', '')
-                selBtn.innerHTML = 'Selected Account &#10004;'
+                selBtn.innerHTML = 'Compte Sélectionné &#10004;'
             } else {
                 if (selBtn.hasAttribute('selected')) {
                     selBtn.removeAttribute('selected')
                 }
-                selBtn.innerHTML = 'Select Account'
+                selBtn.innerHTML = 'Sélectionner le Compte'
             }
         }
     )
@@ -511,8 +511,8 @@ function populateAuthAccounts() {
                 <div class="settingsAuthAccountActions">
                     <button class="settingsAuthAccountSelect" ${
                         selectedUUID === acc.uuid
-                            ? 'selected>Selected Account &#10004;'
-                            : '>Select Account'
+                            ? 'selected>Compte Sélectionné &#10004;'
+                            : '>Sélectionner le Compte'
                     }</button>
                     <div class="settingsAuthAccountWrapper">
                         <button class="settingsAuthAccountLogOut">Se Déconnecter</button>
