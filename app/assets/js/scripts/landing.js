@@ -143,7 +143,7 @@ function updateSelectedAccount(authUser) {
         if (authUser.uuid != null) {
             document.getElementById(
                 'avatarContainer'
-            ).style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}')`
+            ).style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}?overlay')`
         }
     }
     user_text.innerHTML = username
