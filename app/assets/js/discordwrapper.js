@@ -27,11 +27,11 @@ exports.initRPC = function () {
     client.login({ clientId: '726151873983283300' }).catch((error) => {
         if (error.message.includes('ENOENT')) {
             logger.log(
-                "Impossible d'initialiser Discord Rich Presence, aucun client détecté !"
+                "Impossible d'initialiser Discord RPC, aucun client détecté !"
             )
         } else {
             logger.log(
-                "Impossible d'initialiser Discord Rich Presence : " +
+                "Impossible d'initialiser Discord RPC : " +
                     error.message,
                 error
             )
