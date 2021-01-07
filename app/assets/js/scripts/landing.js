@@ -778,11 +778,11 @@ function dlAsync(login = true) {
                     const distro = DistroManager.getDistribution()
                     hasRPC = true
                     proc.on('close', (code, signal) => {
-                        loggerLaunchSuite.log(
-                            'Arret de la Discord Rich Presence...'
-                        )
-                        DiscordWrapper.shutdownRPC()
-                        hasRPC = false
+                        // loggerLaunchSuite.log(
+                        //     'Arret de la Discord Rich Presence...'
+                        // )
+                        // DiscordWrapper.shutdownRPC()
+                        // hasRPC = false
                         proc = null
                     })
                 } catch (err) {
