@@ -244,8 +244,8 @@ const refreshServerStatus = async function (fade = false) {
         ConfigManager.getSelectedServer()
     )
 
-    let pLabel = 'SERVER'
-    let pVal = 'Hors-Ligne'
+    let pLabel = 'Newzen'
+    let pVal = 'Offline'
 
     try {
         const serverURL = new URL('my://' + serv.getAddress())
