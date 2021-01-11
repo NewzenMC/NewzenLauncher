@@ -399,7 +399,7 @@ function bindAuthAccountLogOut() {
                 setOverlayContent(
                     'Attention<br>C\'est votre dernier compte !',
                         'Pour pouvoir utiliser le launcher, vous devez être connecté avec au moins un compte. Vous aurez besoin de vous reconnecter pour pouvoir utiliser le launcher<br><br>Êtes-vous sûr de vouloir vous déconnecter ?',
-                    "Je suis sûr !",
+                    'Je suis sûr !',
                     'Annuler'
                 )
                 setOverlayHandler(() => {
