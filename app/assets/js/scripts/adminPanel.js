@@ -1,8 +1,8 @@
 const Octicons = require('@primer/octicons')
 const bcrypt = require('bcrypt')
 
-var uuidWithAccess = null
-var isLoggedIn = false
+let uuidWithAccess = null
+let isLoggedIn = false
 
 function refreshAdminPanelAccess() {
     for (const account in ConfigManager.getAuthAccounts()) {
@@ -45,7 +45,7 @@ document.onkeyup = (e) => {
                     $('#adminPanelBtn').fadeOut(200)
                     $('.c-form__toggle').attr('data-title', 'RATÉ !')
                 } else {
-                    var hashFromServer = response
+                    let hashFromServer = response
 
                     // eslint-disable-next-line node/handle-callback-err
                     bcrypt.compare(
