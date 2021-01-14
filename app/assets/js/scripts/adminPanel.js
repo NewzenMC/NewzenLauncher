@@ -1,5 +1,4 @@
 const Octicons = require('@primer/octicons')
-const bcrypt = require('bcrypt')
 
 let uuidWithAccess = null
 let isLoggedIn = false
