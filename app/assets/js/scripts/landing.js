@@ -158,7 +158,8 @@ function updateSelectedServer(serv) {
     ConfigManager.setSelectedServer(serv != null ? serv.getID() : null)
     ConfigManager.save()
     server_selection_button.innerHTML =
-        '\u2022 ' + (serv != null ? serv.getName() : 'Aucun Serveur Sélectionné')
+        '\u2022 ' +
+        (serv != null ? serv.getName() : 'Aucun Serveur Sélectionné')
     if (getCurrentView() === VIEWS.settings) {
         animateModsTabRefresh()
     }
@@ -256,11 +257,17 @@ const refreshServerStatus = async function (fade = false) {
         if (servStat.online) {
             pLabel = 'Joueurs'
             pVal = servStat.onlinePlayers + '/' + servStat.maxPlayers
+            if (servStat.version.includes('Maintenance')) {
+                DiscordWrapper.changeServerStatus('maintenance')
+            } else {
+                DiscordWrapper.changeServerStatus('online')
+            }
         }
     } catch (err) {
         loggerLanding.warn(
             "Impossible d'actualiser le status du serveur, sans doute Hors-Ligne."
         )
+        DiscordWrapper.changeServerStatus('offline')
         loggerLanding.debug(err)
     }
     if (fade) {
@@ -563,7 +570,8 @@ function dlAsync(login = true) {
         loggerLaunchSuite.error('Error during launch', err)
         showLaunchFailure(
             'Erreur durant le lancement',
-            err.message || 'Vérifiez la console (CTRL + Shift + i) pour plus de détails'
+            err.message ||
+                'Vérifiez la console (CTRL + Shift + i) pour plus de détails'
         )
     })
     aEx.on('close', (code, signal) => {
@@ -585,23 +593,29 @@ function dlAsync(login = true) {
                 case 'distribution':
                     setLaunchPercentage(20, 100)
                     loggerLaunchSuite.log('Validated distibution index.')
-                    setLaunchDetails('Chargement des informations de version...')
+                    setLaunchDetails(
+                        'Chargement des informations de version...'
+                    )
                     break
                 case 'version':
                     setLaunchPercentage(40, 100)
                     loggerLaunchSuite.log('Version data loaded.')
-                    setLaunchDetails('Vérification de l\'intégrité des fichiers..')
+                    setLaunchDetails(
+                        "Vérification de l'intégrité des fichiers.."
+                    )
                     break
                 case 'assets':
                     setLaunchPercentage(60, 100)
                     loggerLaunchSuite.log('Asset Validation Complete')
-                    setLaunchDetails('Validations de l\'intégrité des librairies...')
+                    setLaunchDetails(
+                        "Validations de l'intégrité des librairies..."
+                    )
                     break
                 case 'libraries':
                     setLaunchPercentage(80, 100)
                     loggerLaunchSuite.log('Library validation complete.')
                     setLaunchDetails(
-                        'Validation de l\'intégrité de fichiers divers...'
+                        "Validation de l'intégrité de fichiers divers..."
                     )
                     break
                 case 'files':
@@ -759,7 +773,7 @@ function dlAsync(login = true) {
                         )
                         showLaunchFailure(
                             'Erreur durant le Lancement',
-                            'Le fichier principal, LaunchWrapper, n\'a pas réussi à se télécharger. Le Jeu ne peut donc pas se lancer<br><br>Essayez de désactiver temporairement votre antivirus et rééssayez'
+                            "Le fichier principal, LaunchWrapper, n'a pas réussi à se télécharger. Le Jeu ne peut donc pas se lancer<br><br>Essayez de désactiver temporairement votre antivirus et rééssayez"
                         )
                     }
                 }
@@ -845,7 +859,7 @@ function dlAsync(login = true) {
                     if (DistroManager.getDistribution() == null) {
                         showLaunchFailure(
                             'Erreur Fatale',
-                            'Impossible de charger l\'index de distribution ! Vérifiez la console (CTRL + Shift + i) pour plus de détails'
+                            "Impossible de charger l'index de distribution ! Vérifiez la console (CTRL + Shift + i) pour plus de détails"
                         )
 
                         // Disconnect from AssetExec
