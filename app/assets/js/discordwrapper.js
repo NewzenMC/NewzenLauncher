@@ -14,25 +14,24 @@ exports.initRPC = function () {
         details: 'Sur le Launcher',
         largeImageKey: 'newzen',
         largeImageText: 'Newzen',
-        smallImageKey: 'maintenance',
-        smallImageText: 'Maintenance',
-        instance: false
+        smallImageKey: 'unknown',
+        smallImageText: 'Status du Serveur Inconnu',
+        instance: true
     }
 
     client.on('connected', () => {
-        logger.log('Discord RPC Connecté')
+        logger.info('Discord RPC Connecté')
         client.setActivity(activity)
     })
 
     client.login({ clientId: '726151873983283300' }).catch((error) => {
         if (error.message.includes('ENOENT')) {
-            logger.log(
-                "Impossible d'initialiser Discord RPC, aucun client détecté !"
+            logger.warn(
+                "Impossible d'initialiser Discord RPC, aucun client Discord détecté !"
             )
         } else {
-            logger.log(
-                "Impossible d'initialiser Discord RPC : " +
-                    error.message,
+            logger.error(
+                "Impossible d'initialiser Discord RPC : " + error.message,
                 error
             )
         }
@@ -42,6 +41,7 @@ exports.initRPC = function () {
 exports.updateDetails = function (details) {
     activity.details = details
     client.setActivity(activity)
+    logger.debug('Détails changés en ' + details)
 }
 
 exports.shutdownRPC = function () {
@@ -50,6 +50,38 @@ exports.shutdownRPC = function () {
     client.destroy()
     client = null
     activity = null
+    logger.info('Discord RPC Stoppée !')
+}
+
+exports.changeServerStatus = function (status) {
+    switch (status) {
+        case 'online':
+            activity.smallImageKey = 'online'
+            activity.smallImageText = 'Serveur en Ligne'
+            client.setActivity(activity)
+            logger.debug('Status du Serveur Changé en Online')
+            break
+        case 'offline':
+            activity.smallImageKey = 'offline'
+            activity.smallImageText = 'Serveur Hors-Ligne'
+            client.setActivity(activity)
+            logger.debug('Status du Serveur Changé en Offline')
+            break
+        case 'maintenance':
+            activity.smallImageKey = 'maintenance'
+            activity.smallImageText = 'Serveur en Maintenance'
+            client.setActivity(activity)
+            logger.debug('Status du Serveur Changé en Maintenance')
+            break
+        case 'unknown':
+            activity.smallImageKey = 'unknown'
+            activity.smallImageText = 'Status du Serveur Inconnu'
+            client.setActivity(activity)
+            logger.debug('Status du Serveur Changé en Inconnu')
+            break
+        default:
+            throw new Error('Unknown status: ' + status)
+    }
 }
 
 this.initRPC()
