@@ -1244,6 +1244,7 @@ function loadNews() {
     return new Promise((resolve, reject) => {
         const distroData = DistroManager.getDistribution()
         const newsFeed = distroData.getRSS()
+        //FIX Erreur dans la console au moment de parsing de l'URL Solution => Désactiver totalement le sytème de news en le remplacant par autre chose
         const newsHost = new URL(newsFeed).origin + '/'
         $.ajax({
             url: newsFeed,
