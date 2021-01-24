@@ -4022,3 +4022,142 @@ ul {
 .tabBlock-pane > :last-child {
     margin-bottom: 0;
 }
+
+/*******************************************************************************
+ *                                                                             *
+ * CuteToasts (https://github.com/gustavosmanc/cute-alert)                     *
+ *                                                                             *
+ ******************************************************************************/
+
+@keyframes open-toast {
+    0% {
+        transform: scaleX(1) scaleY(1);
+    }
+    20%,
+    45% {
+        transform: scaleX(1.35) scaleY(0.1);
+    }
+    65% {
+        transform: scaleX(0.8) scaleY(1.7);
+    }
+    80% {
+        transform: scaleX(0.6) scaleY(0.85);
+    }
+    100% {
+        transform: scaleX(1) scaleY(1);
+    }
+}
+
+.toast-container {
+    top: 15px;
+    right: 15px;
+    overflow: hidden;
+    position: fixed;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgb(0, 0, 0, 0.2);
+    animation: open-toast 0.3s linear;
+    z-index: 999999;
+}
+
+.toast-frame {
+    padding: 5px 15px;
+    display: flex;
+    min-width: 100px;
+    height: 60px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.toast-img {
+    height: 40px;
+}
+
+.toast-message {
+    font-size: 14px !important;
+    font-weight: 600;
+    font-size: 15px;
+    font-family: 'Avenir Book';
+    color: #fff;
+    margin-left: 15px;
+}
+
+@keyframes timer {
+    0% {
+        width: 100%;
+    }
+    25% {
+        width: 75%;
+    }
+    50% {
+        width: 50%;
+    }
+    75% {
+        width: 25%;
+    }
+    100% {
+        width: 1%;
+    }
+}
+
+.toast-timer {
+    width: 1%;
+    height: 5px;
+}
+
+.error-bg {
+    background: #d85261;
+}
+
+.success-bg {
+    background: #2dd284;
+}
+
+.warning-bg {
+    background: #fada5e;
+}
+
+.question-bg {
+    background: #779ecb;
+}
+
+.error-btn:hover {
+    background: #e5a4b4;
+}
+
+.success-btn:hover {
+    background: #6edaa4;
+}
+
+.warning-btn:hover {
+    background: #fcecae;
+}
+
+.info-btn:hover {
+    background: #c3e6fb;
+}
+
+.question-btn:hover {
+    background: #bacee4;
+}
+
+.error-timer {
+    background: #e5a4b4;
+}
+
+.success-timer {
+    background: #6edaa4;
+}
+
+.warning-timer {
+    background: #fcecae;
+}
+
+.info-timer {
+    background: #c3e6fb;
+}
+
+.info-bg {
+    background: #88cef7;
+}
