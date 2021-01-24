@@ -4049,7 +4049,7 @@ ul {
 }
 
 .toast-container {
-    top: 15px;
+    top: 40px;
     right: 15px;
     overflow: hidden;
     position: fixed;
