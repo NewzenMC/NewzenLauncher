@@ -28,9 +28,9 @@ process.traceProcessWarnings = true
 process.traceDeprecation = true
 
 // Disable eval function.
-// eslint-disable-next-line
-window.eval = global.eval = function () {
-    throw new Error('Sorry, this app does not support window.eval().')
+// eslint-disable-next-line no-eval
+window.eval = global.eval = () => {
+    throw new Error('eval() disabled for security reasons')
 }
 
 // Display warning when devtools window is opened.
