@@ -10,15 +10,13 @@ $('#sendDiscordConfirmBtn:enabled').on('click', () => {
     socket.emit('authRequest', null)
     socket.on('authResponse', (response) => {
         if (response) {
-            btn.text('Accès Autorisé !')
-            setTimeout(() => {
-                btn.removeAttr('disabled')
-                btn.text('Vérifier mon Identité')
-                $('#adminPanelLogin').fadeOut(500)
-                $('#adminPanelContent').fadeIn(500)
-            }, 2000)
+            cuteToast('success', 'Accès Autorisé', 5000)
+            btn.removeAttr('disabled')
+            btn.text('Vérifier mon Identité')
+            $('#adminPanelLogin').fadeOut(500)
+            $('#adminPanelContent').fadeIn(500)
         } else {
-            btn.text('Accès Refusé !')
+            cuteToast('error', 'Accès Refusé')
             setTimeout(() => {
                 btn.removeAttr('disabled')
                 btn.text('Vérifier mon Identité')
