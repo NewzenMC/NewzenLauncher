@@ -8,7 +8,7 @@ function getCurrentPlatform() {
         case 'darwin':
             return Platform.MAC
         case 'linux':
-            return Platform.linux
+            return Platform.LINUX
         default:
             console.error('Cannot resolve current platform!')
             return undefined
@@ -23,9 +23,9 @@ builder
         ).createTarget(),
         config: {
             appId: 'newzenlauncher',
-            productName: 'Newzen Launcher',
+            productName: 'NewzenLauncher',
             artifactName: '${productName}-setup-${version}.${ext}',
-            copyright: 'Copyright © 2020 Newzen',
+            copyright: 'Copyright © 2021 Newzen',
             directories: {
                 buildResources: 'build',
                 output: 'dist'
@@ -53,13 +53,12 @@ builder
                 maintainer: 'Titouan Petit (TIEB62)',
                 vendor: 'Newzen',
                 synopsis: 'Launcher de Newzen',
-                description:
-                    'Le Launcher Officiel de Newzen (Serveur Minecraft)',
+                description: 'Launcher Officiel de Newzen',
                 category: 'Game'
             },
             compression: 'maximum',
             files: [
-                '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.travis.yml,.nvmrc,.eslintrc.json,build.js}'
+                '!{dist,.gitignore,.github,README.md,.vscode,docs,dev-app-update.yml,.nvmrc,.eslintrc.json,.eslintignore,build.js,.prettierignore,.prettierrc.json}'
             ],
             extraResources: ['libraries'],
             asar: true
