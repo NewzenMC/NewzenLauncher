@@ -6,6 +6,4 @@
 /.vscode/
 
 # Ignore Logs and Build data
-/target/
-/logs/
 /dist/
