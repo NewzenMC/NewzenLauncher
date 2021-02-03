@@ -22,8 +22,8 @@ socket.on('disconnect', () => {
 socket.on('message', (data) => {
     if (data.maintenance) Maintenance.enableMaintenance()
     else Maintenance.disableMaintenance()
-    permisisonLevel = data.adminPanelPermissions
-    if (permisisonLevel !== 0) {
+    permissionLevel = data.adminPanelPermissions
+    if (permissionLevel !== 0) {
         $('#adminPanelBtn').fadeIn(200)
     } else {
         $('#adminPanelBtn').fadeOut(200)
