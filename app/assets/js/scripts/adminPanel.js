@@ -8,7 +8,7 @@ $('#sendDiscordConfirmBtn:enabled').on('click', () => {
     btn.attr('disabled', 'disabled')
     btn.text('Vérification...')
     socket.emit('authRequest', null)
-    socket.on('authResponse', (response) => {
+    socket.once('authResponse', (response) => {
         if (response) {
             cuteToast('success', 'Accès Autorisé', 5000)
             btn.removeAttr('disabled')
