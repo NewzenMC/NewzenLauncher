@@ -232,7 +232,7 @@ exports.isFirstLaunch = function () {
  * @returns {string} The name of the folder.
  */
 exports.getTempNativeFolder = function () {
-    return 'WCNatives'
+    return 'NewzenNatives'
 }
 
 // System Settings (Unconfigurable on UI)
