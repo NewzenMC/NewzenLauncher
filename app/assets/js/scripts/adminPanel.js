@@ -1,5 +1,3 @@
-const Octicons = require('@primer/octicons')
-
 let uuidWithAccess = null
 let isLoggedIn = false
 
@@ -28,8 +26,6 @@ $('#sendDiscordConfirmBtn:enabled').on('click', () => {
 $('#adminPanelBtn').on('click', () => {
     switchView(getCurrentView(), VIEWS.adminPanel)
 })
-
-$('#backAdminPanelSVG').html(Octicons['chevron-left'].toSVG())
 
 $('#backAdminPanelBtn').on('click', () => {
     switchView(getCurrentView(), VIEWS.landing)
