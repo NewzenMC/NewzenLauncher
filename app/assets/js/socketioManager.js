@@ -10,6 +10,8 @@ let datacenterConnectionInterval = null
 
 socket.on('connect', () => {
     socket.send(Object.keys(ConfigManager.getAuthAccounts())[0])
+    $('#adminPanelLogin').fadeIn(500)
+    $('#adminPanelContent').fadeOut(500)
     datacenterConnection = true
     refreshNoDatacenterConnectionOverlay()
 })
