@@ -4035,10 +4035,29 @@ ul {
  *                                                                             *
  ******************************************************************************/
 
+.terminal {
+    background-color: #212155;
+    color: white;
+    font: 0.85rem Inconsolata, monospace;
+    overflow: auto;
+    display: block;
+    height: 350px;
+    padding: 15px;
+    border-radius: 10px;
 }
 
+.terminal::-webkit-scrollbar {
+    width: 12px;
 }
+.terminal::-webkit-scrollbar-track {
+    background: transparent;
 }
+.terminal::-webkit-scrollbar-thumb {
+    background-color: royalblue; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid #212155; /* creates padding around scroll thumb */
 }
 
+.terminal div {
+    color: white;
 }
