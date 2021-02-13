@@ -3886,14 +3886,6 @@ input:checked + .toggleSwitchSlider:before {
     margin-top: 30px;
 }
 
-#backAdminPanelSVG svg {
-    height: 30px;
-    width: auto;
-    align-items: center;
-    background: none;
-    fill: black;
-}
-
 #adminPanelContent {
     margin: 0 auto;
     margin-top: 50px;
