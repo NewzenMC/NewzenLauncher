@@ -65,6 +65,7 @@
                 </div>
             </div>
         </div>
+        <script src="../node_modules/notyf/notyf.min.js"></script>
         <script>
             // Load language
             for (let key of Object.keys(Lang.query('html'))) {
@@ -72,6 +73,16 @@
                     `html.${key}`
                 )
             }
+            /* Initialize Notyf */
+            const notyf = new Notyf({
+                duration: 5000,
+                dismissible: true,
+                ripple: true,
+                position: {
+                    y: 'top',
+                    x: 'right'
+                }
+            })
         </script>
     </body>
 </html>
