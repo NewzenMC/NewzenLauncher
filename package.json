@@ -22,7 +22,7 @@
         "node": "12.x.x"
     },
     "dependencies": {
-        "adm-zip": "^0.5.2",
+        "adm-zip": "^0.5.4",
         "async": "^3.2.0",
         "discord-rpc": "^3.2.0",
         "ejs": "^3.1.6",
