@@ -43,8 +43,8 @@ socket.on('maintenance', (status) => {
 function refreshNoDatacenterConnectionOverlay() {
     if (!datacenterConnection) {
         setOverlayContent(
-            'Connection aux Serveurs de Données Impossible',
-            'Il est actuellement impossible de se connecter aux Serveurs de Données de Newzen<br>Vérifiez votre connection Internet !<br>Si le problème persiste, veuillez le signaler à TIEB62#3087 sur le Discord de Newzen !',
+            'Connection aux Centres de Données Impossible',
+            'Il est actuellement impossible de se connecter aux Centres de Données de Newzen<br>Vérifiez votre connection Internet !<br>Si le problème persiste, veuillez le signaler à TIEB62#3087 sur le Discord de Newzen !',
             'Rejoindre le Discord'
         ) //TODO Mettre un lien vers la page de status de Newzen
         setOverlayHandler(() => {
