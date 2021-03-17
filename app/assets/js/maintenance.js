@@ -15,12 +15,22 @@ exports.isMaintenance = function () {
 exports.enableMaintenance = () => {
     if (this.isMaintenance()) return
     setOverlayContent('Maintenance', 'Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d\'informations', 'Rejoindre le Discord')
+    if (permissionLevel >= 3) setOverlayContent('Maintenance', 'Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d\'informations', 'Accéder au Panel Admin')
     setOverlayHandler(() => {
         require('electron').shell.openExternal('https://tieb62.freeboxos.fr/discord')
     })
+    if (permissionLevel >= 3) setOverlayHandler(() => {
+        switchView(getCurrentView(), VIEWS.adminPanel)
+    })
     $('#main').fadeOut()
     maintenanceInterval = setInterval(() => {
-        toggleOverlay(true)
+        if (permissionLevel >= 3 && getCurrentView() === "#adminPanelContainer") {
+            toggleOverlay(false)
+            $('#main').fadeIn()
+        } else {
+            toggleOverlay(true)
+            $('#main').fadeOut()
+        }
     }, 100)
     toggleOverlay(true)
     maintenanceStatus = true
