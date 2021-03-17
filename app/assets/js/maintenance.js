@@ -24,7 +24,7 @@ exports.enableMaintenance = () => {
     })
     $('#main').fadeOut()
     maintenanceInterval = setInterval(() => {
-        if (permissionLevel >= 3 && getCurrentView() === "#adminPanelContainer") {
+        if (permissionLevel >= 3 && getCurrentView() === '#adminPanelContainer') {
             toggleOverlay(false)
             $('#main').fadeIn()
         } else {

@@ -279,7 +279,6 @@ loginButton.addEventListener('click', () => {
 
     AuthManager.addAccount(loginUsername.value, loginPassword.value)
         .then((value) => {
-
             // Connect to NewzenManager
             socket.connect()
 
