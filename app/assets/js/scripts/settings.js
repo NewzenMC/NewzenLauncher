@@ -406,6 +406,9 @@ function bindAuthAccountLogOut() {
                     processLogOut(val, isLastAccount)
                     toggleOverlay(false)
                     switchView(getCurrentView(), VIEWS.login)
+                    setTimeout(() => {
+                        socket.disconnect()
+                    }, 1000)
                 })
                 setDismissHandler(() => {
                     toggleOverlay(false)

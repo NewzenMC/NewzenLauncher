@@ -279,6 +279,10 @@ loginButton.addEventListener('click', () => {
 
     AuthManager.addAccount(loginUsername.value, loginPassword.value)
         .then((value) => {
+
+            // Connect to NewzenManager
+            socket.connect()
+
             updateSelectedAccount(value)
             loginButton.innerHTML = loginButton.innerHTML.replace(
                 Lang.queryJS('login.loggingIn'),

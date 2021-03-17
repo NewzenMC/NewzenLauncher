@@ -41,6 +41,7 @@ socket.on('maintenance', (status) => {
 })
 
 function refreshNoDatacenterConnectionOverlay() {
+    if (Object.keys(ConfigManager.getAuthAccounts())[0] === undefined) return
     if (!datacenterConnection) {
         setOverlayContent(
             'Connection aux Centres de Données Impossible',
