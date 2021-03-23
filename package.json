@@ -33,7 +33,7 @@
         "jquery": "^3.6.0",
         "notyf": "^3.9.0",
         "request": "^2.88.2",
-        "semver": "^7.3.4",
+        "semver": "^7.3.5",
         "socket.io-client": "^4.0.0",
         "tar-fs": "^2.1.1",
         "winreg": "^1.2.4"
