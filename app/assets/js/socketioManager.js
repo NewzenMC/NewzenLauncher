@@ -5,6 +5,7 @@ setTimeout(() => {
 const Maintenance = require('./assets/js/maintenance')
 
 let permissionLevel = 0
+
 let datacenterConnection = false
 let datacenterConnectionInterval = null
 
@@ -29,6 +30,68 @@ socket.on('message', (data) => {
         $('#adminPanelBtn').fadeIn(200)
     } else {
         $('#adminPanelBtn').fadeOut(200)
+    }
+    switch (permissionLevel) {
+        case 0:
+            $('#adminPanelBtn').fadeOut(200)
+            $('#adminPanelPlayersTab').hide()
+            $('#adminPanelBungeeTab').hide()
+            $('#adminPanelLobbyTab').hide()
+            $('#adminPanelMainTab').hide()
+            $('#adminPanelMaintenanceTab').hide()
+            $('#adminPanelNewzenBotTab').hide()
+            $('#adminPanelDevTab').hide()
+            break;
+        case 1: //TODO SPECIAL : Juste accès a la liste des joueurs (Kick+Ban+Mute, etc)
+            $('#adminPanelBtn').fadeIn(200)
+            $('#adminPanelPlayersTab').show()
+            $('#adminPanelBungeeTab').hide()
+            $('#adminPanelLobbyTab').hide()
+            $('#adminPanelMainTab').hide()
+            $('#adminPanelMaintenanceTab').hide()
+            $('#adminPanelNewzenBotTab').hide()
+            $('#adminPanelDevTab').hide()
+            break;
+        case 2: //TODO SPECIAL : Tout le 1 PLUS accès au TPS et force-clearlag
+            $('#adminPanelBtn').fadeIn(200)
+            $('#adminPanelPlayersTab').show()
+            $('#adminPanelBungeeTab').hide()
+            $('#adminPanelLobbyTab').hide()
+            $('#adminPanelMainTab').hide()
+            $('#adminPanelMaintenanceTab').hide()
+            $('#adminPanelNewzenBotTab').hide()
+            $('#adminPanelDevTab').hide()
+            break;
+        case 3:
+            $('#adminPanelBtn').fadeIn(200)
+            $('#adminPanelPlayersTab').show()
+            $('#adminPanelBungeeTab').show()
+            $('#adminPanelLobbyTab').show()
+            $('#adminPanelMainTab').show()
+            $('#adminPanelMaintenanceTab').hide()
+            $('#adminPanelNewzenBotTab').hide()
+            $('#adminPanelDevTab').hide()
+            break;
+        case 4:
+            $('#adminPanelBtn').fadeIn(200)
+            $('#adminPanelPlayersTab').show()
+            $('#adminPanelBungeeTab').show()
+            $('#adminPanelLobbyTab').show()
+            $('#adminPanelMainTab').show()
+            $('#adminPanelMaintenanceTab').show()
+            $('#adminPanelNewzenBotTab').show()
+            $('#adminPanelDevTab').hide()
+            break;
+        case 5:
+            $('#adminPanelBtn').fadeIn(200)
+            $('#adminPanelPlayersTab').show()
+            $('#adminPanelBungeeTab').show()
+            $('#adminPanelLobbyTab').show()
+            $('#adminPanelMainTab').show()
+            $('#adminPanelMaintenanceTab').show()
+            $('#adminPanelNewzenBotTab').show()
+            $('#adminPanelDevTab').show()
+            break;
     }
 })
 
