@@ -41,7 +41,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
-            break;
+            break
         case 1: //TODO SPECIAL : Juste accès a la liste des joueurs (Kick+Ban+Mute, etc)
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
@@ -51,7 +51,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
-            break;
+            break
         case 2: //TODO SPECIAL : Tout le 1 PLUS accès au TPS et force-clearlag
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
@@ -61,7 +61,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
-            break;
+            break
         case 3:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
@@ -71,7 +71,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
-            break;
+            break
         case 4:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
@@ -81,7 +81,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').show()
             $('#adminPanelNewzenBotTab').show()
             $('#adminPanelDevTab').hide()
-            break;
+            break
         case 5:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
@@ -91,7 +91,7 @@ socket.on('message', (data) => {
             $('#adminPanelMaintenanceTab').show()
             $('#adminPanelNewzenBotTab').show()
             $('#adminPanelDevTab').show()
-            break;
+            break
     }
 })
 
