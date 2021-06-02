@@ -39,7 +39,7 @@
         "winreg": "^1.2.4"
     },
     "devDependencies": {
-        "@types/socket.io-client": "^1.4.36",
+        "@types/socket.io-client": "^3.0.0",
         "cross-env": "^7.0.3",
         "ejs-lint": "^1.2.0",
         "electron": "^12.0.7",
