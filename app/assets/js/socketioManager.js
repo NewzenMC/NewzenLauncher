@@ -1,4 +1,4 @@
-const socket = require('socket.io-client')('http://tieb62.freeboxos.fr:8080')
+const socket = require('socket.io-client')('http://newzen.fr:8080')
 setTimeout(() => {
     refreshNoDatacenterConnectionOverlay()
 }, 5000)
@@ -112,9 +112,7 @@ function refreshNoDatacenterConnectionOverlay() {
             'Rejoindre le Discord'
         ) //TODO Mettre un lien vers la page de status de Newzen
         setOverlayHandler(() => {
-            require('electron').shell.openExternal(
-                'https://tieb62.freeboxos.fr/discord'
-            )
+            require('electron').shell.openExternal('https://discord.newzen.fr')
         })
         $('#main').fadeOut()
         datacenterConnectionInterval = setInterval(() => {

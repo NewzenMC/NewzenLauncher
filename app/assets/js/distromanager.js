@@ -572,7 +572,7 @@ exports.pullRemote = function () {
         return exports.pullLocal()
     }
     return new Promise((resolve, reject) => {
-        const distroURL = 'https://tieb62.freeboxos.fr/distribution.json'
+        const distroURL = 'https://launcher.newzen.fr/distribution.json'
         const opts = {
             url: distroURL,
             timeout: 2500
