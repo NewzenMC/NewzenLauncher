@@ -14,11 +14,11 @@ let client
  */
 let activity
 
-exports.initRPC = function () {
+exports.initRPC = () => {
     client = new RPC.Client({ transport: 'ipc' })
 
     activity = {
-        details: 'Sur le Launcher',
+        state: 'Sur le Launcher',
         largeImageKey: 'newzen',
         largeImageText: 'Newzen',
         instance: true,
@@ -26,8 +26,7 @@ exports.initRPC = function () {
             { label: 'Site', url: 'https://newzen.fr' },
             { label: 'Discord', url: 'https://discord.newzen.fr' }
         ],
-        //TODO Mettre le pseudo du compte sélectionné
-        state: 'METTRE LE PSEUDO DU GARS'
+        details: 'Récupération du Pseudo...'
         //NEWFEATURE Utiliser les spectateSecret, joinSecret, partySize, partyMax, etc pour rejoindre la partie du gars
     }
 
@@ -50,13 +49,32 @@ exports.initRPC = function () {
     })
 }
 
-exports.updateDetails = async function (details) {
-    activity.details = details
+exports.updateState = async (details) => {
+    activity.state = details
     await client.setActivity(activity)
-    logger.debug('Détails changés en ' + details)
+    logger.info('Status changé en ' + details)
 }
 
-exports.shutdownRPC = async function () {
+exports.updateUsername = async (username) => {
+    activity.details = username
+    // Initial call of this function is before RPC is initialized but we need to save username in activity object (will be used during RPC Initialization)
+    if (client !== null) await client.setActivity(activity)
+    logger.info('Pseudo changé en ' + username)
+}
+
+exports.startTimer = async () => {
+    activity.startTimestamp = Date.now()
+    await client.setActivity(activity)
+    logger.info('Timer Démarré')
+}
+
+exports.stopTimer = async () => {
+    activity.startTimestamp = undefined
+    await client.setActivity(activity)
+    logger.info('Timer Stoppé')
+}
+
+exports.shutdownRPC = async () => {
     if (!client) return
     await client.clearActivity()
     await client.destroy()

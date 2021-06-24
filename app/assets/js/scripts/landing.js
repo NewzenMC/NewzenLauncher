@@ -147,6 +147,7 @@ function updateSelectedAccount(authUser) {
         }
     }
     user_text.innerHTML = username
+    DiscordWrapper.updateUsername(username)
 }
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
@@ -726,7 +727,7 @@ function dlAsync(login = true) {
                 const onLoadComplete = () => {
                     toggleLaunchArea(false)
                     if (hasRPC) {
-                        DiscordWrapper.updateDetails('Chargement du Jeu..')
+                        DiscordWrapper.updateState('Chargement du Jeu..')
                     }
                     proc.stdout.on('data', gameStateChange)
                     proc.stdout.removeListener('data', tempListener)
@@ -753,9 +754,10 @@ function dlAsync(login = true) {
                 const gameStateChange = function (data) {
                     data = data.trim()
                     if (SERVER_JOINED_REGEX.test(data)) {
-                        DiscordWrapper.updateDetails('Sur le Menu')
+                        DiscordWrapper.updateState('Sur le Menu')
+                        DiscordWrapper.startTimer()
                     } else if (GAME_JOINED_REGEX.test(data)) {
-                        DiscordWrapper.updateDetails('Connecté sur Newzen')
+                        DiscordWrapper.updateState('Connecté sur Newzen')
                     }
                 }
 
@@ -789,6 +791,8 @@ function dlAsync(login = true) {
                     const distro = DistroManager.getDistribution()
                     proc.on('close', (code, signal) => {
                         proc = null
+                        DiscordWrapper.updateState('Sur le Launcher')
+                        DiscordWrapper.stopTimer()
                     })
                 } catch (err) {
                     loggerLaunchSuite.error('Erreur durant le lancement', err)
