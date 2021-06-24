@@ -58,7 +58,9 @@ exports.updateState = async (details) => {
 exports.updateUsername = async (username) => {
     activity.details = username
     // Initial call of this function is before RPC is initialized but we need to save username in activity object (will be used during RPC Initialization)
-    if (client !== null) await client.setActivity(activity)
+    try {
+        await client.setActivity(activity)
+    } catch (error) {}
     logger.info('Pseudo changé en ' + username)
 }
 
