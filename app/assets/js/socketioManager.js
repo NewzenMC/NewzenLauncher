@@ -1,4 +1,4 @@
-const socket = require('socket.io-client')('http://newzen.fr:8080')
+const socket = require('socket.io-client')('http://ws.newzen.fr:8080')
 setTimeout(() => {
     refreshNoDatacenterConnectionOverlay()
 }, 5000)
