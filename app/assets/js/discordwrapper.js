@@ -71,6 +71,7 @@ exports.startTimer = async () => {
 }
 
 exports.stopTimer = async () => {
+    if (activity.startTimestamp === undefined) return
     activity.startTimestamp = undefined
     await client.setActivity(activity)
     logger.info('Timer Stoppé')
