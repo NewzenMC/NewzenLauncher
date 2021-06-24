@@ -4,7 +4,14 @@ const logger = require('./loggerutil')(
 )
 
 const RPC = require('discord-rpc')
+
+/**
+ * @type {RPC.Client}
+ */
 let client
+/**
+ * @type {RPC.Presence}
+ */
 let activity
 
 exports.initRPC = function () {
@@ -14,14 +21,19 @@ exports.initRPC = function () {
         details: 'Sur le Launcher',
         largeImageKey: 'newzen',
         largeImageText: 'Newzen',
-        smallImageKey: 'unknown',
-        smallImageText: 'Status du Serveur Inconnu',
-        instance: true
+        instance: true,
+        buttons: [
+            { label: 'Site', url: 'https://newzen.fr' },
+            { label: 'Discord', url: 'https://discord.newzen.fr' }
+        ],
+        //TODO Mettre le pseudo du compte sélectionné
+        state: 'METTRE LE PSEUDO DU GARS'
+        //NEWFEATURE Utiliser les spectateSecret, joinSecret, partySize, partyMax, etc pour rejoindre la partie du gars
     }
 
-    client.on('connected', () => {
+    client.on('connected', async () => {
+        await client.setActivity(activity)
         logger.info('Discord RPC Connecté')
-        client.setActivity(activity)
     })
 
     client.login({ clientId: '726151873983283300' }).catch((error) => {
@@ -38,50 +50,19 @@ exports.initRPC = function () {
     })
 }
 
-exports.updateDetails = function (details) {
+exports.updateDetails = async function (details) {
     activity.details = details
-    client.setActivity(activity)
+    await client.setActivity(activity)
     logger.debug('Détails changés en ' + details)
 }
 
-exports.shutdownRPC = function () {
+exports.shutdownRPC = async function () {
     if (!client) return
-    client.clearActivity()
-    client.destroy()
+    await client.clearActivity()
+    await client.destroy()
     client = null
     activity = null
-    logger.info('Discord RPC Stoppée !')
-}
-
-exports.changeServerStatus = function (status) {
-    switch (status) {
-        case 'online':
-            activity.smallImageKey = 'online'
-            activity.smallImageText = 'Serveur en Ligne'
-            client.setActivity(activity)
-            logger.debug('Status du Serveur Changé en Online')
-            break
-        case 'offline':
-            activity.smallImageKey = 'offline'
-            activity.smallImageText = 'Serveur Hors-Ligne'
-            client.setActivity(activity)
-            logger.debug('Status du Serveur Changé en Offline')
-            break
-        case 'maintenance':
-            activity.smallImageKey = 'maintenance'
-            activity.smallImageText = 'Serveur en Maintenance'
-            client.setActivity(activity)
-            logger.debug('Status du Serveur Changé en Maintenance')
-            break
-        case 'unknown':
-            activity.smallImageKey = 'unknown'
-            activity.smallImageText = 'Status du Serveur Inconnu'
-            client.setActivity(activity)
-            logger.debug('Status du Serveur Changé en Inconnu')
-            break
-        default:
-            throw new Error('Unknown status: ' + status)
-    }
+    logger.info('Discord RPC Stoppé !')
 }
 
 this.initRPC()
