@@ -677,9 +677,8 @@ class JavaGuard extends EventEmitter {
                                     scanDir,
                                     files[i]
                                 )
-                                const execPath = JavaGuard.javaExecFromRoot(
-                                    combinedPath
-                                )
+                                const execPath =
+                                    JavaGuard.javaExecFromRoot(combinedPath)
 
                                 fs.exists(execPath, (v) => {
                                     if (v) {
@@ -1670,10 +1669,11 @@ class AssetGuard extends EventEmitter {
                             type
                         )
                         try {
-                            let forgeData = await AssetGuard._finalizeForgeAsset(
-                                asset,
-                                self.commonPath
-                            )
+                            let forgeData =
+                                await AssetGuard._finalizeForgeAsset(
+                                    asset,
+                                    self.commonPath
+                                )
                             resolve(forgeData)
                         } catch (err) {
                             reject(err)

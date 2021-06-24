@@ -354,9 +354,8 @@ function populateAccountListings() {
             <div class="accountListingName">${accounts[i].displayName}</div>
         </button>`
     }
-    document.getElementById(
-        'accountSelectListScrollable'
-    ).innerHTML = htmlString
+    document.getElementById('accountSelectListScrollable').innerHTML =
+        htmlString
 }
 
 function prepareServerSelectionList() {

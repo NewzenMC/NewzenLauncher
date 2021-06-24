@@ -290,9 +290,8 @@ function settingsNavItemListener(ele, fade = true) {
     selectedSettingsTab = ele.getAttribute('rSc')
 
     document.getElementById(prevTab).onscroll = null
-    document.getElementById(
-        selectedSettingsTab
-    ).onscroll = settingsTabScrollListener
+    document.getElementById(selectedSettingsTab).onscroll =
+        settingsTabScrollListener
 
     if (fade) {
         $(`#${prevTab}`).fadeOut(250, () => {
@@ -397,8 +396,8 @@ function bindAuthAccountLogOut() {
             if (Object.keys(ConfigManager.getAuthAccounts()).length === 1) {
                 isLastAccount = true
                 setOverlayContent(
-                    'Attention<br>C\'est votre dernier compte !',
-                        'Pour pouvoir utiliser le launcher, vous devez être connecté avec au moins un compte. Vous aurez besoin de vous reconnecter pour pouvoir utiliser le launcher<br><br>Êtes-vous sûr de vouloir vous déconnecter ?',
+                    "Attention<br>C'est votre dernier compte !",
+                    'Pour pouvoir utiliser le launcher, vous devez être connecté avec au moins un compte. Vous aurez besoin de vous reconnecter pour pouvoir utiliser le launcher<br><br>Êtes-vous sûr de vouloir vous déconnecter ?',
                     'Je suis sûr !',
                     'Annuler'
                 )
