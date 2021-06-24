@@ -9,7 +9,7 @@ const logger = require('./loggerutil')(
 
 const sysRoot =
     process.env.APPDATA ||
-    (process.platform == 'darwin'
+    (process.platform === 'darwin'
         ? process.env.HOME + '/Library/Application Support'
         : process.env.HOME)
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 // Requirements
 const AdmZip = require('adm-zip')
 const async = require('async')
@@ -353,7 +354,7 @@ class JavaGuard extends EventEmitter {
      */
     static parseJavaRuntimeVersion(verString) {
         const major = verString.split('.')[0]
-        if (major == 1) {
+        if (major === 1) {
             return JavaGuard._parseJavaRuntimeVersion_8(verString)
         } else {
             return JavaGuard._parseJavaRuntimeVersion_9(verString)
@@ -1424,6 +1425,7 @@ class AssetGuard extends EventEmitter {
                                       lib.natives[
                                           Library.mojangFriendlyOS()
                                       ].replace(
+                                          // eslint-disable-next-line no-template-curly-in-string
                                           '${arch}',
                                           process.arch.replace('x', '')
                                       )
@@ -1934,6 +1936,7 @@ class AssetGuard extends EventEmitter {
                             let writeStream = fs.createWriteStream(asset.to)
                             writeStream.on('close', () => {
                                 if (dlTracker.callback != null) {
+                                    // eslint-disable-next-line no-useless-call
                                     dlTracker.callback.apply(dlTracker, [
                                         asset,
                                         self

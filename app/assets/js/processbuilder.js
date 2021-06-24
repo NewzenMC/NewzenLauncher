@@ -50,7 +50,7 @@ class ProcessBuilder {
         const tempNativePath = path.join(
             os.tmpdir(),
             ConfigManager.getTempNativeFolder(),
-            crypto.pseudoRandomBytes(16).toString('hex')
+            crypto.randomBytes(16).toString('hex')
         )
         process.throwDeprecation = true
         this.setupLiteLoader()
@@ -766,6 +766,7 @@ class ProcessBuilder {
                     const artifact =
                         lib.downloads.classifiers[
                             lib.natives[Library.mojangFriendlyOS()].replace(
+                                // eslint-disable-next-line no-template-curly-in-string
                                 '${arch}',
                                 process.arch.replace('x', '')
                             )

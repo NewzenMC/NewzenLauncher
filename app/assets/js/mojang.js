@@ -114,10 +114,10 @@ exports.status = function () {
                 } else {
                     for (let i = 0; i < body.length; i++) {
                         const key = Object.keys(body[i])[0]
-                        inner: for (let j = 0; j < statuses.length; j++) {
+                        for (let j = 0; j < statuses.length; j++) {
                             if (statuses[j].service === key) {
                                 statuses[j].status = body[i][key]
-                                break inner
+                                break
                             }
                         }
                     }

@@ -1,3 +1,4 @@
+/* global setOverlayContent permissionLevel setOverlayHandler switchView getCurrentView VIEWS toggleOverlay socket */
 let maintenanceStatus = false
 let maintenanceInterval = null
 
@@ -19,19 +20,21 @@ exports.enableMaintenance = () => {
         "Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d'informations",
         'Rejoindre le Discord'
     )
-    if (permissionLevel >= 3)
+    if (permissionLevel >= 3) {
         setOverlayContent(
             'Maintenance',
             "Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d'informations",
             'Accéder au Panel Admin'
         )
+    }
     setOverlayHandler(() => {
         require('electron').shell.openExternal('https://discord.newzen.fr')
     })
-    if (permissionLevel >= 3)
+    if (permissionLevel >= 3) {
         setOverlayHandler(() => {
             switchView(getCurrentView(), VIEWS.adminPanel)
         })
+    }
     $('#main').fadeOut()
     maintenanceInterval = setInterval(() => {
         if (

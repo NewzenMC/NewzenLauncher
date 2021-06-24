@@ -1,3 +1,4 @@
+/* global VIEWS switchView */
 /**
  * Script for welcome.ejs
  */

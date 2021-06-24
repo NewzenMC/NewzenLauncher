@@ -329,9 +329,9 @@ function mergeModConfiguration(o, n, nReq = false) {
             return n
         }
     } else if (typeof o === 'object') {
-        if (typeof n === 'boolean')
+        if (typeof n === 'boolean') {
             return typeof o.value !== 'undefined' ? o.value : true
-        else if (typeof n === 'object') {
+        } else if (typeof n === 'object') {
             if (!nReq) {
                 n.value = typeof o.value !== 'undefined' ? o.value : true
             }

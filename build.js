@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 const builder = require('electron-builder')
 const Platform = builder.Platform
 

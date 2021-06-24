@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const fs = require('fs')
 const path = require('path')
 const request = require('request')
@@ -190,7 +191,7 @@ class Module {
                       this.getID(),
                       this.getVersion(),
                       `${this.getID()}-${this.getVersion()}${
-                          this.artifactClassifier != undefined
+                          this.artifactClassifier !== undefined
                               ? `-${this.artifactClassifier}`
                               : ''
                       }.${this.getExtension()}`

@@ -1,3 +1,4 @@
+/* eslint-disable no-control-regex */
 const net = require('net')
 
 /**
@@ -9,7 +10,7 @@ const net = require('net')
  * status information.
  */
 exports.getStatus = function (address, port = 25565) {
-    if (port == null || port == '') {
+    if (port === null || port === '') {
         port = 25565
     }
     if (typeof port === 'string') {
@@ -33,7 +34,7 @@ exports.getStatus = function (address, port = 25565) {
         })
 
         socket.on('data', (data) => {
-            if (data != null && data != '') {
+            if (data !== null && data !== '') {
                 let server_info = data.toString().split('\x00\x00\x00')
                 const NUM_FIELDS = 6
                 if (server_info != null && server_info.length >= NUM_FIELDS) {

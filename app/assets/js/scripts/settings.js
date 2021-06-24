@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 // Requirements
 const os = require('os')
 const semver = require('semver')
@@ -56,7 +57,7 @@ function bindFileSelectors() {
             const isJavaExecSel = ele.id === 'settingsJavaExecSel'
             const directoryDialog =
                 ele.hasAttribute('dialogDirectory') &&
-                ele.getAttribute('dialogDirectory') == 'true'
+                ele.getAttribute('dialogDirectory') === 'true'
             const properties = directoryDialog
                 ? ['openDirectory', 'createDirectory']
                 : ['openFile']
@@ -865,7 +866,7 @@ function saveDropinModConfiguration() {
         if (dropinUI != null) {
             const dropinUIEnabled = dropinUI.hasAttribute('enabled')
             if (
-                DropinModUtil.isDropinModEnabled(dropin.fullName) !=
+                DropinModUtil.isDropinModEnabled(dropin.fullName) !==
                 dropinUIEnabled
             ) {
                 DropinModUtil.toggleDropinMod(

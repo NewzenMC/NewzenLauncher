@@ -4,6 +4,7 @@ if (target == null) {
     console.error('Invalid class name passed to argv[2], cannot continue.')
     process.exit(1)
 }
+// eslint-disable-next-line new-cap
 let tracker = new target(...process.argv.splice(3))
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -75,6 +76,7 @@ process.on('message', (msg) => {
                 error: `Invalid class ${msg.class}`
             })
         } else {
+            // eslint-disable-next-line new-cap
             tracker = new target(...msg.args)
             assignListeners()
         }

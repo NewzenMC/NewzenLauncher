@@ -1,3 +1,4 @@
+/* global Lang VIEWS prepareSettings setOverlayContent setOverlayHandler */
 /**
  * Script for login.ejs
  */
@@ -41,8 +42,9 @@ function showError(element, value) {
  * @param {HTMLElement} element The element to shake.
  */
 function shakeError(element) {
-    if (element.style.opacity == 1) {
+    if (element.style.opacity === 1) {
         element.classList.remove('shake')
+        // eslint-disable-next-line no-void
         void element.offsetWidth
         element.classList.add('shake')
     }

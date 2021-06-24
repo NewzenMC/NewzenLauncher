@@ -1,3 +1,4 @@
+/* global ConfigManager setOverlayHandler setOverlayContent toggleOverlay */
 const socket = require('socket.io-client')('http://ws.newzen.fr:8080')
 setTimeout(() => {
     refreshNoDatacenterConnectionOverlay()
