@@ -502,13 +502,20 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
 let proc
 // Is DiscordRPC enabled
 let hasRPC = true
-// Joined server regex
+
+//TODO Modifier pour Newzen
+// Serveur de Newzen rejoint
 const SERVER_JOINED_REGEX =
     /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
-//TODO Modifier pour Newzen
-const GAME_JOINED_REGEX = /\[.+\]: Skipping bad option: lastServer:/
+
+// Jeu lancé
+const GAME_JOINED_REGEX =
+    /\[.+\]: Could not authorize you against Realms server: Invalid session id/
+
+// Lancement du jeu
 const GAME_LAUNCH_REGEX =
     /^\[.+\]: (?:MinecraftForge .+ Initialized|ModLauncher .+ starting: .+)$/
+
 const MIN_LINGER = 5000
 
 let aEx
@@ -727,7 +734,7 @@ function dlAsync(login = true) {
                 const onLoadComplete = () => {
                     toggleLaunchArea(false)
                     if (hasRPC) {
-                        DiscordWrapper.updateState('Chargement du Jeu..')
+                        DiscordWrapper.updateState('Chargement du Jeu...')
                     }
                     proc.stdout.on('data', gameStateChange)
                     proc.stdout.removeListener('data', tempListener)
@@ -754,10 +761,10 @@ function dlAsync(login = true) {
                 const gameStateChange = function (data) {
                     data = data.trim()
                     if (SERVER_JOINED_REGEX.test(data)) {
+                        DiscordWrapper.updateState('Connecté sur Newzen')
+                    } else if (GAME_JOINED_REGEX.test(data)) {
                         DiscordWrapper.updateState('Sur le Menu')
                         DiscordWrapper.startTimer()
-                    } else if (GAME_JOINED_REGEX.test(data)) {
-                        DiscordWrapper.updateState('Connecté sur Newzen')
                     }
                 }
 
