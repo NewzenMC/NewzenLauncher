@@ -115,12 +115,16 @@ function refreshNoDatacenterConnectionOverlay() {
             require('electron').shell.openExternal('https://discord.newzen.fr')
         })
         $('#main').fadeOut()
-        datacenterConnectionInterval = setInterval(() => {
-            toggleOverlay(true)
-        }, 100)
+        // Not recreate an interval if another is alerady running
+        if (datacenterConnectionInterval === null) {
+            datacenterConnectionInterval = setInterval(() => {
+                toggleOverlay(true)
+            }, 100)
+        }
         toggleOverlay(true)
     } else {
         clearInterval(datacenterConnectionInterval)
+        datacenterConnectionInterval = null
         setOverlayHandler(null)
         toggleOverlay(false)
         $('#main').fadeIn()
