@@ -23,6 +23,58 @@ $('#sendDiscordConfirmBtn:enabled').on('click', () => {
     })
 })
 
+//#region Admin Panel Listeners
+
+socket.on('bot.log', (line) => {
+    $(`<div>${line}</div>`).appendTo($('#botTerm'))
+})
+socket.on('waterfall.log', (line) => {
+    //TODO
+})
+socket.on('lobby.log', (line) => {
+    //TODO
+})
+
+// Create an observer instance
+let mutationObserver = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        let newNodes = mutation.addedNodes // DOM NodeList
+        if (newNodes !== null) {
+            document.querySelectorAll('.terminal').forEach((element) => {
+                $(element).scrollTop($(element)[0].scrollHeight)
+            })
+        }
+    })
+})
+
+// Enable/Disable AutoScroll
+$('#autoScroll').on('change', () => {
+    if ($('#autoScroll').prop('checked')) {
+        document.querySelectorAll('.terminal').forEach((element) => {
+            mutationObserver.observe(element, {
+                attributes: false,
+                characterData: false,
+                childList: true,
+                subtree: true
+            })
+        })
+    } else {
+        mutationObserver.disconnect()
+    }
+})
+
+// AutoScroll All the Terminals by Default
+document.querySelectorAll('.terminal').forEach((element) => {
+    mutationObserver.observe(element, {
+        attributes: false,
+        characterData: false,
+        childList: true,
+        subtree: true
+    })
+})
+
+//#endregion Admin Panel Listeners
+
 $('#adminPanelBtn').on('click', () => {
     switchView(getCurrentView(), VIEWS.adminPanel)
 })

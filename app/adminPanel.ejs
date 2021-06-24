@@ -1,8 +1,21 @@
 <div id="adminPanelContainer" style="display: none">
     <button id="backAdminPanelBtn">
-        <!-- <span id="backAdminPanelSVG"></span> -->
         Retour
     </button>
+    <div class="powerContainer">
+        <label class="power">
+            <input type="checkbox" id="autoScroll" checked />
+            <div>
+                <svg viewBox="0 0 44 44">
+                    <path
+                        d="M22,6 C31,6 38,13 38,22 C38,31 31,38 22,38 C13,38 6,31 6,22 C6,13 13,6 22,6 L22,28"
+                        id="path"
+                    ></path>
+                </svg>
+            </div>
+        </label>
+        AutoScroll
+    </div>
 
     <div class="bg"></div>
     <div class="bg bg2"></div>
@@ -35,22 +48,26 @@
                     Onglet Joueurs
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet Bungee
+                    <!-- Onglet Bungee -->
+                    <pre><output class="terminal" id="bungeeTerm"></output></pre>
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet Lobby
+                    <!-- Onglet Lobby -->
+                    <pre><output class="terminal" id="lobbyTerm"></output></pre>
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet Main
+                    <!-- Onglet Main -->
+                    <pre><output class="terminal" id="mainTerm"></output></pre>
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet Maintenance
+                    <!-- Onglet Maintenance -->
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet NewzenBot
+                    <!-- Onglet NewzenBot -->
+                    <pre><output class="terminal" id="botTerm"></output></pre>
                 </div>
                 <div class="tabBlock-pane">
-                    Onglet Développement
+                    <!-- Onglet Développement -->
                 </div>
             </div>
         </figure>

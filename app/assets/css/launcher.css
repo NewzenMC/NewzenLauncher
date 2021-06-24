@@ -4036,6 +4036,7 @@ ul {
     height: 350px;
     padding: 15px;
     border-radius: 10px;
+    margin-top: 15px;
 }
 
 .terminal::-webkit-scrollbar {
@@ -4052,4 +4053,130 @@ ul {
 
 .terminal div {
     color: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ *                    Admin Panel AutoScroll Power Button                      *
+ *                                                                             *
+ ******************************************************************************/
+
+.powerContainer {
+    display: table;
+    cursor: pointer;
+    float: right;
+    margin: 20px;
+}
+
+.power {
+    display: table;
+    cursor: pointer;
+}
+.power input {
+    display: none;
+}
+.power input + div {
+    position: relative;
+    overflow: hidden;
+    background: #eb2c59;
+    border-radius: 50%;
+    padding: 18px;
+    transition: -webkit-transform 0.4s ease;
+    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+    -webkit-filter: drop-shadow(0 4px 6px rgba(235, 44, 89, 0.3));
+    filter: drop-shadow(0 4px 6px rgba(235, 44, 89, 0.3));
+}
+.power input + div:before {
+    content: '';
+    width: 4px;
+    height: 14px;
+    border-radius: 2px;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    margin: 0 0 0 -2px;
+    top: 18px;
+    opacity: 1;
+    -webkit-transform: scaleY(1) translate(0, 2px);
+    transform: scaleY(1) translate(0, 2px);
+    transition: opacity 0.4s ease 0.1s, -webkit-transform 0.9s ease 0.4s;
+    transition: opacity 0.4s ease 0.1s, transform 0.9s ease 0.4s;
+    transition: opacity 0.4s ease 0.1s, transform 0.9s ease 0.4s,
+        -webkit-transform 0.9s ease 0.4s;
+}
+.power input + div:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: #21e76e;
+    -webkit-transform: translate(100%, 100%);
+    transform: translate(100%, 100%);
+    -webkit-transform-origin: right bottom;
+    transform-origin: right bottom;
+    transition: -webkit-transform 0.8s ease;
+    transition: transform 0.8s ease;
+    transition: transform 0.8s ease, -webkit-transform 0.8s ease;
+}
+.power input + div svg {
+    width: 36px;
+    height: 36px;
+    fill: none;
+    display: block;
+    stroke: #fff;
+    position: relative;
+    z-index: 2;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 84;
+    stroke-dashoffset: 160;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    transition: stroke-dasharray 0.6s ease 0s, stroke-dashoffset 0.7s ease 0s;
+}
+.power input + div:active {
+    -webkit-transform: scale(0.96);
+    transform: scale(0.96);
+}
+.power input:checked + div {
+    -webkit-filter: drop-shadow(0 4px 6px rgba(33, 231, 110, 0.3));
+    filter: drop-shadow(0 4px 6px rgba(33, 231, 110, 0.3));
+}
+.power input:checked + div svg {
+    stroke-dasharray: 120;
+    stroke-dashoffset: 133;
+    transition: stroke-dasharray 0.6s ease 0.45s,
+        stroke-dashoffset 0.7s cubic-bezier(0.94, -0.1, 0.1, 1.2) 0.2s;
+}
+.power input:checked + div:before {
+    -webkit-transform: scaleY(0) translate(0, 7px);
+    transform: scaleY(0) translate(0, 7px);
+    transition: opacity 0.4s ease 0s, -webkit-transform 0.6s ease 0.3s;
+    transition: opacity 0.4s ease 0s, transform 0.6s ease 0.3s;
+    transition: opacity 0.4s ease 0s, transform 0.6s ease 0.3s,
+        -webkit-transform 0.6s ease 0.3s;
+}
+.power input:checked + div:after {
+    -webkit-transform: translate(40%, 40%);
+    transform: translate(40%, 40%);
+}
+body .dribbble {
+    position: fixed;
+    display: block;
+    right: 20px;
+    bottom: 20px;
+    opacity: 0.5;
+    transition: all 0.4s ease;
+}
+body .dribbble:hover {
+    opacity: 1;
+}
+body .dribbble img {
+    display: block;
+    height: 36px;
 }
