@@ -228,15 +228,12 @@ const refreshMojangStatuses = async function () {
         loggerLanding.debug(err)
     }
 
-    document.getElementById(
-        'mojangStatusEssentialContainer'
-    ).innerHTML = tooltipEssentialHTML
-    document.getElementById(
-        'mojangStatusNonEssentialContainer'
-    ).innerHTML = tooltipNonEssentialHTML
-    document.getElementById(
-        'mojang_status_icon'
-    ).style.color = Mojang.statusToHex(status)
+    document.getElementById('mojangStatusEssentialContainer').innerHTML =
+        tooltipEssentialHTML
+    document.getElementById('mojangStatusNonEssentialContainer').innerHTML =
+        tooltipNonEssentialHTML
+    document.getElementById('mojang_status_icon').style.color =
+        Mojang.statusToHex(status)
 }
 
 const refreshServerStatus = async function (fade = false) {
@@ -258,16 +255,14 @@ const refreshServerStatus = async function (fade = false) {
             pLabel = 'Joueurs'
             pVal = servStat.onlinePlayers + '/' + servStat.maxPlayers
             if (servStat.version.includes('Maintenance')) {
-                DiscordWrapper.changeServerStatus('maintenance')
-            } else {
-                DiscordWrapper.changeServerStatus('online')
+                pVal = 'Newzen'
+                pVal = 'Maintenance'
             }
         }
     } catch (err) {
         loggerLanding.warn(
             "Impossible d'actualiser le status du serveur, sans doute Hors-Ligne."
         )
-        DiscordWrapper.changeServerStatus('offline')
         loggerLanding.debug(err)
     }
     if (fade) {
@@ -505,11 +500,14 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
 // Keep reference to Minecraft Process
 let proc
 // Is DiscordRPC enabled
-let hasRPC = false
+let hasRPC = true
 // Joined server regex
-const SERVER_JOINED_REGEX = /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
+const SERVER_JOINED_REGEX =
+    /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
+//TODO Modifier pour Newzen
 const GAME_JOINED_REGEX = /\[.+\]: Skipping bad option: lastServer:/
-const GAME_LAUNCH_REGEX = /^\[.+\]: (?:MinecraftForge .+ Initialized|ModLauncher .+ starting: .+)$/
+const GAME_LAUNCH_REGEX =
+    /^\[.+\]: (?:MinecraftForge .+ Initialized|ModLauncher .+ starting: .+)$/
 const MIN_LINGER = 5000
 
 let aEx
@@ -788,15 +786,8 @@ function dlAsync(login = true) {
 
                     setLaunchDetails('Terminé, Bon jeu sur Newzen !')
 
-                    // Init Discord Hook
                     const distro = DistroManager.getDistribution()
-                    hasRPC = true
                     proc.on('close', (code, signal) => {
-                        // loggerLaunchSuite.log(
-                        //     'Arret de la Discord Rich Presence...'
-                        // )
-                        // DiscordWrapper.shutdownRPC()
-                        // hasRPC = false
                         proc = null
                     })
                 } catch (err) {
@@ -1225,9 +1216,8 @@ function displayArticle(articleObject, index) {
         )
     ).forEach((v) => {
         v.onclick = () => {
-            const text = v.parentElement.getElementsByClassName(
-                'bbCodeSpoilerText'
-            )[0]
+            const text =
+                v.parentElement.getElementsByClassName('bbCodeSpoilerText')[0]
             text.style.display =
                 text.style.display === 'block' ? 'none' : 'block'
         }
