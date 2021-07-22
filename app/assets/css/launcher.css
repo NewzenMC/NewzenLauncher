@@ -489,12 +489,6 @@ button {
 
 /* Logo on login form. */
 #loginImageSeal {
-    border-radius: 50%;
-    border: 2px solid #cad7e1;
-    background: rgba(1, 2, 1, 0.5);
-    height: 125px;
-    width: 125px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
     margin-bottom: 20px;
 }
 
@@ -521,20 +515,23 @@ button {
     fill: #fff;
     height: 20px;
     width: 20px;
+    margin-bottom: 5px;
 }
 
 /* Span which displays errors related to login field content. */
 .loginErrorSpan {
     font-family: 'Avenir Medium';
     font-weight: bold;
-    font-size: 8px;
-    color: #ff1b0c;
+    font-size: 12px;
+    color: red;
     width: 100%;
     text-align: right;
     position: absolute;
     top: 7px;
     opacity: 0;
     transition: 0.25s ease;
+    letter-spacing: 0.5;
+    text-shadow: 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60, 0 0 2px #d60;
 }
 
 .shake {
@@ -628,6 +625,8 @@ button {
     position: relative;
     right: -20px;
     transition: 0.5s ease;
+    padding-bottom: 0;
+    margin-bottom: 15;
 }
 #loginButton:disabled {
     color: rgba(255, 255, 255, 0.75);
@@ -786,12 +785,12 @@ button {
 
 /* Add spacing between register anchor and disclaimer. */
 #loginRegisterSpan {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 /* Disclaimer text styles. */
 .loginDisclaimerText {
-    font-size: 7px;
+    font-size: 10px;
     color: #848484;
     font-weight: bold;
     text-align: center;
