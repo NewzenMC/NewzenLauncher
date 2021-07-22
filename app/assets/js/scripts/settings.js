@@ -1382,11 +1382,11 @@ function populateVersionInformation(
 ) {
     valueElement.innerHTML = version
     if (isPrerelease(version)) {
-        titleElement.innerHTML = 'Pre-release'
+        titleElement.innerHTML = 'Version Bêta'
         titleElement.style.color = '#ff886d'
         checkElement.style.background = '#ff886d'
     } else {
-        titleElement.innerHTML = 'Stable Release'
+        titleElement.innerHTML = 'Version Stable'
         titleElement.style.color = null
         checkElement.style.background = null
     }
