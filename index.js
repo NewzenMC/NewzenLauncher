@@ -143,6 +143,8 @@ function createWindow() {
         })
     )
 
+    win.maximize()
+
     /*win.once('ready-to-show', () => {
         win.show()
     })*/
