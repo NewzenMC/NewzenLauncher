@@ -124,9 +124,9 @@ function showFatalStartupError() {
             document.getElementById('overlayContainer').style.background =
                 'none'
             setOverlayContent(
-                'Fatal Error: Unable to Load Distribution Index',
-                'A connection could not be established to our servers to download the distribution index. No local copies were available to load. <br><br>The distribution index is an essential file which provides the latest server information. The launcher is unable to start without it. Ensure you are connected to the internet and relaunch the application.',
-                'Close'
+                "Erreur Fatale : Impossible de Charger l'Index de Distribution",
+                "Impossible de se connecter à nos serveurs afin de télécharger l`'Index de Distribution !<br>Le Launcher ne peut pas fonctionner sans !<br><br>Vérifiez votre accès à Internet et relancez le Launcher",
+                'Fermer'
             )
             setOverlayHandler(() => {
                 const window = remote.getCurrentWindow()
