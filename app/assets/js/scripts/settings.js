@@ -406,9 +406,6 @@ function bindAuthAccountLogOut() {
                     processLogOut(val, isLastAccount)
                     toggleOverlay(false)
                     switchView(getCurrentView(), VIEWS.login)
-                    setTimeout(() => {
-                        socket.disconnect()
-                    }, 1000)
                 })
                 setDismissHandler(() => {
                     toggleOverlay(false)
@@ -442,6 +439,11 @@ function processLogOut(val, isLastAccount) {
     $(parent).fadeOut(250, () => {
         parent.remove()
     })
+    if (isLastAccount) {
+        setTimeout(() => {
+            socket.disconnect()
+        }, 1000)
+    }
 }
 
 /**
