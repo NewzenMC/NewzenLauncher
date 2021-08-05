@@ -2,4 +2,4 @@
 
 ## Versions Supportées
 
-La seule version supportée est la dernière version
+Les seules versions supportées sont la dernière version Stable et la dernière version Bêta
