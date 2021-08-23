@@ -125,7 +125,7 @@ function showFatalStartupError() {
                 'none'
             setOverlayContent(
                 "Erreur Fatale : Impossible de Charger l'Index de Distribution",
-                "Impossible de se connecter à nos serveurs afin de télécharger l`'Index de Distribution !<br>Le Launcher ne peut pas fonctionner sans !<br><br>Vérifiez votre accès à Internet et relancez le Launcher",
+                "Impossible de se connecter à nos serveurs afin de télécharger l'Index de Distribution !<br>Le Launcher ne peut pas fonctionner sans !<br><br>Vérifiez votre accès à Internet et relancez le Launcher",
                 'Fermer'
             )
             setOverlayHandler(() => {
