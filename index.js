@@ -7,6 +7,8 @@ const isDev = require('./app/assets/js/isdev')
 const path = require('path')
 const semver = require('semver')
 const url = require('url')
+// Init @electron/remote Module
+require('@electron/remote/main').initialize()
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {

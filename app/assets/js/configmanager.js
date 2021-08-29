@@ -18,7 +18,7 @@ const dataPath = path.join(sysRoot, '.newzen')
 // Forked processes do not have access to electron, so we have this workaround.
 const launcherDir =
     process.env.CONFIG_DIRECT_PATH ||
-    require('electron').remote.app.getPath('userData')
+    require('@electron/remote').app.getPath('userData')
 
 /**
  * Retrieve the absolute path of the launcher directory.
