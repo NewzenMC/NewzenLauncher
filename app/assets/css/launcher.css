@@ -831,6 +831,16 @@ button {
     transform: rotate(45deg);
 }
 
+/* * *
+* Login View | Login with Microsoft Button
+* * */
+#loginWithMicrosoftBtn {
+    margin-bottom: 10px;
+    background: dimgray;
+    padding: 1px;
+    cursor: pointer;
+}
+
 /*******************************************************************************
  *                                                                             *
  * Settings View (settings.ejs)                                                *
@@ -1299,7 +1309,14 @@ input:checked + .toggleSwitchSlider:before {
     width: 100%;
 }
 .settingsAuthAccountDetails > *:not(:last-child) {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+}
+
+.settingsAuthAccountTypeImg {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    margin-left: 5px;
 }
 
 /* Account detail element styles. */

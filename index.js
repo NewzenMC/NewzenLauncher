@@ -7,6 +7,9 @@ const isDev = require('./app/assets/js/isdev')
 const path = require('path')
 const semver = require('semver')
 const url = require('url')
+const http = require('http')
+const URL = require('url').URL
+
 // Init @electron/remote Module
 require('@electron/remote/main').initialize()
 
@@ -265,4 +268,92 @@ app.on('activate', () => {
     if (win === null) {
         createWindow()
     }
+})
+
+/* Microsoft Authentication */
+let microsoftAuthStarted = false
+let msAuthWindow = null
+/**
+ * @param {String} url Microsoft Auth URL
+ */
+function createMsAuthWindow(url) {
+    if (msAuthWindow !== null) {
+        throw new Error('Microsoft Auth Window Already Created')
+    }
+    msAuthWindow = new BrowserWindow({
+        icon: getPlatformIcon('SealCircle'),
+        webPreferences: {
+            contextIsolation: true,
+            worldSafeExecuteJavaScript: true
+        },
+        backgroundColor: '#2C2F33',
+        parent: win,
+        modal: true
+    })
+
+    msAuthWindow.webContents.session.clearAuthCache()
+    msAuthWindow.webContents.session.clearStorageData()
+
+    msAuthWindow.loadURL(url)
+
+    msAuthWindow.maximize()
+
+    msAuthWindow.removeMenu()
+
+    msAuthWindow.on('closed', () => {
+        msAuthWindow = null
+        microsoftAuthStarted = false
+        stopMicrosoftAuthServer()
+    })
+}
+
+/**
+ * @type {http.Server}
+ */
+let msAuthServer = null
+/**
+ *
+ * @param {Electron.IpcMainEvent} event
+ */
+function startMicrosoftAuthServer(event) {
+    const PORT = 25555
+    msAuthServer = http.createServer((req, res) => {
+        let requestURL = new URL(req.url, `http://127.0.0.1:${PORT}`)
+        let error = requestURL.searchParams.get('error')
+        let errorDescription = requestURL.searchParams.get('error_description')
+        if (error !== null) {
+            switch (error) {
+                case 'access_denied':
+                    event.sender.send('microsoftAuthCancelled')
+                    break
+
+                default:
+                    event.sender.send(
+                        'microsoftAuthError',
+                        error,
+                        errorDescription
+                    )
+                    break
+            }
+        } else {
+            event.sender.send(
+                'microsoftAuthSuccess',
+                requestURL.searchParams.get('code')
+            )
+        }
+        msAuthWindow.close()
+        stopMicrosoftAuthServer()
+    })
+    msAuthServer.listen(PORT)
+}
+
+function stopMicrosoftAuthServer() {
+    msAuthServer.close()
+}
+
+ipcMain.on('startMicrosoftAuth', (event, url) => {
+    if (microsoftAuthStarted === true) return
+    microsoftAuthStarted = true
+    startMicrosoftAuthServer(event)
+    createMsAuthWindow(url)
 })

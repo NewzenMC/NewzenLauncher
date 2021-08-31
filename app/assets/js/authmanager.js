@@ -12,6 +12,7 @@
 const ConfigManager = require('./configmanager')
 const LoggerUtil = require('./loggerutil')
 const Mojang = require('./mojang')
+const Microsoft = require('./microsoft')
 const logger = LoggerUtil(
     '%c[AuthManager]',
     'color: #a02d2a; font-weight: bold'
@@ -60,6 +61,41 @@ exports.addAccount = async function (username, password) {
 }
 
 /**
+ * Add a Microsoft account. This will convert the Microsoft Auth Code
+ * to an Auth Token, then authenticate to Xbox Live with This Token, then
+ * with the XBL Token authenticate to XSTS, then with XSTS Token and UserHash
+ * get a Minecraft Token, then check if the Microsoft account own Minecraft,
+ * Finally get The profile with the token to obtain player Name and UUID.
+ * The resultant data will be stored as an auth account in the
+ * configuration database.
+ *
+ * @param {string} code The Microsoft Authentication Code
+ * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
+ */
+exports.addMicrosoftAccount = async function (code) {
+    const result = await Microsoft.authFromCode(code)
+    if (result.errorCode !== undefined) {
+        switch (result.errorCode) {
+            case 'notOwnMinecraft':
+                throw new Error(result.error)
+
+            default:
+                throw new Error(result.error)
+        }
+    } else {
+        ConfigManager.addAuthAccount(
+            result.uuid,
+            result.token,
+            result.name,
+            result.name,
+            true,
+            result.refreshToken
+        )
+        ConfigManager.save()
+    }
+}
+
+/**
  * Remove an account. This will invalidate the access token associated
  * with the account and then remove it from the database.
  *
@@ -69,10 +105,12 @@ exports.addAccount = async function (username, password) {
 exports.removeAccount = async function (uuid) {
     try {
         const authAcc = ConfigManager.getAuthAccount(uuid)
-        await Mojang.invalidate(
-            authAcc.accessToken,
-            ConfigManager.getClientToken()
-        )
+        if (authAcc.microsoft === false) {
+            await Mojang.invalidate(
+                authAcc.accessToken,
+                ConfigManager.getClientToken()
+            )
+        }
         ConfigManager.removeAuthAccount(uuid)
         ConfigManager.save()
         return Promise.resolve()
@@ -93,17 +131,35 @@ exports.removeAccount = async function (uuid) {
  */
 exports.validateSelected = async function () {
     const current = ConfigManager.getSelectedAccount()
-    const isValid = await Mojang.validate(
-        current.accessToken,
-        ConfigManager.getClientToken()
-    )
+    let isValid = false
+    if (current.microsoft) {
+        isValid = await Microsoft.validate(current.accessToken)
+    } else {
+        isValid = await Mojang.validate(
+            current.accessToken,
+            ConfigManager.getClientToken()
+        )
+    }
     if (!isValid) {
         try {
-            const session = await Mojang.refresh(
-                current.accessToken,
-                ConfigManager.getClientToken()
-            )
-            ConfigManager.updateAuthAccount(current.uuid, session.accessToken)
+            let session = null
+            if (current.microsoft) {
+                session = await Microsoft.refresh(current.refreshToken)
+                ConfigManager.updateAuthAccount(
+                    current.uuid,
+                    session.token,
+                    session.refreshToken
+                )
+            } else {
+                session = await Mojang.refresh(
+                    current.accessToken,
+                    ConfigManager.getClientToken()
+                )
+                ConfigManager.updateAuthAccount(
+                    current.uuid,
+                    session.accessToken
+                )
+            }
             ConfigManager.save()
         } catch (err) {
             logger.debug('Error while validating selected profile:', err)

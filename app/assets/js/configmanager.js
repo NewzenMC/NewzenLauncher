@@ -348,11 +348,15 @@ exports.getAuthAccount = function (uuid) {
  *
  * @param {string} uuid The uuid of the authenticated account.
  * @param {string} accessToken The new Access Token.
+ * @param {string} refreshToken The new Refresh Token MICROSOFT ONLY
  *
  * @returns {Object} The authenticated account object created by this action.
  */
-exports.updateAuthAccount = function (uuid, accessToken) {
+exports.updateAuthAccount = function (uuid, accessToken, refreshToken = null) {
     config.authenticationDatabase[uuid].accessToken = accessToken
+    if (refreshToken !== null) {
+        config.authenticationDatabase[uuid].refreshToken = refreshToken
+    }
     return config.authenticationDatabase[uuid]
 }
 
@@ -363,16 +367,27 @@ exports.updateAuthAccount = function (uuid, accessToken) {
  * @param {string} accessToken The accessToken of the authenticated account.
  * @param {string} username The username (usually email) of the authenticated account.
  * @param {string} displayName The in game name of the authenticated account.
+ * @param {Boolean} [microsoftAccount] If the account is a Microsoft Account
+ * @param {string} [refreshToken] If the account is a Microsoft Account, the
  *
  * @returns {Object} The authenticated account object created by this action.
  */
-exports.addAuthAccount = function (uuid, accessToken, username, displayName) {
+exports.addAuthAccount = function (
+    uuid,
+    accessToken,
+    username,
+    displayName,
+    microsoftAccount = false,
+    refreshToken = null
+) {
     config.selectedAccount = uuid
     config.authenticationDatabase[uuid] = {
         accessToken,
-        username: username.trim(),
-        uuid: uuid.trim(),
-        displayName: displayName.trim()
+        username: username,
+        uuid: uuid,
+        displayName: displayName,
+        microsoft: microsoftAccount,
+        refreshToken: refreshToken
     }
     return config.authenticationDatabase[uuid]
 }

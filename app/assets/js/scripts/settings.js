@@ -512,6 +512,15 @@ function populateAuthAccounts() {
                             acc.uuid
                         }</div>
                     </div>
+                    <div class="settingsAuthAccountDetailPane">
+                        <div class="settingsAuthAccountDetailTitle">Type</div>
+                        <div class="settingsAuthAccountDetailValue">${
+                            acc.microsoft ? 'Microsoft' : 'Mojang'
+                        }
+                        <img src="assets/images/icons/logo_${
+                            acc.microsoft ? 'microsoft' : 'mojang_studios'
+                        }.png" class="settingsAuthAccountTypeImg"></div>
+                    </div>
                 </div>
                 <div class="settingsAuthAccountActions">
                     <button class="settingsAuthAccountSelect" ${
