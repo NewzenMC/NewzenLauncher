@@ -101,6 +101,10 @@ socket.on('maintenance', (status) => {
     }
 })
 
+socket.on('error', (errorMsg) => {
+    notyf.error(errorMsg)
+})
+
 function refreshNoDatacenterConnectionOverlay() {
     if (Object.keys(ConfigManager.getAuthAccounts())[0] === undefined) return
     if (!datacenterConnection) {
