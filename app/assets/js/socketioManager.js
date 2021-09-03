@@ -1,8 +1,10 @@
 /* global ConfigManager setOverlayHandler setOverlayContent toggleOverlay */
 const socket = require('socket.io-client')('http://ws.newzen.fr:8080')
+
 setTimeout(() => {
     refreshNoDatacenterConnectionOverlay()
 }, 5000)
+
 const Maintenance = require('./assets/js/maintenance')
 
 let permissionLevel = 0
@@ -13,6 +15,7 @@ let datacenterConnectionInterval = null
 socket.on('connect', () => {
     socket.send(Object.keys(ConfigManager.getAuthAccounts())[0])
     $('#adminPanelLogin').fadeIn(500)
+    $('.content').fadeIn(500) // Parent element of #adminPanelLogin
     $('#adminPanelContent').fadeOut(500)
     datacenterConnection = true
     refreshNoDatacenterConnectionOverlay()
@@ -36,9 +39,8 @@ socket.on('message', (data) => {
         case 0:
             $('#adminPanelBtn').fadeOut(200)
             $('#adminPanelPlayersTab').hide()
-            $('#adminPanelBungeeTab').hide()
-            $('#adminPanelLobbyTab').hide()
-            $('#adminPanelMainTab').hide()
+            $('#adminPanelMinageTab').hide()
+            $('#adminPanelDeltaTab').hide()
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
@@ -46,9 +48,8 @@ socket.on('message', (data) => {
         case 1: //TODO SPECIAL : Juste accès a la liste des joueurs (Kick+Ban+Mute, etc)
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
-            $('#adminPanelBungeeTab').hide()
-            $('#adminPanelLobbyTab').hide()
-            $('#adminPanelMainTab').hide()
+            $('#adminPanelMinageTab').hide()
+            $('#adminPanelDeltaTab').hide()
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
@@ -56,9 +57,8 @@ socket.on('message', (data) => {
         case 2: //TODO SPECIAL : Tout le 1 PLUS accès au TPS et force-clearlag
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
-            $('#adminPanelBungeeTab').hide()
-            $('#adminPanelLobbyTab').hide()
-            $('#adminPanelMainTab').hide()
+            $('#adminPanelMinageTab').hide()
+            $('#adminPanelDeltaTab').hide()
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
@@ -66,9 +66,8 @@ socket.on('message', (data) => {
         case 3:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
-            $('#adminPanelBungeeTab').show()
-            $('#adminPanelLobbyTab').show()
-            $('#adminPanelMainTab').show()
+            $('#adminPanelMinageTab').show()
+            $('#adminPanelDeltaTab').show()
             $('#adminPanelMaintenanceTab').hide()
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
@@ -76,9 +75,8 @@ socket.on('message', (data) => {
         case 4:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
-            $('#adminPanelBungeeTab').show()
-            $('#adminPanelLobbyTab').show()
-            $('#adminPanelMainTab').show()
+            $('#adminPanelMinageTab').show()
+            $('#adminPanelDeltaTab').show()
             $('#adminPanelMaintenanceTab').show()
             $('#adminPanelNewzenBotTab').show()
             $('#adminPanelDevTab').hide()
@@ -86,9 +84,8 @@ socket.on('message', (data) => {
         case 5:
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
-            $('#adminPanelBungeeTab').show()
-            $('#adminPanelLobbyTab').show()
-            $('#adminPanelMainTab').show()
+            $('#adminPanelMinageTab').show()
+            $('#adminPanelDeltaTab').show()
             $('#adminPanelMaintenanceTab').show()
             $('#adminPanelNewzenBotTab').show()
             $('#adminPanelDevTab').show()
