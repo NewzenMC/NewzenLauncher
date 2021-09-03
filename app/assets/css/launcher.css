@@ -3924,7 +3924,6 @@ ul {
 
 .tabBlock-content,
 .tabBlock-content * {
-    color: black;
     max-height: 65%;
     overflow: auto;
 }
@@ -4023,6 +4022,16 @@ ul {
 
 .terminal div {
     color: white;
+    overflow: initial;
+    max-height: unset;
+    user-select: text;
+}
+
+.terminal div span {
+    color: white;
+    overflow: initial;
+    max-height: unset;
+    user-select: text;
 }
 
 /*******************************************************************************
