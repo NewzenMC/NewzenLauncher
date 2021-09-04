@@ -13,7 +13,7 @@ $('#loginWithMicrosoftBtn').on('click', () => {
     const scopes = encodeURIComponent('XboxLive.signin offline_access')
     ipcRenderer.send(
         'startMicrosoftAuth',
-        `https://login.live.com/oauth20_authorize.srf?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri}&scope=${scopes}&state=${socket.id}`
+        `https://login.live.com/oauth20_authorize.srf?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri}&scope=${scopes}`
     )
     ipcRenderer.once('microsoftAuthSuccess', async (event, code) => {
         try {
