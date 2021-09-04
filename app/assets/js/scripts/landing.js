@@ -135,7 +135,7 @@ document.getElementById('avatarOverlay').onclick = (e) => {
 
 // Bind selected account
 function updateSelectedAccount(authUser) {
-    let username = 'No Account Selected'
+    let username = 'Aucun Compte Sélectionné'
     if (authUser != null) {
         if (authUser.displayName != null) {
             username = authUser.displayName
