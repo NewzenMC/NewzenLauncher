@@ -1,5 +1,5 @@
 const axios = require('axios').default
-const qs = require('querystring')
+const querystring = require('querystring')
 
 const client_id = '92425d35-b7ea-4608-b193-abf85dcfb95d'
 const redirect_uri = 'http://127.0.0.1:25555'
@@ -17,7 +17,7 @@ exports.authFromCode = async (code) => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: qs.stringify({
+            data: querystring.stringify({
                 client_id: client_id,
                 scope: 'offline_access XboxLive.signin',
                 redirect_uri: redirect_uri,
@@ -37,7 +37,7 @@ exports.authFromCode = async (code) => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            data: JSON.stringify({
+            data: {
                 Properties: {
                     AuthMethod: 'RPS',
                     SiteName: 'user.auth.xboxlive.com',
@@ -45,7 +45,7 @@ exports.authFromCode = async (code) => {
                 },
                 RelyingParty: 'http://auth.xboxlive.com',
                 TokenType: 'JWT'
-            }),
+            },
             responseType: 'json'
         })
 
@@ -60,14 +60,14 @@ exports.authFromCode = async (code) => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            data: JSON.stringify({
+            data: {
                 Properties: {
                     SandboxId: 'RETAIL',
                     UserTokens: [xblToken]
                 },
                 RelyingParty: 'rp://api.minecraftservices.com/',
                 TokenType: 'JWT'
-            }),
+            },
             responseType: 'json'
         })
 
@@ -80,9 +80,9 @@ exports.authFromCode = async (code) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            data: JSON.stringify({
+            data: {
                 identityToken: `XBL3.0 x=${userhash};${xstsToken}`
-            }),
+            },
             responseType: 'json'
         })
 
@@ -164,7 +164,7 @@ exports.refresh = async (refreshToken) => {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data: qs.stringify({
+        data: querystring.stringify({
             client_id: client_id,
             refresh_token: refreshToken,
             grant_type: 'refresh_token',

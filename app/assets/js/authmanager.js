@@ -83,7 +83,7 @@ exports.addMicrosoftAccount = async function (code) {
                 throw new Error(result.error)
         }
     } else {
-        ConfigManager.addAuthAccount(
+        const authAccount = ConfigManager.addAuthAccount(
             result.uuid,
             result.token,
             result.name,
@@ -92,6 +92,7 @@ exports.addMicrosoftAccount = async function (code) {
             result.refreshToken
         )
         ConfigManager.save()
+        return authAccount
     }
 }
 

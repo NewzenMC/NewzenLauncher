@@ -15,9 +15,42 @@ $('#loginWithMicrosoftBtn').on('click', () => {
         'startMicrosoftAuth',
         `https://login.live.com/oauth20_authorize.srf?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri}&scope=${scopes}`
     )
-    ipcRenderer.once('microsoftAuthSuccess', async (event, code) => {
+    ipcRenderer.once('microsoftAuthSuccess', async (_event, code) => {
         try {
-            await AuthManager.addMicrosoftAccount(code)
+            const uuid = await AuthManager.addMicrosoftAccount(code)
+
+            updateSelectedAccount(uuid)
+
+            // Connect to NewzenManager
+            socket.connect()
+
+            loginButton.innerHTML = loginButton.innerHTML.replace(
+                Lang.queryJS('login.loggingIn'),
+                Lang.queryJS('login.success')
+            )
+            $('.circle-loader').toggleClass('load-complete')
+            $('.checkmark').toggle()
+            setTimeout(() => {
+                switchView(VIEWS.login, loginViewOnSuccess, 500, 500, () => {
+                    // Temporary workaround
+                    if (loginViewOnSuccess === VIEWS.settings) {
+                        prepareSettings()
+                    }
+                    loginViewOnSuccess = VIEWS.landing // Reset this for good measure.
+                    loginCancelEnabled(false) // Reset this for good measure.
+                    loginViewCancelHandler = null // Reset this for good measure.
+                    loginUsername.value = ''
+                    loginPassword.value = ''
+                    $('.circle-loader').toggleClass('load-complete')
+                    $('.checkmark').toggle()
+                    loginLoading(false)
+                    loginButton.innerHTML = loginButton.innerHTML.replace(
+                        Lang.queryJS('login.success'),
+                        Lang.queryJS('login.login')
+                    )
+                    formDisabled(false)
+                })
+            }, 1000)
         } catch (error) {
             showMicrosoftAuthError(error)
         }
