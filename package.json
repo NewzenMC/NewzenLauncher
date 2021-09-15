@@ -19,7 +19,7 @@
         "lint": "eslint --config .eslintrc.json ."
     },
     "dependencies": {
-        "@electron/remote": "^1.2.1",
+        "@electron/remote": "^2.0.0",
         "adm-zip": "^0.5.5",
         "ansi-to-html": "^0.7.1",
         "async": "^3.2.1",
