@@ -21,7 +21,7 @@
     "dependencies": {
         "@electron/remote": "^1.2.1",
         "adm-zip": "^0.5.6",
-        "ansi-to-html": "^0.7.1",
+        "ansi-to-html": "^0.7.2",
         "async": "^3.2.1",
         "axios": "^0.21.4",
         "discord-rpc": "^4.0.1",
