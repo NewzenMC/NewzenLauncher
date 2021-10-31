@@ -78,7 +78,7 @@ socket.on('message', (data) => {
             $('#adminPanelMinageTab').show()
             $('#adminPanelDeltaTab').show()
             $('#adminPanelMaintenanceTab').show()
-            $('#adminPanelNewzenBotTab').show()
+            $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
             break
         case 5:
