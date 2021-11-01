@@ -15,40 +15,28 @@ exports.isMaintenance = function () {
  */
 exports.enableMaintenance = () => {
     if (this.isMaintenance()) return
-    setOverlayContent(
-        'Maintenance',
-        "Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d'informations",
-        'Rejoindre le Discord'
-    )
+
     if (permissionLevel >= 3) {
+        $('#maintenanceAccess').show()
+    } else {
+        $('#maintenanceAccess').hide()
+
         setOverlayContent(
             'Maintenance',
             "Newzen est actuellement en Maintenance,<br>Rejoignez le Discord pour plus d'informations",
-            'Accéder au Panel Admin'
+            'Rejoindre le Discord'
         )
-    }
-    setOverlayHandler(() => {
-        require('electron').shell.openExternal('https://discord.newzen.fr')
-    })
-    if (permissionLevel >= 3) {
         setOverlayHandler(() => {
-            switchView(getCurrentView(), VIEWS.adminPanel)
+            require('electron').shell.openExternal('https://discord.newzen.fr')
         })
-    }
-    $('#main').fadeOut()
-    maintenanceInterval = setInterval(() => {
-        if (
-            permissionLevel >= 3 &&
-            getCurrentView() === '#adminPanelContainer'
-        ) {
-            toggleOverlay(false)
-            $('#main').fadeIn()
-        } else {
+        $('#main').fadeOut()
+        maintenanceInterval = setInterval(() => {
+            if (permissionLevel >= 3) return
             toggleOverlay(true)
             $('#main').fadeOut()
-        }
-    }, 100)
-    toggleOverlay(true)
+        }, 100)
+        toggleOverlay(true)
+    }
     maintenanceStatus = true
 }
 
@@ -57,10 +45,14 @@ exports.enableMaintenance = () => {
  */
 exports.disableMaintenance = () => {
     if (!this.isMaintenance()) return
-    socket.emit('maintenance')
-    clearInterval(maintenanceInterval)
-    setOverlayHandler(null)
-    toggleOverlay(false)
-    $('#main').fadeIn()
-    maintenanceStatus = false
+    if (permissionLevel >= 3) {
+        $('#maintenanceAccess').hide()
+    } else {
+        socket.emit('maintenance')
+        clearInterval(maintenanceInterval)
+        setOverlayHandler(null)
+        toggleOverlay(false)
+        $('#main').fadeIn()
+        maintenanceStatus = false
+    }
 }

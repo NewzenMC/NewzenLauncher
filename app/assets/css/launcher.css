@@ -4157,7 +4157,7 @@ ul {
     -webkit-transform: translate(40%, 40%);
     transform: translate(40%, 40%);
 }
-body .dribbble {
+.dribbble {
     position: fixed;
     display: block;
     right: 20px;
@@ -4165,10 +4165,119 @@ body .dribbble {
     opacity: 0.5;
     transition: all 0.4s ease;
 }
-body .dribbble:hover {
+.dribbble:hover {
     opacity: 1;
 }
-body .dribbble img {
+.dribbble img {
     display: block;
     height: 36px;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ *                       Admin Panel Maintenance Switch                        *
+ *                                                                             *
+ ******************************************************************************/
+
+.toggleWrapper {
+    position: relative;
+    transition: all 0.3s ease-in;
+    width: 300px;
+    height: 100px;
+    background-color: orange;
+    border-radius: 0 125px 125px 0;
+    border: 5px solid black;
+    overflow: unset;
+}
+.toggleWrapper input {
+    display: none;
+}
+.toggleWrapper .toggle {
+    transition: all 1.5s ease-in-out;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    height: 82px;
+    width: 82px;
+    background-color: red;
+    transform: rotate(0deg);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+    max-height: unset;
+    overflow: unset;
+}
+.toggleWrapper input:checked + .toggle {
+    background-color: green;
+    height: 86px;
+    width: 86px;
+    border-radius: 50%;
+    top: 7px;
+    left: 206px;
+    transform: rotate(360deg);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+}
+
+/* DEBUG */
+
+#maintenanceAccess span {
+    font-size: 1em;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    -moz-animation: marquee 12s linear infinite;
+    -webkit-animation: marquee 12s linear infinite;
+    animation: marquee 12s linear infinite;
+}
+#maintenanceAccess span:nth-child(1) {
+    position: absolute;
+    left: -100%;
+    -moz-animation: marquee 12s 6s linear infinite;
+    -webkit-animation: marquee 12s 6s linear infinite;
+    animation: marquee 12s 6s linear infinite;
+}
+#maintenanceAccess .line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 34px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+
+    z-index: 100 !important;
+}
+
+@keyframes marquee {
+    0% {
+        left: 0;
+        -moz-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+    }
+    100% {
+        left: 0;
+        -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
 }
