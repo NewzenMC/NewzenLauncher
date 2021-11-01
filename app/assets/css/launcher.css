@@ -3862,6 +3862,19 @@ input:checked + .toggleSwitchSlider:before {
     width: 95%;
 }
 
+#minageAdminPanelBtn {
+    background: rgb(0, 207, 0);
+    cursor: pointer;
+    padding: 10px;
+    outline: none;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: none;
+    text-align: center;
+    margin-left: 30px;
+    margin-top: 35px;
+}
+
 /*----------------------------------------------------------------------------*/
 /*                                  LOGIN                                     */
 /*----------------------------------------------------------------------------*/
