@@ -27,9 +27,10 @@ socket.on('disconnect', () => {
 })
 
 socket.on('message', (data) => {
+    permissionLevel = data.adminPanelPermissions
+    $('#maintenanceMode').prop('checked', data.maintenance)
     if (data.maintenance) Maintenance.enableMaintenance()
     else Maintenance.disableMaintenance()
-    permissionLevel = data.adminPanelPermissions
     if (permissionLevel !== 0) {
         $('#adminPanelBtn').fadeIn(200)
     } else {
@@ -94,6 +95,7 @@ socket.on('message', (data) => {
 })
 
 socket.on('maintenance', (status) => {
+    $('#maintenanceMode').prop('checked', status)
     if (status) {
         Maintenance.enableMaintenance()
     } else {
