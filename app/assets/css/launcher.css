@@ -3862,12 +3862,12 @@ input:checked + .toggleSwitchSlider:before {
     width: 95%;
 }
 
-#minageAdminPanelBtn {
-    background: rgb(0, 207, 0);
+#minageStartBtn {
+    background: #00cf00;
     cursor: pointer;
     padding: 10px;
     outline: none;
-    color: rgb(255, 255, 255);
+    color: white;
     border: none;
     border-radius: none;
     text-align: center;
