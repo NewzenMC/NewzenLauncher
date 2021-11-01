@@ -4144,7 +4144,7 @@ ul {
     -webkit-transform: translate(40%, 40%);
     transform: translate(40%, 40%);
 }
-body .dribbble {
+.dribbble {
     position: fixed;
     display: block;
     right: 20px;
@@ -4152,10 +4152,10 @@ body .dribbble {
     opacity: 0.5;
     transition: all 0.4s ease;
 }
-body .dribbble:hover {
+.dribbble:hover {
     opacity: 1;
 }
-body .dribbble img {
+.dribbble img {
     display: block;
     height: 36px;
 }
