@@ -95,6 +95,7 @@ socket.on('message', (data) => {
 })
 
 socket.on('maintenance', (status) => {
+    status = JSON.parse(status)
     $('#maintenanceMode').prop('checked', status)
     if (status) {
         Maintenance.enableMaintenance()

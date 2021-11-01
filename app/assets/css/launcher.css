@@ -4205,7 +4205,11 @@ ul {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
 }
 
-/* DEBUG */
+/*******************************************************************************
+ *                                                                             *
+ *          Admin Ribbon showed during Maintenance (Only for Admins)           *
+ *                                                                             *
+ ******************************************************************************/
 
 #maintenanceAccess span {
     font-size: 1em;

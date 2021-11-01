@@ -85,6 +85,13 @@ document.querySelectorAll('.terminal').forEach((element) => {
     })
 })
 
+$('#maintenanceMode').on('change', () => {
+    socket.emit(
+        'setMaintenance',
+        $('#maintenanceMode').prop('checked').toString()
+    )
+})
+
 //#endregion Admin Panel Listeners
 
 $('#adminPanelBtn').on('click', () => {

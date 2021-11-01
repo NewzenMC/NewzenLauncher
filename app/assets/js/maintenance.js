@@ -14,7 +14,7 @@ exports.isMaintenance = function () {
  * Enable Launcher's Maintenance Mode
  */
 exports.enableMaintenance = () => {
-    if (this.isMaintenance()) return
+    if (maintenanceInterval !== null) return
 
     if (permissionLevel >= 3) {
         $('#maintenanceAccess').show()
@@ -50,6 +50,7 @@ exports.disableMaintenance = () => {
     } else {
         socket.emit('maintenance')
         clearInterval(maintenanceInterval)
+        maintenanceInterval = null
         setOverlayHandler(null)
         toggleOverlay(false)
         $('#main').fadeIn()
