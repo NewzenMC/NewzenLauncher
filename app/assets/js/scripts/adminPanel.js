@@ -31,7 +31,43 @@ $('#sendDiscordConfirmBtn:enabled').on('click', () => {
     })
 })
 
-//#region Admin Panel Listeners
+//#region Listeners
+
+socket.on('minage.logs', (logs) => {
+    $('#minageTerm').children().remove()
+    logs.forEach((line) => {
+        const escapedLine = escapeHtml(line)
+        const ansiConvertedLine = convert.toHtml(escapedLine)
+        const mcColorParsedLine = parseStyle(ansiConvertedLine)
+        const termDiv = $('<div></div>').append(mcColorParsedLine)
+        termDiv.appendTo($('#minageTerm'))
+    })
+
+    // Scroll All Terminals To Bottom
+    document.querySelectorAll('.terminal').forEach((element) => {
+        $(element).scrollTop($(element)[0].scrollHeight)
+    })
+
+    socket.emit('minage.status') // Unless the Status is "Unknown"
+})
+socket.on('delta.logs', (logs) => {
+    $('#deltaTerm').children().remove()
+    logs.forEach((line) => {
+        const escapedLine = escapeHtml(line)
+        const ansiConvertedLine = convert.toHtml(escapedLine)
+        const mcColorParsedLine = parseStyle(ansiConvertedLine)
+        const termDiv = $('<div></div>').append(mcColorParsedLine)
+        termDiv.appendTo($('#deltaTerm'))
+    })
+
+    // Scroll All Terminals To Bottom
+    document.querySelectorAll('.terminal').forEach((element) => {
+        $(element).scrollTop($(element)[0].scrollHeight)
+    })
+
+    socket.emit('delta.status') // Unless the Status is "Unknown"
+})
+
 socket.on('minage.log', (line) => {
     const escapedLine = escapeHtml(line)
     const ansiConvertedLine = convert.toHtml(escapedLine)
@@ -46,6 +82,239 @@ socket.on('delta.log', (line) => {
     const termDiv = $('<div></div>').append(mcColorParsedLine)
     termDiv.appendTo($('#deltaTerm'))
 })
+
+socket.on('minage.status', (status) => {
+    $('#minageStatus').removeClass('unknown')
+    $('#minageStatus').removeClass('offline')
+    $('#minageStatus').removeClass('online')
+    $('#minageStatus').removeClass('starting')
+    $('#minageStatus').removeClass('stopping')
+
+    switch (status) {
+        case 'STOPPED':
+            $('#minageStatus').addClass('offline')
+            $('#minageStatus h2').html('Arrêté')
+
+            $('#minageStartBtn').removeAttr('disabled')
+            $('#minageSetReadyBtn').attr('disabled', 'disabled')
+            $('#minageStopBtn').attr('disabled', 'disabled')
+            $('#minageKillBtn').attr('disabled', 'disabled')
+            break
+
+        case 'STARTING':
+            $('#minageStatus').addClass('starting')
+            $('#minageStatus h2').html('Démarrage..')
+
+            $('#minageStartBtn').attr('disabled', 'disabled')
+            $('#minageSetReadyBtn').removeAttr('disabled')
+            $('#minageStopBtn').attr('disabled', 'disabled')
+            $('#minageKillBtn').removeAttr('disabled')
+            break
+
+        case 'RUNNING':
+            $('#minageStatus').addClass('online')
+            $('#minageStatus h2').html('En Ligne')
+
+            $('#minageStartBtn').attr('disabled', 'disabled')
+            $('#minageSetReadyBtn').attr('disabled', 'disabled')
+            $('#minageStopBtn').removeAttr('disabled')
+            $('#minageKillBtn').removeAttr('disabled')
+            break
+
+        case 'STOPPING':
+            $('#minageStatus').addClass('stopping')
+            $('#minageStatus h2').html('Arrêt en Cours..')
+
+            $('#minageStartBtn').attr('disabled', 'disabled')
+            $('#minageSetReadyBtn').attr('disabled', 'disabled')
+            $('#minageStopBtn').attr('disabled', 'disabled')
+            $('#minageKillBtn').removeAttr('disabled')
+            break
+
+        case 'KILLED':
+            $('#minageStatus').addClass('offline')
+            $('#minageStatus h2').html('Processus Tué')
+
+            $('#minageStartBtn').removeAttr('disabled')
+            $('#minageSetReadyBtn').attr('disabled', 'disabled')
+            $('#minageStopBtn').attr('disabled', 'disabled')
+            $('#minageKillBtn').attr('disabled', 'disabled')
+            break
+
+        case 'CRASHED':
+            $('#minageStatus').addClass('offline')
+            $('#minageStatus h2').html('Crashé')
+
+            $('#minageStartBtn').removeAttr('disabled')
+            $('#minageSetReadyBtn').attr('disabled', 'disabled')
+            $('#minageStopBtn').attr('disabled', 'disabled')
+            $('#minageKillBtn').attr('disabled', 'disabled')
+            break
+    }
+})
+socket.on('delta.status', (status) => {
+    $('#deltaStatus').removeClass('unknown')
+    $('#deltaStatus').removeClass('offline')
+    $('#deltaStatus').removeClass('online')
+    $('#deltaStatus').removeClass('starting')
+    $('#deltaStatus').removeClass('stopping')
+
+    switch (status) {
+        case 'STOPPED':
+            $('#deltaStatus').addClass('offline')
+            $('#deltaStatus h2').html('Arrêté')
+
+            $('#deltaStartBtn').removeAttr('disabled')
+            $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+            $('#deltaStopBtn').attr('disabled', 'disabled')
+            $('#deltaKillBtn').attr('disabled', 'disabled')
+            break
+
+        case 'STARTING':
+            $('#deltaStatus').addClass('starting')
+            $('#deltaStatus h2').html('Démarrage..')
+
+            $('#deltaStartBtn').attr('disabled', 'disabled')
+            $('#deltaSetReadyBtn').removeAttr('disabled')
+            $('#deltaStopBtn').attr('disabled', 'disabled')
+            $('#deltaKillBtn').removeAttr('disabled')
+            break
+
+        case 'RUNNING':
+            $('#deltaStatus').addClass('online')
+            $('#deltaStatus h2').html('En Ligne')
+
+            $('#deltaStartBtn').attr('disabled', 'disabled')
+            $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+            $('#deltaStopBtn').removeAttr('disabled')
+            $('#deltaKillBtn').removeAttr('disabled')
+            break
+
+        case 'STOPPING':
+            $('#deltaStatus').addClass('stopping')
+            $('#deltaStatus h2').html('Arrêt en Cours..')
+
+            $('#deltaStartBtn').attr('disabled', 'disabled')
+            $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+            $('#deltaStopBtn').attr('disabled', 'disabled')
+            $('#deltaKillBtn').removeAttr('disabled')
+            break
+
+        case 'KILLED':
+            $('#deltaStatus').addClass('offline')
+            $('#deltaStatus h2').html('Processus Tué')
+
+            $('#deltaStartBtn').removeAttr('disabled')
+            $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+            $('#deltaStopBtn').attr('disabled', 'disabled')
+            $('#deltaKillBtn').attr('disabled', 'disabled')
+            break
+
+        case 'CRASHED':
+            $('#deltaStatus').addClass('offline')
+            $('#deltaStatus h2').html('Crashé')
+
+            $('#deltaStartBtn').removeAttr('disabled')
+            $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+            $('#deltaStopBtn').attr('disabled', 'disabled')
+            $('#deltaKillBtn').attr('disabled', 'disabled')
+            break
+    }
+})
+
+$('#minageStartBtn').on('click', () => {
+    socket.emit('minage.start')
+
+    $('#minageStartBtn').attr('disabled', 'disabled')
+    $('#minageSetReadyBtn').removeAttr('disabled')
+    $('#minageStopBtn').attr('disabled', 'disabled')
+    $('#minageKillBtn').removeAttr('disabled')
+})
+$('#minageSetReadyBtn').on('click', () => {
+    socket.emit('minage.setReady')
+
+    $('#minageStartBtn').attr('disabled', 'disabled')
+    $('#minageSetReadyBtn').attr('disabled', 'disabled')
+    $('#minageStopBtn').removeAttr('disabled')
+    $('#minageKillBtn').removeAttr('disabled')
+})
+$('#minageStopBtn').on('click', () => {
+    socket.emit('minage.stop')
+
+    $('#minageStartBtn').attr('disabled', 'disabled')
+    $('#minageSetReadyBtn').attr('disabled', 'disabled')
+    $('#minageStopBtn').attr('disabled', 'disabled')
+    $('#minageKillBtn').removeAttr('disabled')
+})
+minageKillCount = 0
+$('#minageKillBtn').on('click', () => {
+    if (minageKillCount === 0) {
+        minageKillCount = 1
+        $('#minageKillBtn').html('Re-Cliquez pour Confirmer')
+        setTimeout(() => {
+            $('#minageKillBtn').html('Tuer')
+            minageKillCount = 0
+        }, 2500)
+    } else if (minageKillCount === 1) {
+        socket.emit('minage.kill')
+        $('#minageKillBtn').html('Tuer')
+        minageKillCount = 0
+
+        $('#minageStartBtn').removeAttr('disabled')
+        $('#minageSetReadyBtn').attr('disabled', 'disabled')
+        $('#minageStopBtn').attr('disabled', 'disabled')
+        $('#minageKillBtn').attr('disabled', 'disabled')
+    }
+})
+
+$('#deltaStartBtn').on('click', () => {
+    socket.emit('delta.start')
+
+    $('#deltaStartBtn').attr('disabled', 'disabled')
+    $('#deltaSetReadyBtn').removeAttr('disabled')
+    $('#deltaStopBtn').attr('disabled', 'disabled')
+    $('#deltaKillBtn').removeAttr('disabled')
+})
+$('#deltaSetReadyBtn').on('click', () => {
+    socket.emit('delta.setReady')
+
+    $('#deltaStartBtn').attr('disabled', 'disabled')
+    $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+    $('#deltaStopBtn').removeAttr('disabled')
+    $('#deltaKillBtn').removeAttr('disabled')
+})
+$('#deltaStopBtn').on('click', () => {
+    socket.emit('delta.stop')
+
+    $('#deltaStartBtn').attr('disabled', 'disabled')
+    $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+    $('#deltaStopBtn').attr('disabled', 'disabled')
+    $('#deltaKillBtn').removeAttr('disabled')
+})
+deltaKillCount = 0
+$('#deltaKillBtn').on('click', () => {
+    if (deltaKillCount === 0) {
+        deltaKillCount = 1
+        $('#deltaKillBtn').html('Re-Cliquez pour Confirmer')
+        setTimeout(() => {
+            $('#deltaKillBtn').html('Tuer')
+            deltaKillCount = 0
+        }, 2500)
+    } else if (deltaKillCount === 1) {
+        socket.emit('delta.kill')
+        $('#deltaKillBtn').html('Tuer')
+        deltaKillCount = 0
+
+        $('#deltaStartBtn').removeAttr('disabled')
+        $('#deltaSetReadyBtn').attr('disabled', 'disabled')
+        $('#deltaStopBtn').attr('disabled', 'disabled')
+        $('#deltaKillBtn').attr('disabled', 'disabled')
+    }
+})
+
+//#endregion Listeners
+
+//#region AutoScroll
 
 // Create an observer instance
 let mutationObserver = new MutationObserver(function (mutations) {
@@ -84,6 +353,8 @@ document.querySelectorAll('.terminal').forEach((element) => {
         subtree: true
     })
 })
+
+//#endregion AutoScroll
 
 $('#maintenanceMode').on('change', () => {
     socket.emit(

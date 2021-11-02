@@ -52,8 +52,41 @@
                 <div class="tabBlock-pane">Onglet Joueurs</div>
                 <div class="tabBlock-pane">
                     <!-- Onglet Minage -->
+                    <div id="minageStatus" class="serverStatus unknown">
+                        <div class="online-indicator">
+                            <span class="blink"></span>
+                        </div>
+                        <h2 class="online-text">Inconnu</h2>
+                    </div>
                     <div>
-                        <button id="minageStartBtn">Lancer</button>
+                        <button
+                            class="serverStartBtn"
+                            id="minageStartBtn"
+                            disabled
+                        >
+                            Démarrer
+                        </button>
+                        <button
+                            class="serverSetReadyBtn"
+                            id="minageSetReadyBtn"
+                            disabled
+                        >
+                            Définir comme Prêt
+                        </button>
+                        <button
+                            class="serverStopBtn"
+                            id="minageStopBtn"
+                            disabled
+                        >
+                            Arrêter
+                        </button>
+                        <button
+                            class="serverKillBtn"
+                            id="minageKillBtn"
+                            disabled
+                        >
+                            Tuer
+                        </button>
                     </div>
                     <pre>
                         <output class="terminal" id="minageTerm"></output>
@@ -61,7 +94,45 @@
                 </div>
                 <div class="tabBlock-pane">
                     <!-- Onglet Delta -->
-                    <pre><output class="terminal" id="deltaTerm"></output></pre>
+                    <div id="deltaStatus" class="serverStatus unknown">
+                        <div class="online-indicator">
+                            <span class="blink"></span>
+                        </div>
+                        <h2 class="online-text">Inconnu</h2>
+                    </div>
+                    <div>
+                        <button
+                            class="serverStartBtn"
+                            id="deltaStartBtn"
+                            disabled
+                        >
+                            Démarrer
+                        </button>
+                        <button
+                            class="serverSetReadyBtn"
+                            id="deltaSetReadyBtn"
+                            disabled
+                        >
+                            Définir comme Prêt
+                        </button>
+                        <button
+                            class="serverStopBtn"
+                            id="deltaStopBtn"
+                            disabled
+                        >
+                            Arrêter
+                        </button>
+                        <button
+                            class="serverKillBtn"
+                            id="deltaKillBtn"
+                            disabled
+                        >
+                            Tuer
+                        </button>
+                    </div>
+                    <pre>
+                        <output class="terminal" id="deltaTerm"></output>
+                    </pre>
                 </div>
                 <div class="tabBlock-pane">
                     <!-- Onglet Maintenance -->
