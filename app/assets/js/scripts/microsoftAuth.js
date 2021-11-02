@@ -6,7 +6,7 @@ $('#loginWithMicrosoftBtn').on('click', () => {
     loginLoading(true)
     loginPassword.disabled = true
     loginUsername.disabled = true
-    $('#loginWithMicrosoftBtn').prop('disabled', 'disabled')
+    $('#loginWithMicrosoftBtn').attr('disabled', 'disabled')
 
     const client_id = '92425d35-b7ea-4608-b193-abf85dcfb95d'
     const redirect_uri = 'http://127.0.0.1:25555'
@@ -74,7 +74,7 @@ function showMicrosoftAuthError(error) {
     loginLoading(false)
     loginPassword.disabled = false
     loginUsername.disabled = false
-    $('#loginWithMicrosoftBtn').removeProp('disabled')
+    $('#loginWithMicrosoftBtn').removeAttr('disabled')
     setOverlayHandler(null)
     if (error !== undefined) {
         setOverlayContent(
@@ -99,6 +99,6 @@ function cancelMicrosoftLogin() {
     loginLoading(false)
     loginPassword.disabled = false
     loginUsername.disabled = false
-    $('#loginWithMicrosoftBtn').removeProp('disabled')
+    $('#loginWithMicrosoftBtn').removeAttr('disabled')
     authCancelled = true
 }
