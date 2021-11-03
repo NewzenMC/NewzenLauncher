@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2.3.5
+      uses: actions/checkout@v2.4.0
       with:
           persist-credentials: false
 
@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2.3.5
+      uses: actions/checkout@v2.4.0
       with:
           persist-credentials: false
 
@@ -63,7 +63,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2.3.5
+      uses: actions/checkout@v2.4.0
       with:
           persist-credentials: false
 
