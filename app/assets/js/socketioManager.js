@@ -9,6 +9,8 @@ const Maintenance = require('./assets/js/maintenance')
 
 let permissionLevel = 0
 
+let luckpermsGroups = []
+
 let datacenterConnection = false
 let datacenterConnectionInterval = null
 
@@ -28,6 +30,10 @@ socket.on('disconnect', () => {
 
 socket.on('message', (data) => {
     permissionLevel = data.adminPanelPermissions
+
+    luckpermsGroups = data.luckpermsGroups
+    refreshLuckpermsGroups()
+
     $('#maintenanceMode').prop('checked', data.maintenance)
     if (data.maintenance) Maintenance.enableMaintenance()
     else Maintenance.disableMaintenance()
@@ -134,4 +140,32 @@ function refreshNoDatacenterConnectionOverlay() {
         toggleOverlay(false)
         $('#main').fadeIn()
     }
+}
+
+function refreshLuckpermsGroups() {
+    let highestGroup = 'HEY YA UN BUG LA !'
+    let groupColor = 'black'
+    if (luckpermsGroups.includes('default')) {
+        highestGroup = 'JOUEUR'
+        groupColor = 'lightgray'
+    }
+    //TODO Ajouter les autres Grades
+    //TODO WARNING : Dans l'ordre hiérarchique,
+    //TODO WARNING : Le Grade le plus haut en dernier et le plus bas en premier
+    if (luckpermsGroups.includes('administration')) {
+        highestGroup = 'ADMINISTRATION'
+        groupColor = 'darkred'
+    }
+
+    let username = $('#user_text').html()
+    $('#user_text').html('')
+
+    let groupSpan = $(`<span>${highestGroup}</span>`)
+    groupSpan.css('color', groupColor)
+    let br = $('<br>')
+    let usernameSpan = $(`<span>${username}</span>`)
+
+    $('#user_text').append(groupSpan)
+    $('#user_text').append(br)
+    $('#user_text').append(usernameSpan)
 }
