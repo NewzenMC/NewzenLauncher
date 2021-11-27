@@ -11,16 +11,32 @@ let permissionLevel = 0
 
 let luckpermsGroups = []
 
+let loginInProgress = false
+let loginEnded = false
+
 let datacenterConnection = false
 let datacenterConnectionInterval = null
 
 socket.on('connect', () => {
-    socket.send(Object.keys(ConfigManager.getAuthAccounts())[0])
+    const selectedAccount = ConfigManager.getSelectedAccount()
+    if (selectedAccount !== undefined) {
+        const currentUUID = selectedAccount.uuid
+
+        socket.send(currentUUID)
+
+        datacenterConnection = true
+        refreshNoDatacenterConnectionOverlay()
+    } else {
+        loginInProgress = true
+        loginEnded = false
+        socket.disconnect()
+        datacenterConnection = false
+        refreshNoDatacenterConnectionOverlay()
+    }
+
     $('#adminPanelLogin').fadeIn(500)
     $('.content').fadeIn(500) // Parent element of #adminPanelLogin
     $('#adminPanelContent').fadeOut(500)
-    datacenterConnection = true
-    refreshNoDatacenterConnectionOverlay()
 })
 
 socket.on('disconnect', () => {
@@ -115,18 +131,18 @@ socket.on('error', (errorMsg) => {
 })
 
 function refreshNoDatacenterConnectionOverlay() {
-    if (Object.keys(ConfigManager.getAuthAccounts())[0] === undefined) return
-    if (!datacenterConnection) {
+    if (datacenterConnection === false && loginInProgress === false) {
         setOverlayContent(
             'Connection aux Centres de Données Impossible',
             'Il est actuellement impossible de se connecter aux Centres de Données de Newzen<br>Vérifiez votre connection Internet !<br>Si le problème persiste, veuillez le signaler à TIEB62#3087 sur le Discord de Newzen !',
             'Rejoindre le Discord'
-        ) //TODO Mettre un lien vers la page de status de Newzen
+        )
+        //TODO Mettre un lien vers la page de status de Newzen
         setOverlayHandler(() => {
             require('electron').shell.openExternal('https://discord.newzen.fr')
         })
         $('#main').fadeOut()
-        // Not recreate an interval if another is alerady running
+        // Not recreate an interval if another is already running
         if (datacenterConnectionInterval === null) {
             datacenterConnectionInterval = setInterval(() => {
                 toggleOverlay(true)
@@ -139,6 +155,16 @@ function refreshNoDatacenterConnectionOverlay() {
         setOverlayHandler(null)
         toggleOverlay(false)
         $('#main').fadeIn()
+    }
+    if (loginInProgress === false && loginEnded === true) {
+        socket.connect()
+        socket.send(ConfigManager.getSelectedAccount().uuid)
+        loginEnded = false
+        //FIX Work but blinks after login
+        setTimeout(() => {
+            socket.connect()
+        }, 500)
+        //FIX
     }
 }
 

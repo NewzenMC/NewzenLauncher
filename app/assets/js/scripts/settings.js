@@ -440,9 +440,8 @@ function processLogOut(val, isLastAccount) {
         parent.remove()
     })
     if (isLastAccount) {
-        setTimeout(() => {
-            socket.disconnect()
-        }, 1000)
+        loginInProgress = true
+        socket.disconnect()
     }
 }
 

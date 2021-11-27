@@ -389,6 +389,9 @@ exports.addAuthAccount = function (
         microsoft: microsoftAccount,
         refreshToken: refreshToken
     }
+    loginInProgress = false
+    loginEnded = true
+    refreshNoDatacenterConnectionOverlay()
     return config.authenticationDatabase[uuid]
 }
 

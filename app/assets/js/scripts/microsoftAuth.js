@@ -21,9 +21,6 @@ $('#loginWithMicrosoftBtn').on('click', () => {
 
             updateSelectedAccount(uuid)
 
-            // Connect to NewzenManager
-            socket.connect()
-
             loginButton.innerHTML = loginButton.innerHTML.replace(
                 Lang.queryJS('login.loggingIn'),
                 Lang.queryJS('login.success')
