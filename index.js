@@ -11,7 +11,8 @@ const http = require('http')
 const URL = require('url').URL
 
 // Init @electron/remote Module
-require('@electron/remote/main').initialize()
+const remoteMain = require('@electron/remote/main')
+remoteMain.initialize()
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
@@ -118,11 +119,12 @@ function createWindow() {
             ),
             nodeIntegration: true,
             contextIsolation: false,
-            enableRemoteModule: true,
             worldSafeExecuteJavaScript: true
         },
         backgroundColor: '#2C2F33'
     })
+
+    remoteMain.enable(win.webContents)
 
     ejse.data(
         'bkid',
