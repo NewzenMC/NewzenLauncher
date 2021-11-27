@@ -36,20 +36,27 @@ window.eval = global.eval = () => {
 
 // Display warning when devtools window is opened.
 remote.getCurrentWebContents().on('devtools-opened', () => {
+    for (let i = 0; i < 7; i++) {
+        console.log(
+            `%cAttends ${'!'.repeat(i)}`,
+            'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold'
+        )
+    }
+
     console.log(
-        '%cLa Console est sombre et pleine de dangers',
-        'color: white; -webkit-text-stroke: 4px #a02d2a; font-size: 60px; font-weight: bold'
+        "%cSi on t'as a dit de Copier/Coller quelque chose ici, tu t'est sans doute fait arnaquer",
+        'font-size: 30px'
     )
     console.log(
-        "%cSi l'on vous a dit de Copier/Coller quelque chose ici, vous vous êtes sans doute fait arnaquer",
-        'font-size: 20px'
+        '%cSi tu ne sais pas exactement ce que tu fais, ferme cette fenêtre !',
+        'font-size: 30px'
     )
     console.log(
-        '%cSi vous ne savez pas exactement ce que vous faites, fermez cette fenêtre !',
-        'font-size: 20px'
+        "%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, tu t'expose à de gros risques de piratage !",
+        'font-size: 30px; color: red;'
     )
     console.log(
-        '%cEn éxécutant et/ou récupérant des données sur cette page puis en les donnant à autrui, vous vous exposez à de gros risques de piratage de données !',
+        '%cSi tu sais exactement ce que tu fais, dépose ta candidature pour être développeur sur Newzen ! (Ouvre un Ticket sur le Discord)',
         'font-size: 20px'
     )
 })
