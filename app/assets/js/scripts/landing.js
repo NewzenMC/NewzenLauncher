@@ -1213,7 +1213,7 @@ document.addEventListener('keydown', (e) => {
 function displayArticle(articleObject, index) {
     newsArticleTitle.innerHTML = articleObject.title
     newsArticleTitle.href = articleObject.link
-    newsArticleAuthor.innerHTML = 'by ' + articleObject.author
+    newsArticleAuthor.innerHTML = 'Par ' + articleObject.author
     newsArticleDate.innerHTML = articleObject.date
     newsArticleComments.innerHTML = articleObject.comments
     newsArticleComments.href = articleObject.commentsLink
@@ -1233,7 +1233,7 @@ function displayArticle(articleObject, index) {
                 text.style.display === 'block' ? 'none' : 'block'
         }
     })
-    newsNavigationStatus.innerHTML = index + ' of ' + newsArr.length
+    newsNavigationStatus.innerHTML = index + ' de ' + newsArr.length
     newsContent.setAttribute('article', index - 1)
 }
 
@@ -1245,7 +1245,6 @@ function loadNews() {
     return new Promise((resolve, reject) => {
         const distroData = DistroManager.getDistribution()
         const newsFeed = distroData.getRSS()
-        //FIX Erreur dans la console au moment de parsing de l'URL Solution => Désactiver totalement le sytème de news en le remplacant par autre chose
         const newsHost = new URL(newsFeed).origin + '/'
         $.ajax({
             url: newsFeed,
@@ -1260,7 +1259,7 @@ function loadNews() {
                     // Resolve date.
                     const date = new Date(
                         el.find('pubDate').text()
-                    ).toLocaleDateString('en-US', {
+                    ).toLocaleDateString('fr-FR', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
@@ -1271,7 +1270,9 @@ function loadNews() {
                     // Resolve comments.
                     let comments = el.find('slash\\:comments').text() || '0'
                     comments =
-                        comments + ' Comment' + (comments === '1' ? '' : 's')
+                        comments +
+                        ' Commentaire' +
+                        (comments === '1' ? '' : 's')
 
                     // Fix relative links in content.
                     let content = el.find('content\\:encoded').text()
@@ -1296,7 +1297,7 @@ function loadNews() {
                         author,
                         content,
                         comments,
-                        commentsLink: link + '#comments'
+                        commentsLink: link + '#commentaire'
                     })
                 }
                 resolve({
