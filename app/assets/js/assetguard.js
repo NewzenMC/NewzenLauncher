@@ -353,7 +353,7 @@ class JavaGuard extends EventEmitter {
      * @returns Object containing the version information.
      */
     static parseJavaRuntimeVersion(verString) {
-        const major = verString.split('.')[0]
+        const major = parseInt(verString.split('.')[0])
         if (major === 1) {
             return JavaGuard._parseJavaRuntimeVersion_8(verString)
         } else {
