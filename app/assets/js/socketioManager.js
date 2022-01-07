@@ -123,6 +123,9 @@ socket.on('maintenance', (status) => {
         Maintenance.enableMaintenance()
     } else {
         Maintenance.disableMaintenance()
+        setTimeout(() => {
+            Maintenance.disableMaintenance()
+        }, 1000)
     }
 })
 
