@@ -9,7 +9,11 @@ const Maintenance = require('./assets/js/maintenance')
 
 let permissionLevel = 0
 
-let luckpermsGroups = []
+let luckpermsGroup = {
+    name: 'Chargement...',
+    color: '#000000'
+}
+refreshLuckpermsGroups()
 
 let loginInProgress = false
 let loginEnded = false
@@ -47,7 +51,7 @@ socket.on('disconnect', () => {
 socket.on('message', (data) => {
     permissionLevel = data.adminPanelPermissions
 
-    luckpermsGroups = data.luckpermsGroups
+    luckpermsGroup = data.luckpermsGroup
     refreshLuckpermsGroups()
 
     $('#maintenanceMode').prop('checked', data.maintenance)
@@ -68,7 +72,7 @@ socket.on('message', (data) => {
             $('#adminPanelNewzenBotTab').hide()
             $('#adminPanelDevTab').hide()
             break
-        case 1: //TODO SPECIAL : Juste accès a la liste des joueurs (Kick+Ban+Mute, etc)
+        case 1: //TODO Accès a la Liste des Joueurs et leurs Serveurs
             $('#adminPanelBtn').fadeIn(200)
             $('#adminPanelPlayersTab').show()
             $('#adminPanelMinageTab').hide()
@@ -172,28 +176,21 @@ function refreshNoDatacenterConnectionOverlay() {
 }
 
 function refreshLuckpermsGroups() {
-    let highestGroup = 'HEY YA UN BUG LA !'
-    let groupColor = 'black'
-    if (luckpermsGroups.includes('default')) {
-        highestGroup = 'JOUEUR'
-        groupColor = 'lightgray'
-    }
-    //TODO Ajouter les autres Grades
-    //TODO WARNING : Dans l'ordre hiérarchique,
-    //TODO WARNING : Le Grade le plus haut en dernier et le plus bas en premier
-    if (luckpermsGroups.includes('administration')) {
-        highestGroup = 'ADMINISTRATION'
-        groupColor = 'darkred'
-    }
-
+    // Get the Player Name and remove it from the landing page
     let username = $('#user_text').html()
     $('#user_text').html('')
 
-    let groupSpan = $(`<span>${highestGroup}</span>`)
-    groupSpan.css('color', groupColor)
+    // Build the First Span with the Luckperms Group Name & Color
+    let groupSpan = $(`<span>${luckpermsGroup.name.toUpperCase()}</span>`)
+    groupSpan.css('color', luckpermsGroup.color)
+
+    // To make the Group appear above the Player Name we create a <br>
     let br = $('<br>')
+
+    // Create another Spanw with the Player Name
     let usernameSpan = $(`<span>${username}</span>`)
 
+    // Append the Group Name and the Player Name to the landing page
     $('#user_text').append(groupSpan)
     $('#user_text').append(br)
     $('#user_text').append(usernameSpan)
