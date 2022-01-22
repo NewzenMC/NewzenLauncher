@@ -104,14 +104,21 @@ document
             toggleLaunchArea(true)
             setLaunchPercentage(0, 100)
 
-            const jg = new JavaGuard(mcVersion)
-            jg._validateJavaBinary(jExe).then((v) => {
-                loggerLanding.log('Java version meta', v)
-                if (v.valid) {
-                    dlAsync()
-                } else {
-                    asyncSystemScan(mcVersion)
-                }
+            remote.getCurrentWindow().setProgressBar(2) // Indeterminate ProgressBar
+            setLaunchDetails('Vérification du Token...')
+            validateSelectedAccount().then((result) => {
+                remote.getCurrentWindow().setProgressBar(0) // Remove ProgressBar
+                setLaunchDetails('Token Valide !')
+
+                const jg = new JavaGuard(mcVersion)
+                jg._validateJavaBinary(jExe).then((v) => {
+                    loggerLanding.log('Java version meta', v)
+                    if (v.valid) {
+                        dlAsync()
+                    } else {
+                        asyncSystemScan(mcVersion)
+                    }
+                })
             })
         }
     })

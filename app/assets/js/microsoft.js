@@ -146,7 +146,8 @@ exports.validate = async (accessToken) => {
             url: 'https://api.minecraftservices.com/minecraft/profile',
             headers: {
                 Authorization: `Bearer ${accessToken}`
-            }
+            },
+            timeout: 1000
         })
             .catch(function (error) {
                 resolve(false)
