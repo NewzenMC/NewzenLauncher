@@ -1684,7 +1684,7 @@ class AssetGuard extends EventEmitter {
         return new Promise((resolve, reject) => {
             JavaGuard._latestOpenJDK('8').then((verData) => {
                 if (verData != null) {
-                    dataDir = path.join(dataDir, 'runtime', 'x64')
+                    dataDir = path.join(dataDir, 'runtime', process.arch)
                     const fDir = path.join(dataDir, verData.name)
                     const jre = new Asset(
                         verData.name,
@@ -1700,26 +1700,18 @@ class AssetGuard extends EventEmitter {
                                 dataDir,
                                 zip.getEntries()[0].entryName
                             )
-                            zip.extractAllToAsync(dataDir, true, (err) => {
+
+                            zip.extractAllTo(dataDir, true)
+
+                            fs.unlink(a.to, (err) => {
                                 if (err) {
                                     console.log(err)
-                                    self.emit(
-                                        'complete',
-                                        'java',
-                                        JavaGuard.javaExecFromRoot(pos)
-                                    )
-                                } else {
-                                    fs.unlink(a.to, (err) => {
-                                        if (err) {
-                                            console.log(err)
-                                        }
-                                        self.emit(
-                                            'complete',
-                                            'java',
-                                            JavaGuard.javaExecFromRoot(pos)
-                                        )
-                                    })
                                 }
+                                self.emit(
+                                    'complete',
+                                    'java',
+                                    JavaGuard.javaExecFromRoot(pos)
+                                )
                             })
                         } else {
                             // Tar.gz
