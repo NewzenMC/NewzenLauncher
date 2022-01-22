@@ -107,6 +107,12 @@ document
             remote.getCurrentWindow().setProgressBar(2) // Indeterminate ProgressBar
             setLaunchDetails('Vérification du Token...')
             validateSelectedAccount().then((result) => {
+                if (result !== true) {
+                    remote.getCurrentWindow().setProgressBar(0) // Remove ProgressBar
+                    setLaunchDetails('')
+                    toggleLaunchArea(false)
+                    return
+                }
                 remote.getCurrentWindow().setProgressBar(0) // Remove ProgressBar
                 setLaunchDetails('Token Valide !')
 
