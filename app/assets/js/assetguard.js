@@ -11,6 +11,7 @@ const Registry = require('winreg')
 const request = require('request')
 const tar = require('tar-fs')
 const zlib = require('zlib')
+const axios = require('axios').default
 
 const ConfigManager = require('./configmanager')
 const DistroManager = require('./distromanager')
@@ -258,7 +259,7 @@ class JavaGuard extends EventEmitter {
      */
 
     /**
-     * Fetch the last open JDK binary. Uses https://api.adoptopenjdk.net/
+     * Fetch the last open JDK binary. Uses https://api.adoptium.net/
      *
      * @param {string} major The major version of Java to fetch.
      *
@@ -272,19 +273,33 @@ class JavaGuard extends EventEmitter {
                 ? 'mac'
                 : process.platform
 
-        const url = `https://api.adoptopenjdk.net/v2/latestAssets/nightly/openjdk${major}?os=${sanitizedOS}&arch=x64&heap_size=normal&openjdk_impl=hotspot&type=jre`
+        const url = 'https://api.adoptium.net/v3/assets/feature_releases/8/ga'
 
         return new Promise((resolve, reject) => {
-            request({ url, json: true }, (err, resp, body) => {
-                if (!err && body.length > 0) {
-                    resolve({
-                        uri: body[0].binary_link,
-                        size: body[0].binary_size,
-                        name: body[0].binary_name
-                    })
-                } else {
-                    resolve(null)
+            axios({
+                method: 'get',
+                url,
+                responseType: 'json',
+                params: {
+                    os: sanitizedOS,
+                    architecture: process.arch,
+                    project: 'jdk',
+                    image_type: 'jre',
+                    jvm_impl: 'hotspot',
+                    heap_size: 'normal',
+                    vendor: 'eclipse',
+                    sort_method: 'DATE',
+                    sort_order: 'DESC',
+                    page_size: 1,
+                    page: 0
                 }
+            }).then((response) => {
+                const data = response.data[0].binaries[0].package
+                resolve({
+                    uri: data.link,
+                    size: data.size,
+                    name: data.name
+                })
             })
         })
     }
