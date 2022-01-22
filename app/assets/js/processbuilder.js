@@ -532,7 +532,7 @@ class ProcessBuilder {
                         case 'launcher_name':
                             val = args[i].replace(
                                 argDiscovery,
-                                'Helios-Launcher'
+                                'NewzenLauncher'
                             )
                             break
                         case 'launcher_version':
