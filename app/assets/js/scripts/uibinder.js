@@ -372,14 +372,14 @@ async function validateSelectedAccount() {
             ConfigManager.save()
             const accLen = Object.keys(ConfigManager.getAuthAccounts()).length
             setOverlayContent(
-                'Failed to Refresh Login',
-                `We were unable to refresh the login for <strong>${
+                'Impossible de rafraîchir le Token',
+                `Il nous est impossible de rafraîchir le Token pour <strong>${
                     selectedAcc.displayName
-                }</strong>. Please ${
-                    accLen > 0 ? 'select another account or ' : ''
-                } login again.`,
-                'Login',
-                'Select Another Account'
+                }</strong>. Veuillez ${
+                    accLen > 0 ? 'sélectionner un autre compte ou ' : ''
+                } vous reconnecter.`,
+                'Se Reconnecter',
+                'Sélectionner un Autre Compte'
             )
             setOverlayHandler(() => {
                 document.getElementById('loginUsername').value =
