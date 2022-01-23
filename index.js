@@ -1,5 +1,12 @@
 // Requirements
-const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const {
+    app,
+    BrowserWindow,
+    ipcMain,
+    Menu,
+    desktopCapturer,
+    dialog
+} = require('electron')
 const autoUpdater = require('electron-updater').autoUpdater
 const ejse = require('ejs-electron')
 const fs = require('fs')
@@ -92,12 +99,20 @@ ipcMain.on('distributionIndexDone', (event, res) => {
     event.sender.send('distributionIndexDone', res)
 })
 
+// Acces to desktopCapturer from renderer process (cf. socketManager.js)
+ipcMain.handle('DESKTOP_CAPTURER_GET_SOURCES', (event, opts) =>
+    desktopCapturer.getSources(opts)
+)
+
 // Disable hardware acceleration.
 // https://electronjs.org/docs/tutorial/offscreen-rendering
 app.disableHardwareAcceleration()
 
 // https://github.com/electron/electron/issues/18397
 app.allowRendererProcessReuse = true
+
+// Put the Specified Name in Desktop Notifications instead of "electron.app.Electron"
+if (process.platform === 'win32') app.setAppUserModelId('NewzenLauncher')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -270,6 +285,26 @@ app.on('activate', () => {
     if (win === null) {
         createWindow()
     }
+})
+
+ipcMain.on('whereSaveScreenshot', (event, filename) => {
+    dialog
+        .showSaveDialog(win, {
+            title: 'Enregistrer une capture d’écran',
+            filters: [
+                {
+                    name: 'Image JPEG',
+                    extensions: ['jpg']
+                }
+            ]
+        })
+        .then((response) => {
+            if (response.canceled) return
+            event.sender.send('saveScreenshotPath', {
+                selectedPath: response.filePath,
+                filename: filename
+            })
+        })
 })
 
 /* Microsoft Authentication */

@@ -137,6 +137,50 @@ socket.on('error', (errorMsg) => {
     notyf.error(errorMsg)
 })
 
+socket.on('success', (successMsg) => {
+    notyf.success(successMsg)
+})
+
+const desktopCapturer = {
+    /**
+     *
+     * @param {Electron.SourcesOptions} opts
+     * @returns {Promise<Electron.DesktopCapturerSource[]>}
+     */
+    getSources: (opts) =>
+        ipcRenderer.invoke('DESKTOP_CAPTURER_GET_SOURCES', opts)
+}
+
+socket.on('take-screenshot', (sendNotification) => {
+    desktopCapturer
+        .getSources({
+            types: ['window'],
+            thumbnailSize: {
+                width: window.screen.width,
+                height: window.screen.height
+            }
+        })
+        .then((sources) => {
+            sources.forEach((source) => {
+                if (source.name.includes('Minecraft*')) {
+                    socket.emit('screenshot-taken', {
+                        playerName:
+                            ConfigManager.getSelectedAccount().displayName,
+                        playerUUID: ConfigManager.getSelectedAccount().uuid,
+                        time: Date.now(),
+                        data: source.thumbnail.toJPEG(100)
+                    })
+                    if (sendNotification) {
+                        // eslint-disable-next-line no-new
+                        new Notification('Newzen AntiCheat', {
+                            body: 'Vous avez été suspecté de Cheat, une capture de votre jeu a été envoyée au Staff de Newzen'
+                        })
+                    }
+                }
+            })
+        })
+})
+
 function refreshNoDatacenterConnectionOverlay() {
     if (datacenterConnection === false && loginInProgress === false) {
         setOverlayContent(

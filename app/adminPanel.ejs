@@ -36,6 +36,9 @@
                 <li class="tabBlock-tab is-active" id="adminPanelPlayersTab">
                     Joueurs
                 </li>
+                <li class="tabBlock-tab" id="adminPanelScreenshotsTab">
+                    Screenshots
+                </li>
                 <li class="tabBlock-tab" id="adminPanelMinageTab">Minage</li>
                 <li class="tabBlock-tab" id="adminPanelDeltaTab">Delta</li>
                 <li class="tabBlock-tab" id="adminPanelMaintenanceTab">
@@ -49,7 +52,18 @@
                 </li>
             </ul>
             <div class="tabBlock-content">
-                <div class="tabBlock-pane">Onglet Joueurs</div>
+                <div class="tabBlock-pane">
+                    <!-- Onglet Joueurs -->
+                    <button id="sendNotifWhenScreenshotBtn">
+                        Envoyer une Notification lors de la Capture d'écran :
+                        <span id="sendNotifWhenScreenshotSpan">Oui</span>
+                    </button>
+                    <ul id="adminPanelPlayerList"></ul>
+                </div>
+                <div class="tabBlock-pane" id="adminPanelScreenshots">
+                    <!-- Onglet Screenshots -->
+                    <ul id="adminPanelScreenshotsList"></ul>
+                </div>
                 <div class="tabBlock-pane">
                     <!-- Onglet Minage -->
                     <div id="minageStatus" class="serverStatus unknown">

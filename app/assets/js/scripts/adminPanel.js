@@ -1,4 +1,10 @@
+const adminPanelLogger = LoggerUtil(
+    '%c[AdminPanel]',
+    'color: #FFFFFF; font-weight: bold'
+)
+
 const Convert = require('ansi-to-html')
+const axios = require('axios').default
 const convert = new Convert({
     fg: '#FFF',
     bg: '#000',
@@ -309,6 +315,118 @@ $('#deltaKillBtn').on('click', () => {
         $('#deltaSetReadyBtn').attr('disabled', 'disabled')
         $('#deltaStopBtn').attr('disabled', 'disabled')
         $('#deltaKillBtn').attr('disabled', 'disabled')
+    }
+})
+
+let sendNotifWhenScreenshot = true
+$('#sendNotifWhenScreenshotBtn').on('click', () => {
+    sendNotifWhenScreenshot = !sendNotifWhenScreenshot
+    if (sendNotifWhenScreenshot) {
+        $('#sendNotifWhenScreenshotSpan').html('Oui')
+    } else {
+        $('#sendNotifWhenScreenshotSpan').html('Non')
+    }
+})
+
+socket.on('playerList', (uuidList) => {
+    $('#adminPanelPlayerList').empty()
+    $('#adminPanelPlayerList').append(
+        $('<li id="playerListLoading">Chargement...</li>')
+    )
+    adminPanelLogger.info('Started Resolving Player List UUIDs')
+    uuidList.forEach((uuid, index) => {
+        axios({
+            method: 'get',
+            url: `https://api.minetools.eu/uuid/${uuid}`,
+            responseType: 'json'
+        }).then((response) => {
+            adminPanelLogger.info(
+                `Resolved UUID ${uuid} to ${response.data.name}`
+            )
+            $('#adminPanelPlayerList').append(
+                $(
+                    `<li uuid="${uuid}">${response.data.name}<button class="btn">Capture d'écran</button></li>`
+                )
+            )
+
+            // If last item, remove loading message & set button clicks listeners
+            if (index === uuidList.length - 1) {
+                adminPanelLogger.info('Finished Resolving Player List UUIDs')
+                $('#playerListLoading').remove()
+
+                $('#adminPanelPlayerList .btn').on('click', (e) => {
+                    const uuid = $(e.target).parent().attr('uuid')
+                    socket.emit(
+                        'take-screenshot',
+                        uuid,
+                        sendNotifWhenScreenshot
+                    )
+                    notyf.success(
+                        "Si le joueur à son jeu lancé, une capture d'écran sera effectuée puis envoyée sur le serveur, vérifiez l'onglet Screenshots"
+                    )
+                    $(e.target).attr('disabled', 'disabled')
+                    setTimeout(() => {
+                        $(e.target).removeAttr('disabled')
+                    }, 2500)
+                })
+            }
+        })
+    })
+})
+
+socket.on('screenshots', (screenshots) => {
+    $('#adminPanelScreenshotsList').empty()
+    $('#adminPanelScreenshotsList').append(
+        $('<li id="screenshotsListLoading">Chargement...</li>')
+    )
+
+    // Reverse in oder to have the latest screenshot at the top
+    screenshots = screenshots.reverse()
+
+    screenshots.forEach((screenshot) => {
+        //prettier-ignore
+        $('#adminPanelScreenshotsList').append(
+            $(
+                `<li filename="${screenshot.filename}">${
+                    screenshot.playerName
+                } (${screenshot.playerUUID}) ${new Date(
+                    screenshot.time
+                ).toLocaleString()}<button class="btn-download">Télécharger</button><button class="btn-delete">Supprimer</button></li>`
+            )
+        )
+    })
+
+    $('#screenshotsListLoading').remove()
+
+    $('#adminPanelScreenshotsList .btn-download').on('click', (e) => {
+        const filename = $(e.target).parent().attr('filename')
+        ipcRenderer.send('whereSaveScreenshot', filename)
+    })
+    $('#adminPanelScreenshotsList .btn-delete').on('click', (e) => {
+        const filename = $(e.target).parent().attr('filename')
+        socket.emit('delete-screenshot', filename)
+        notyf.success('Demande de suppression...')
+    })
+})
+
+let savePath = null
+ipcRenderer.on('saveScreenshotPath', (event, response) => {
+    socket.emit('get-screenshot', response.filename)
+    savePath = response.selectedPath
+    notyf.success('Démarrage du Téléchargement...')
+})
+
+socket.on('get-screenshot', (screenshot) => {
+    if (savePath !== null) {
+        require('fs').writeFile(savePath, screenshot, (err) => {
+            if (err) {
+                notyf.error('Erreur lors du Téléchargement')
+                adminPanelLogger.error(err)
+            } else {
+                notyf.success('Téléchargement Terminé !')
+            }
+        })
+        savePath = null
     }
 })
 
