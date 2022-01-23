@@ -3926,6 +3926,7 @@ ul {
 .tabBlock-content * {
     max-height: 65%;
     overflow: auto;
+    color: black;
 }
 
 .tabBlock-tab {
