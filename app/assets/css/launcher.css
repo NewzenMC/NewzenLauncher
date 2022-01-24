@@ -4499,6 +4499,7 @@ div.serverStatus.stopping *:not(h2) {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    user-select: text;
 }
 #adminPanelScreenshotsList li:first-child {
     border-top: 0;
@@ -4514,6 +4515,7 @@ div.serverStatus.stopping *:not(h2) {
     min-width: 1.5em;
     padding: 0.25em;
     text-align: center;
+    user-select: none;
 }
 #adminPanelScreenshotsList .btn-download:hover {
     background-color: #00ff00;
@@ -4529,6 +4531,7 @@ div.serverStatus.stopping *:not(h2) {
     min-width: 1.5em;
     padding: 0.25em;
     text-align: center;
+    user-select: none;
 }
 #adminPanelScreenshotsList .btn-delete:hover {
     background-color: #ff0000;
