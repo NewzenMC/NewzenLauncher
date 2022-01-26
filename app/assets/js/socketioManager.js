@@ -143,7 +143,6 @@ socket.on('success', (successMsg) => {
 
 const desktopCapturer = {
     /**
-     *
      * @param {Electron.SourcesOptions} opts
      * @returns {Promise<Electron.DesktopCapturerSource[]>}
      */
