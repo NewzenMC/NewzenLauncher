@@ -522,8 +522,7 @@ const SERVER_JOINED_REGEX =
     /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
 
 // Jeu lancé
-const GAME_JOINED_REGEX =
-    /\[.+\]: Could not authorize you against Realms server: Invalid session id/
+const GAME_JOINED_REGEX = /\[.+\]: Sound engine started/
 
 // Lancement du jeu
 const GAME_LAUNCH_REGEX =
