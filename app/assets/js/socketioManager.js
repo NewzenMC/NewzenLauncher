@@ -161,7 +161,7 @@ socket.on('take-screenshot', (sendNotification) => {
         })
         .then((sources) => {
             sources.forEach((source) => {
-                if (source.name.includes('Minecraft*')) {
+                if (source.name.includes('Newzen - ')) {
                     socket.emit('screenshot-taken', {
                         playerName:
                             ConfigManager.getSelectedAccount().displayName,
