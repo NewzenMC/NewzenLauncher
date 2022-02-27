@@ -517,9 +517,9 @@ let proc
 let hasRPC = true
 
 //TODO Modifier pour Newzen
-// Serveur de Newzen rejoint
+// Serveur rejoint
 const SERVER_JOINED_REGEX =
-    /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} joined the game/
+    /\[.+\]: \[CHAT\] [a-zA-Z0-9_]{1,16} a rejoint la partie/
 
 // Jeu lancé
 const GAME_JOINED_REGEX = /\[.+\]: Sound engine started/
