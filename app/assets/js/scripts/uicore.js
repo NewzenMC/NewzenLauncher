@@ -72,7 +72,10 @@ if (!isDev) {
         switch (arg) {
             case 'checking-for-update':
                 loggerAutoUpdater.log('Checking for update..')
-                settingsUpdateButtonStatus('Checking for Updates..', true)
+                settingsUpdateButtonStatus(
+                    'Vérification des Mises à Jour..',
+                    true
+                )
                 break
             case 'update-available':
                 loggerAutoUpdaterSuccess.log(
