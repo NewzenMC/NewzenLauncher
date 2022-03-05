@@ -1,0 +1,129 @@
+/* Notyf CSS */
+@import '../../../node_modules/notyf/notyf.min.css';
+
+/* Default Font */
+@font-face {
+    font-family: 'Avenir Book';
+    src: url('../fonts/Avenir-Book.ttf');
+}
+
+@font-face {
+    font-family: 'JetBrains Mono Thin';
+    src: url('../fonts/JetBrainsMono-Thin.ttf');
+}
+
+* {
+    user-select: none;
+}
+
+body {
+    font-family: 'Avenir Book';
+    color: white;
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    background-image: radial-gradient(
+        circle at 50% 50%,
+        rgba(51, 102, 136, 0.75) 0%,
+        rgba(0, 54, 128, 1) 100%
+    );
+
+    overflow: hidden;
+}
+
+#background {
+    width: 100%;
+    height: 100vh;
+
+    background-size: 2.5vh 2.5vh;
+    background-image: linear-gradient(to right, grey 1px, transparent 1px),
+        linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+
+img {
+    filter: grayscale(100) brightness(100) opacity(0.1)
+        drop-shadow(1px 1px 0 white) drop-shadow(-1px 1px 0 white)
+        drop-shadow(1px -1px 0 white) drop-shadow(-1px -1px 0 white);
+    transition: all 0.75s;
+
+    cursor: pointer;
+
+    width: 30vw;
+}
+
+div.position img:hover,
+div.force-hover img {
+    filter: grayscale(0) brightness(1) opacity(1) drop-shadow(2px 4px 6px black) !important;
+}
+
+.position {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: table;
+}
+
+.position.right {
+    left: 75vh;
+}
+
+.position.left {
+    right: 75vh;
+}
+
+h1 {
+    font-family: 'JetBrains Mono Thin';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding-top: 3vh;
+    font-size: 7.5vh;
+    text-align: center;
+    font-weight: bold;
+    color: orangered;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: 'JetBrains Mono Thin';
+    font-size: 5vh;
+    text-align: center;
+    color: white;
+    transition: all 1s;
+    position: absolute;
+    top: 35vh;
+    left: 30%;
+
+    filter: drop-shadow(0 0 0 transparent);
+}
+
+div.position img:hover + h2,
+div.force-hover h2 {
+    color: red;
+    filter: drop-shadow(2px 4px 6px black) !important;
+}
+
+#exit {
+    position: absolute;
+    top: 85vh;
+    right: 0;
+    width: 7.5vw;
+    height: 7.5vw;
+    transition: all 0.5s;
+    cursor: pointer;
+
+    filter: invert(0) brightness(50%) sepia(100%) saturate(10000%)
+        drop-shadow(0 0 0 transparent);
+}
+
+#exit:hover {
+    filter: invert(1) brightness(0.5) sepia(1) saturate(10000%)
+        drop-shadow(2px 4px 6px black) !important;
+}

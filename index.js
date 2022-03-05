@@ -5,7 +5,9 @@ const {
     ipcMain,
     Menu,
     desktopCapturer,
-    dialog
+    dialog,
+    contextBridge,
+    ipcRenderer
 } = require('electron')
 const autoUpdater = require('electron-updater').autoUpdater
 const ejse = require('ejs-electron')
@@ -116,6 +118,9 @@ if (process.platform === 'win32') app.setAppUserModelId('NewzenLauncher')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+/**
+ * @type {BrowserWindow}
+ */
 let win
 
 function createWindow() {
@@ -307,8 +312,12 @@ ipcMain.on('whereSaveScreenshot', (event, filename) => {
         })
 })
 
-/* Microsoft Authentication */
+//#region Microsoft Authentication
+
 let microsoftAuthStarted = false
+/**
+ * @type {BrowserWindow}
+ */
 let msAuthWindow = null
 /**
  * @param {String} url Microsoft Auth URL
@@ -394,3 +403,69 @@ ipcMain.on('startMicrosoftAuth', (event, url) => {
     startMicrosoftAuthServer(event)
     createMsAuthWindow(url)
 })
+
+//#endregion Microsoft Authentication
+
+//#region Server Selector
+/**
+ * @type {BrowserWindow}
+ */
+let serverSelectorWindow = null
+function createServerSelectorWindow(currentServer = null) {
+    if (serverSelectorWindow !== null) {
+        throw new Error('Server Selector Window Already Created')
+    }
+    serverSelectorWindow = new BrowserWindow({
+        icon: getPlatformIcon('SealCircle'),
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            worldSafeExecuteJavaScript: true
+        },
+        backgroundColor: '#2C2F33',
+        parent: win,
+        modal: true
+    })
+
+    serverSelectorWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, 'app', 'serverSelector.ejs'),
+            protocol: 'file:',
+            slashes: true
+        })
+    )
+
+    ejse.data('currentServer', currentServer)
+
+    serverSelectorWindow.removeMenu()
+
+    serverSelectorWindow.maximize()
+
+    serverSelectorWindow.setAlwaysOnTop(true)
+
+    serverSelectorWindow.setFullScreen(true)
+
+    serverSelectorWindow.focus()
+
+    setTimeout(() => {
+        serverSelectorWindow.focus()
+    }, 500)
+
+    serverSelectorWindow.on('closed', () => {
+        serverSelectorWindow = null
+        win.minimize()
+    })
+}
+
+ipcMain.on('openServerSelector', (_event, currentServer) => {
+    if (serverSelectorWindow !== null) return
+    createServerSelectorWindow(currentServer)
+})
+
+ipcMain.on('server-select', (_event, selectedServer) => {
+    serverSelectorWindow.close()
+    serverSelectorWindow = null
+    win.webContents.send('server-selected', selectedServer)
+})
+
+//#endregion Server Selector

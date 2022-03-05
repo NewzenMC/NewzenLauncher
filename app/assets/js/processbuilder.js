@@ -86,6 +86,9 @@ class ProcessBuilder {
             }
         )
 
+        global.gameRunning = true
+        startGameCommunication()
+
         if (ConfigManager.getLaunchDetached()) {
             child.unref()
         }
@@ -117,6 +120,9 @@ class ProcessBuilder {
                     logger.log('Temp dir deleted successfully.')
                 }
             })
+
+            global.gameRunning = false
+            stopGameCommunication()
         })
 
         return child

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>NewzenLauncher - Server Selector</title>
+
+        <meta
+            charset="utf-8"
+            http-equiv="Content-Security-Policy"
+            content="script-src 'self' 'unsafe-inline'; script-src-elem * 'self' 'unsafe-inline'"
+        />
+
+        <!-- CSS -->
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="./assets/css/serverSelector.css"
+        />
+    </head>
+
+    <body>
+        <input
+            type="hidden"
+            name="currentServer"
+            value="<%= currentServer %>"
+            style="display: none"
+        />
+        <!-- Background Grid -->
+        <div id="background">
+            <h1>Sélectionnez une Destination</h1>
+            <div id="delta" class="position left server">
+                <img src="assets/images/serverSelector/penrose-delta.png" />
+                <h2>Delta</h2>
+            </div>
+            <div id="minage" class="position right server">
+                <img src="assets/images/serverSelector/newzen-pickaxe.png" />
+                <h2>Minage</h2>
+            </div>
+            <img id="exit" src="assets/images/serverSelector/exit.png" />
+        </div>
+        <!-- Notyf -->
+        <script src="../node_modules/notyf/notyf.min.js"></script>
+        <script>
+            /* Initialize Notyf */
+            const notyf = new Notyf({
+                duration: 5000,
+                dismissible: true,
+                ripple: true,
+                position: {
+                    y: 'bottom',
+                    x: 'left'
+                }
+            })
+        </script>
+
+        <!-- JavaScript -->
+        <script
+            src="assets/js/scripts/serverSelector.js"
+            type="module"
+        ></script>
+    </body>
+</html>

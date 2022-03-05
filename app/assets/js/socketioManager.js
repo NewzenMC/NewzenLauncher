@@ -1,6 +1,8 @@
 /* global ConfigManager setOverlayHandler setOverlayContent toggleOverlay */
 const socket = require('socket.io-client')('http://ws.newzen.fr:8080')
 
+//#region Datacenter Connection
+
 setTimeout(() => {
     refreshNoDatacenterConnectionOverlay()
 }, 5000)
@@ -14,6 +16,26 @@ let luckpermsGroup = {
     color: '#000000'
 }
 refreshLuckpermsGroups()
+
+/**
+ * @typedef {Object} Server
+ * @property {string} id
+ * @property {string} address
+ */
+
+/**
+ * @type {Server[]}
+ */
+let servers = [
+    {
+        id: 'delta',
+        address: 'play.newzen.fr:25565'
+    },
+    {
+        id: 'minage',
+        address: 'play.newzen.fr:25566'
+    }
+]
 
 let loginInProgress = false
 let loginEnded = false
@@ -49,6 +71,8 @@ socket.on('disconnect', () => {
 })
 
 socket.on('message', (data) => {
+    if (data.servers !== undefined) servers = data.servers
+
     permissionLevel = data.adminPanelPermissions
 
     luckpermsGroup = data.luckpermsGroup
@@ -238,3 +262,94 @@ function refreshLuckpermsGroups() {
     $('#user_text').append(br)
     $('#user_text').append(usernameSpan)
 }
+
+//#endregion Datacenter Connection
+
+//#region Game Communication
+
+const GAME_SOCKET_PORT = 25550
+
+const socketManagerLogger = LoggerUtil('%c[SocketIO-Manager]', 'color: yellow;')
+
+const SocketIOServer = require('socket.io').Server
+
+const gameCommunicationServer = new SocketIOServer({
+    serveClient: false
+})
+
+let gameCommunicationStarted = false
+
+function startGameCommunication() {
+    if (global.gameRunning !== true && isDev === false) {
+        return socketManagerLogger.error('Game is not Running !')
+    } else if (gameCommunicationStarted === true) {
+        return socketManagerLogger.error(
+            'Game Communication is already started !'
+        )
+    }
+    gameCommunicationServer.listen(GAME_SOCKET_PORT)
+    gameCommunicationStarted = true
+    socketManagerLogger.info('Game Communication Started')
+}
+
+function stopGameCommunication() {
+    if (global.gameRunning === true && isDev === false) {
+        return socketManagerLogger.error('Game is still Running !')
+    } else if (gameCommunicationStarted === false) {
+        return socketManagerLogger.error('Game Communication is not running !')
+    }
+    gameCommunicationServer.close()
+    gameCommunicationStarted = false
+    socketManagerLogger.info('Game Communication Stopped')
+}
+
+/**
+ * @type {import('socket.io').Socket}
+ */
+let game = null
+gameCommunicationServer.on('connect', (socket) => {
+    game = socket
+    socketManagerLogger.info('Game Connected !')
+
+    registerGameCommunicationListeners()
+})
+
+let currentServer = ''
+ipcRenderer.on('server-selected', (_event, selectedServer) => {
+    switchServer(selectedServer)
+})
+
+function switchServer(targetServerID) {
+    if (game === null) {
+        return socketManagerLogger.error('Game is not connected !')
+    }
+    if (currentServer === targetServerID) {
+        return socketManagerLogger.error(`Already on ${targetServerID}`)
+    }
+
+    const targetServer = servers.find((server) => server.id === targetServerID)
+
+    if (targetServer !== undefined) {
+        game.emit('connectToServer', targetServer.address)
+        currentServer = targetServerID
+    } else {
+        socketManagerLogger.error(`Server ${targetServerID} not found !`)
+    }
+}
+
+function registerGameCommunicationListeners() {
+    game.on('disconnect', (_reason) => {
+        game = null
+        socketManagerLogger.info('Game Disconnected !')
+    })
+
+    game.on('startServerSelector', () => {
+        ipcRenderer.send('openServerSelector', currentServer)
+    })
+
+    game.on('message', (message) => {
+        socketManagerLogger.info('Game Message : ' + message)
+    })
+}
+
+//#endregion Game Communication
