@@ -69,10 +69,12 @@ div.force-hover img {
 
 .position.right {
     left: 75vh;
+    right: 0px;
 }
 
 .position.left {
     right: 75vh;
+    left: 0px;
 }
 
 h1 {
@@ -98,8 +100,9 @@ h2 {
     color: white;
     transition: all 1s;
     position: absolute;
-    top: 35vh;
-    left: 30%;
+
+    display: block;
+    width: 100%;
 
     filter: drop-shadow(0 0 0 transparent);
 }
