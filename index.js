@@ -449,6 +449,9 @@ function createServerSelectorWindow(currentServer = null) {
 
     setTimeout(() => {
         serverSelectorWindow.focus()
+        setTimeout(() => {
+            serverSelectorWindow.focus()
+        }, 500)
     }, 500)
 
     serverSelectorWindow.on('closed', () => {
