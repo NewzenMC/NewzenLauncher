@@ -5,16 +5,16 @@
 
 version: 2
 updates:
-  # Update All the NPM's packages
-  - package-ecosystem: "npm" 
-    directory: "/" # Location of package manifests
-    open-pull-requests-limit: 10
-    schedule:
-      interval: "daily"
+    # Update All the NPM's packages
+    - package-ecosystem: 'npm'
+        directory: '/' # Location of package manifests
+        open-pull-requests-limit: 10
+        schedule:
+            interval: 'daily'
 
-  # Update Github Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      # Check for updates to GitHub Actions every weekday
-      interval: "daily"
+    # Update Github Actions
+    - package-ecosystem: 'github-actions'
+        directory: '/'
+        schedule:
+            # Check for updates to GitHub Actions every weekday
+            interval: 'daily'
