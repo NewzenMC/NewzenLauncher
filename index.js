@@ -6,6 +6,7 @@ const {
     Menu,
     desktopCapturer,
     dialog,
+    protocol
 } = require('electron')
 const autoUpdater = require('electron-updater').autoUpdater
 const ejse = require('ejs-electron')
@@ -269,6 +270,23 @@ function getPlatformIcon(filename) {
     }
 
     return path.join(__dirname, 'app', 'assets', 'images', `${filename}.${ext}`)
+}
+
+// Single Instance Lock
+const singleInstancelocked = app.requestSingleInstanceLock()
+
+if (!singleInstancelocked) {
+    console.error('Another Instance is already opened, closing')
+    app.exit(0) // Force Exit App
+    process.exit(0) // Exit Process to ensure All is Stopped
+} else {
+    app.on('second-instance', () => {
+        // If someone try to open another instance we focus the current one
+        if (win) {
+            if (win.isMinimized()) win.restore()
+            win.focus()
+        }
+    })
 }
 
 app.on('ready', createWindow)
