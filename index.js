@@ -6,8 +6,6 @@ const {
     Menu,
     desktopCapturer,
     dialog,
-    contextBridge,
-    ipcRenderer
 } = require('electron')
 const autoUpdater = require('electron-updater').autoUpdater
 const ejse = require('ejs-electron')
