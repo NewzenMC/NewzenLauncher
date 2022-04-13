@@ -3,6 +3,12 @@ name: Build
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'SECURITY.md'
+      - 'docs/**'
 
 jobs:
   build-windows:
