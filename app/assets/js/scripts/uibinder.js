@@ -30,11 +30,11 @@ let currentView
  *
  * @param {string} current The ID of the current view container.
  * @param {*} next The ID of the next view container.
- * @param {*} currentFadeTime Optional. The fade out time for the current view.
- * @param {*} nextFadeTime Optional. The fade in time for the next view.
- * @param {*} onCurrentFade Optional. Callback function to execute when the current
+ * @param {Number} currentFadeTime Optional. The fade out time for the current view.
+ * @param {Number} nextFadeTime Optional. The fade in time for the next view.
+ * @param {Function} onCurrentFade Optional. Callback function to execute when the current
  * view fades out.
- * @param {*} onNextFade Optional. Callback function to execute when the next view
+ * @param {Function} onNextFade Optional. Callback function to execute when the next view
  * fades in.
  */
 function switchView(

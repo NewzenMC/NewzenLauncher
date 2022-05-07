@@ -535,7 +535,6 @@ let TabBlock = {
     showPane: function (i, $context) {
         let $panes = $context.find('.tabBlock-pane')
 
-        // Normally I'd frown at using jQuery over CSS animations, but we can't transition between unspecified variable heights, right? If you know a better way, I'd love a read it in the comments or on Twitter @johndjameson
         $panes.slideUp(TabBlock.s.animLen)
         $($panes[i]).slideDown(TabBlock.s.animLen)
     }
