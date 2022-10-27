@@ -383,11 +383,11 @@ exports.addAuthAccount = function (
     config.selectedAccount = uuid
     config.authenticationDatabase[uuid] = {
         accessToken,
-        username: username,
-        uuid: uuid,
-        displayName: displayName,
+        username,
+        uuid,
+        displayName,
         microsoft: microsoftAccount,
-        refreshToken: refreshToken
+        refreshToken
     }
     loginInProgress = false
     loginEnded = true

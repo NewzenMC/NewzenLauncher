@@ -390,7 +390,7 @@ function asyncSystemScan(mcVersion, launchAfter = true) {
                 })
                 setDismissHandler(() => {
                     $('#overlayContent').fadeOut(250, () => {
-                        //$('#overlayDismiss').toggle(false)
+                        // $('#overlayDismiss').toggle(false)
                         setOverlayContent(
                             'Java est requis pour lancer !',
                             'Une installation valide de Java 8 x64 est requise pour le lancement',
@@ -946,8 +946,8 @@ function slide_(up) {
         lCLRight.style.top = '-200vh'
         newsBtn.style.top = '130vh'
         newsContainer.style.top = '0px'
-        //date.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
-        //landingContainer.style.background = 'rgba(29, 29, 29, 0.55)'
+        // date.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
+        // landingContainer.style.background = 'rgba(29, 29, 29, 0.55)'
         landingContainer.style.background = 'rgba(0, 0, 0, 0.50)'
         setTimeout(() => {
             if (newsGlideCount === 1) {

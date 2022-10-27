@@ -1586,4 +1586,4 @@ function prepareSettings(first = false) {
 }
 
 // Prepare the settings UI on startup.
-//prepareSettings(true)
+// prepareSettings(true)

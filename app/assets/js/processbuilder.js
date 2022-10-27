@@ -426,7 +426,7 @@ class ProcessBuilder {
         // JVM Arguments First
         let args = this.versionData.arguments.jvm
 
-        //args.push('-Dlog4j.configurationFile=D:\\WesterosCraft\\game\\common\\assets\\log_configs\\client-1.12.xml')
+        // args.push('-Dlog4j.configurationFile=D:\\WesterosCraft\\game\\common\\assets\\log_configs\\client-1.12.xml')
 
         // Java Arguments
         if (process.platform === 'darwin') {
@@ -479,12 +479,12 @@ class ProcessBuilder {
                     }
                 }
 
-                // TODO splice not push
+                //TODO splice not push
                 if (checksum === args[i].rules.length) {
                     if (typeof args[i].value === 'string') {
                         args[i] = args[i].value
                     } else if (typeof args[i].value === 'object') {
-                        //args = args.concat(args[i].value)
+                        // args = args.concat(args[i].value)
                         args.splice(i, 1, ...args[i].value)
                     }
 
@@ -502,7 +502,7 @@ class ProcessBuilder {
                             val = this.authUser.displayName.trim()
                             break
                         case 'version_name':
-                            //val = versionData.id
+                            // val = versionData.id
                             val = this.server.getID()
                             break
                         case 'game_directory':
@@ -613,7 +613,7 @@ class ProcessBuilder {
                         val = this.authUser.displayName.trim()
                         break
                     case 'version_name':
-                        //val = versionData.id
+                        // val = versionData.id
                         val = this.server.getID()
                         break
                     case 'game_directory':
@@ -849,7 +849,7 @@ class ProcessBuilder {
             }
         }
 
-        //Check for any libraries in our mod list.
+        // Check for any libraries in our mod list.
         for (let i = 0; i < mods.length; i++) {
             if (mods.sub_modules != null) {
                 const res = this._resolveModuleLibraries(mods[i])
