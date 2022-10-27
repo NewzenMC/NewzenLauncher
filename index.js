@@ -171,9 +171,9 @@ function createWindow() {
 
     win.maximize()
 
-    /*win.once('ready-to-show', () => {
-        win.show()
-    })*/
+    // win.once('ready-to-show', () => {
+    //     win.show()
+    // })
 
     win.removeMenu()
 
@@ -323,7 +323,7 @@ ipcMain.on('whereSaveScreenshot', (event, filename) => {
             if (response.canceled) return
             event.sender.send('saveScreenshotPath', {
                 selectedPath: response.filePath,
-                filename: filename
+                filename
             })
         })
 })

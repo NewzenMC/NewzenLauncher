@@ -987,7 +987,7 @@ class AssetGuard extends EventEmitter {
      */
     static _validateLocal(filePath, algo, hash) {
         if (fs.existsSync(filePath)) {
-            //No hash provided, have to assume it's good.
+            // No hash provided, have to assume it's good.
             if (hash == null) {
                 return true
             }
@@ -1040,7 +1040,7 @@ class AssetGuard extends EventEmitter {
         const zip = new AdmZip(buf)
         const zipEntries = zip.getEntries()
 
-        //First pass
+        // First pass
         for (let i = 0; i < zipEntries.length; i++) {
             let entry = zipEntries[i]
             if (entry.entryName === 'checksums.sha1') {
@@ -1056,7 +1056,7 @@ class AssetGuard extends EventEmitter {
             return false
         }
 
-        //Check against expected
+        // Check against expected
         const expectedEntries = Object.keys(expected)
         for (let i = 0; i < expectedEntries.length; i++) {
             if (expected[expectedEntries[i]] !== hashes[expectedEntries[i]]) {
@@ -1170,7 +1170,7 @@ class AssetGuard extends EventEmitter {
                             )
                             resolve(forgeVersion)
                         } else {
-                            //Read the saved file to allow for user modifications.
+                            // Read the saved file to allow for user modifications.
                             resolve(
                                 JSON.parse(
                                     fs.readFileSync(versionFile, 'utf-8')
@@ -1180,7 +1180,7 @@ class AssetGuard extends EventEmitter {
                         return
                     }
                 }
-                //We didn't find forge's version.json.
+                // We didn't find forge's version.json.
                 reject(
                     'Unable to finalize Forge processing, version.json not found! Has forge changed their format?'
                 )
@@ -1209,7 +1209,7 @@ class AssetGuard extends EventEmitter {
             const versionFile = path.join(versionPath, version + '.json')
             if (!fs.existsSync(versionFile) || force) {
                 const url = await self._getVersionDataUrl(version)
-                //This download will never be tracked as it's essential and trivial.
+                // This download will never be tracked as it's essential and trivial.
                 console.log('Preparing download of ' + version + ' assets.')
                 fs.ensureDirSync(versionPath)
                 const stream = request(url).pipe(
@@ -1277,7 +1277,7 @@ class AssetGuard extends EventEmitter {
         })
     }
 
-    //Chain the asset tasks to provide full async. The below functions are private.
+    // Chain the asset tasks to provide full async. The below functions are private.
     /**
      * Private function used to chain the asset validation process. This function retrieves
      * the index data.
@@ -1288,7 +1288,7 @@ class AssetGuard extends EventEmitter {
     _assetChainIndexData(versionData, force = false) {
         const self = this
         return new Promise((resolve, reject) => {
-            //Asset index constants.
+            // Asset index constants.
             const assetIndex = versionData.assetIndex
             const name = assetIndex.id + '.json'
             const indexPath = path.join(self.commonPath, 'assets', 'indexes')
@@ -1328,7 +1328,7 @@ class AssetGuard extends EventEmitter {
     _assetChainValidateAssets(versionData, indexData) {
         const self = this
         return new Promise((resolve, reject) => {
-            //Asset constants
+            // Asset constants
             const resourceURL = 'http://resources.download.minecraft.net/'
             const localPath = path.join(self.commonPath, 'assets')
             const objectPath = path.join(localPath, 'objects')
@@ -1337,7 +1337,7 @@ class AssetGuard extends EventEmitter {
             let dlSize = 0
             let acc = 0
             const total = Object.keys(indexData.objects).length
-            //const objKeys = Object.keys(data.objects)
+            // const objKeys = Object.keys(data.objects)
             async.forEachOfLimit(
                 indexData.objects,
                 10,
@@ -1391,7 +1391,7 @@ class AssetGuard extends EventEmitter {
             const libDlQueue = []
             let dlSize = 0
 
-            //Check validity of each library. If the hashs don't match, download the library.
+            // Check validity of each library. If the hashs don't match, download the library.
             async.eachLimit(
                 libArr,
                 5,
@@ -1582,7 +1582,7 @@ class AssetGuard extends EventEmitter {
                 alist.push(artifact)
                 if (validationPath !== obPath) this.extractQueue.push(obPath)
             }
-            //Recursively process the submodules then combine the results.
+            // Recursively process the submodules then combine the results.
             if (ob.getSubModules() != null) {
                 let dltrack = this._parseDistroModules(
                     ob.getSubModules(),
@@ -1876,14 +1876,14 @@ class AssetGuard extends EventEmitter {
                         )
                     }
 
-                    //self.totaldlsize -= dlTracker.dlsize
-                    //self.progress -= dlTracker.dlsize
+                    // self.totaldlsize -= dlTracker.dlsize
+                    // self.progress -= dlTracker.dlsize
                     self[identifier] = new DLTracker([], 0)
 
                     if (self.progress >= self.totaldlsize) {
                         if (self.extractQueue.length > 0) {
                             self.emit('progress', 'extract', 1, 1)
-                            //self.emit('extracting')
+                            // self.emit('extracting')
                             AssetGuard._extractPackXZ(
                                 self.extractQueue,
                                 self.javaexec
@@ -1973,7 +1973,7 @@ class AssetGuard extends EventEmitter {
             await this.validateMiscellaneous(versionData)
             this.emit('validate', 'files')
             await this.processDlQueues()
-            //this.emit('complete', 'download')
+            // this.emit('complete', 'download')
             const forgeData = await this.loadForgeData(server)
 
             return {
