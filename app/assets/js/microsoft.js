@@ -1,5 +1,4 @@
 const axios = require('axios').default
-const querystring = require('querystring')
 
 const client_id = '92425d35-b7ea-4608-b193-abf85dcfb95d'
 const redirect_uri = 'http://127.0.0.1:25555'
@@ -17,13 +16,13 @@ exports.authFromCode = async (code) => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: querystring.stringify({
-                client_id: client_id,
+            data: new URLSearchParams({
+                client_id,
                 scope: 'offline_access XboxLive.signin',
                 redirect_uri,
                 grant_type: 'authorization_code',
-            })
                 code
+            }).toString()
         })
 
         const microsoftAccessToken = microsoftResult.data.access_token
