@@ -106,7 +106,7 @@ exports.status = function () {
                         'Erreur durant la récupération des status des services Mojang :',
                         error
                     )
-                    //reject(error || response.statusCode)
+                    // reject(error || response.statusCode)
                     for (let i = 0; i < statuses.length; i++) {
                         statuses[i].status = 'grey'
                     }

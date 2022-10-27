@@ -384,7 +384,7 @@ socket.on('screenshots', (screenshots) => {
     screenshots = screenshots.reverse()
 
     screenshots.forEach((screenshot) => {
-        //prettier-ignore
+        // prettier-ignore
         $('#adminPanelScreenshotsList').append(
             $(
                 `<li filename="${screenshot.filename}">${
@@ -670,7 +670,7 @@ function parseStyle(string) {
 
 function clearObfuscators() {
     let i = obfuscators.length
-    //prettier-ignore
+    // prettier-ignore
     for (; i--;) {
         clearInterval(obfuscators[i])
     }
