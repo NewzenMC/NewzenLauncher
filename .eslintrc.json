@@ -19,7 +19,7 @@
         "no-undef": "off",
         "no-unused-vars": "off",
         "indent": "off",
-        "spaced-comment": "off",
+        "spaced-comment": "warn",
         "space-before-function-paren": "off",
         "no-irregular-whitespace": "warn",
         "curly": "warn",
@@ -27,7 +27,7 @@
         "camelcase": "off",
         "prefer-const": "off",
         "prefer-promise-reject-errors": "off",
-        "node/handle-callback-err": "off",
+        "handle-callback-err": "off",
         "array-callback-return": "off"
     }
 }
