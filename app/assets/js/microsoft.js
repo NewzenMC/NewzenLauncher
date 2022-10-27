@@ -20,10 +20,10 @@ exports.authFromCode = async (code) => {
             data: querystring.stringify({
                 client_id: client_id,
                 scope: 'offline_access XboxLive.signin',
-                redirect_uri: redirect_uri,
+                redirect_uri,
                 grant_type: 'authorization_code',
-                code: code
             })
+                code
         })
 
         const microsoftAccessToken = microsoftResult.data.access_token
@@ -128,7 +128,7 @@ exports.authFromCode = async (code) => {
         }
     } catch (error) {
         return {
-            error: error,
+            error,
             errorCode: 'unknown'
         }
     }
@@ -166,10 +166,10 @@ exports.refresh = async (refreshToken) => {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: querystring.stringify({
-            client_id: client_id,
+            client_id,
             refresh_token: refreshToken,
             grant_type: 'refresh_token',
-            redirect_uri: redirect_uri
+            redirect_uri
         })
     })
     const microsoftAccessToken = refreshResult.data.access_token

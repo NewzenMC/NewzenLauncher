@@ -7,9 +7,7 @@
         "node": true,
         "shared-node-browser": true
     },
-    "extends": [
-        "standard"
-    ],
+    "extends": ["standard"],
     "parserOptions": {
         "ecmaVersion": 12
     },
@@ -19,7 +17,22 @@
         "no-undef": "off",
         "no-unused-vars": "off",
         "indent": "off",
-        "spaced-comment": "warn",
+        "spaced-comment": [
+            "warn",
+            "always",
+            {
+                "markers": [
+                    "#region",
+                    "#endregion",
+                    "region",
+                    "endregion",
+                    "TODO",
+                    "FIX",
+                    "NEWFEATURE",
+                    "BUG"
+                ]
+            }
+        ],
         "space-before-function-paren": "off",
         "no-irregular-whitespace": "warn",
         "curly": "warn",
@@ -27,7 +40,7 @@
         "camelcase": "off",
         "prefer-const": "off",
         "prefer-promise-reject-errors": "off",
-        "handle-callback-err": "off",
+        "n/handle-callback-err": "off",
         "array-callback-return": "off"
     }
 }
